@@ -26,4 +26,4 @@ build/
 
 # OS
 .DS_Store
-Thumbs.db
+Thumbs.db__temp_pipreqsnb_folder/
