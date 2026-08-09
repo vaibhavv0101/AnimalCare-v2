@@ -1,4 +1,6 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
 from app.extensions import db
 
 
@@ -33,6 +35,6 @@ class Adoption(db.Model):
     )
 
     created_at = db.Column(
-        db.DateTime,
-        default=datetime.utcnow
+    db.DateTime,
+    default=lambda: datetime.now(ZoneInfo("Asia/Kolkata"))
     )

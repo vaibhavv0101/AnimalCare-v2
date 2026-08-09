@@ -4,3 +4,4 @@ from app.models.animal import Animal
 from app.models.rescue import Rescue
 from app.models.rescue import Rescue
 from app.models.adoption import Adoption
+from app.models.ngo import NGO

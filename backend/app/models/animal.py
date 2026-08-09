@@ -1,4 +1,6 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
 from app.extensions import db
 
 
@@ -37,9 +39,10 @@ class Animal(db.Model):
     )
 
     created_at = db.Column(
-        db.DateTime,
-        default=datetime.utcnow
+    db.DateTime,
+    default=lambda: datetime.now(ZoneInfo("Asia/Kolkata"))
     )
+    
     rescues = db.relationship(
     "Rescue",
     back_populates="animal",

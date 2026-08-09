@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from app.extensions import db
 
@@ -49,14 +50,14 @@ class Rescue(db.Model):
     notes = db.Column(db.Text)
 
     created_at = db.Column(
-        db.DateTime,
-        default=datetime.utcnow
+    db.DateTime,
+    default=lambda: datetime.now(ZoneInfo("Asia/Kolkata"))
     )
 
     updated_at = db.Column(
-        db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+    db.DateTime,
+    default=lambda: datetime.now(ZoneInfo("Asia/Kolkata")),
+    onupdate=lambda: datetime.now(ZoneInfo("Asia/Kolkata"))
     )
 
     animal = db.relationship(
