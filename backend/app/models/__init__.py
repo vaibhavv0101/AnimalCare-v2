@@ -5,3 +5,4 @@ from app.models.rescue import Rescue
 from app.models.rescue import Rescue
 from app.models.adoption import Adoption
 from app.models.ngo import NGO
+from app.models.volunteer import Volunteer

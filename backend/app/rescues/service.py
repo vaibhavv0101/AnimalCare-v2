@@ -4,6 +4,8 @@ from app.extensions import db
 from app.models.animal import Animal
 from app.models.rescue import Rescue
 from app.models.user import User
+from app.models.ngo import NGO
+from app.models.volunteer import Volunteer
 
 def assign_volunteer(rescue_id, volunteer_id):
 
@@ -87,3 +89,35 @@ def delete_rescue(rescue_id):
     db.session.commit()
 
     return True
+
+def assign_rescue(rescue_id, data):
+
+    rescue = Rescue.query.get(rescue_id)
+
+    if rescue is None:
+        return None, "Rescue not found"
+
+    if "assigned_ngo" in data:
+        ngo = NGO.query.get(data["assigned_ngo"])
+
+        if ngo is None:
+            return None, "NGO not found"
+
+        rescue.assigned_ngo = ngo.id
+
+    if "assigned_volunteer" in data:
+        volunteer = Volunteer.query.get(
+            data["assigned_volunteer"]
+        )
+
+        if volunteer is None:
+            return None, "Volunteer not found"
+
+        rescue.assigned_volunteer = volunteer.id
+
+    if "status" in data:
+        rescue.status = data["status"]
+
+    db.session.commit()
+
+    return rescue, None

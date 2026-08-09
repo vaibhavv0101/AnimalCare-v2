@@ -8,6 +8,7 @@ from app.animals import animals_bp
 from app.rescues import rescues_bp
 from app.adoptions import adoptions_bp
 from app.ngos import ngos_bp
+from app.volunteers import volunteers_bp
 
 def create_app():
     app = Flask(__name__)
@@ -25,6 +26,7 @@ def create_app():
     app.register_blueprint(rescues_bp)
     app.register_blueprint(adoptions_bp)
     app.register_blueprint(ngos_bp)
+    app.register_blueprint(volunteers_bp)
 
     @app.route("/")
     def home():

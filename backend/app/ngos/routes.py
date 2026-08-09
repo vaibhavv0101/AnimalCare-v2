@@ -6,7 +6,9 @@ from app.ngos.schemas import NGOSchema
 from app.ngos.service import (
     create_ngo,
     get_all_ngos,
-    get_ngo_by_id
+    get_ngo_by_id,
+    update_ngo,
+    delete_ngo
 )
 
 schema = NGOSchema()
@@ -86,4 +88,54 @@ def ngo_details(ngo_id):
                 "%Y-%m-%d %H:%M:%S"
             )
         }
+    }), 200
+    
+@ngos_bp.route("/<int:ngo_id>", methods=["PUT"])
+@jwt_required()
+def edit_ngo(ngo_id):
+
+    if not request.json:
+        return jsonify({
+            "success": False,
+            "message": "Request body is required"
+        }), 400
+
+    ngo = update_ngo(ngo_id, request.json)
+
+    if ngo is None:
+        return jsonify({
+            "success": False,
+            "message": "NGO not found"
+        }), 404
+
+    return jsonify({
+        "success": True,
+        "message": "NGO updated successfully",
+        "ngo": {
+            "id": ngo.id,
+            "name": ngo.name,
+            "email": ngo.email,
+            "phone": ngo.phone,
+            "address": ngo.address,
+            "registration_number": ngo.registration_number,
+            "description": ngo.description,
+            "status": ngo.status
+        }
+    }), 200
+    
+@ngos_bp.route("/<int:ngo_id>", methods=["DELETE"])
+@jwt_required()
+def remove_ngo(ngo_id):
+
+    deleted = delete_ngo(ngo_id)
+
+    if not deleted:
+        return jsonify({
+            "success": False,
+            "message": "NGO not found"
+        }), 404
+
+    return jsonify({
+        "success": True,
+        "message": "NGO deleted successfully"
     }), 200

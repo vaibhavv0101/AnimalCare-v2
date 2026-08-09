@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required
 
 from app.rescues import rescues_bp
 from app.rescues.schemas import RescueSchema
+
 from app.rescues.service import (
     create_rescue,
     get_all_rescues,
@@ -12,6 +13,7 @@ from app.rescues.service import (
     assign_volunteer,
     delete_rescue
 )
+
 schema = RescueSchema()
 
 
@@ -37,7 +39,8 @@ def add_rescue():
         "message": "Rescue request created successfully",
         "rescue_id": rescue.id
     }), 201
-    
+
+
 @rescues_bp.route("/", methods=["GET"])
 @jwt_required()
 def list_rescues():
@@ -54,7 +57,9 @@ def list_rescues():
             "address": rescue.address,
             "priority": rescue.priority,
             "status": rescue.status,
-            "created_at": rescue.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": rescue.created_at.strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
         })
 
     return jsonify({
@@ -62,7 +67,8 @@ def list_rescues():
         "count": len(result),
         "rescues": result
     }), 200
-    
+
+
 @rescues_bp.route("/<int:rescue_id>", methods=["GET"])
 @jwt_required()
 def rescue_details(rescue_id):
@@ -89,21 +95,27 @@ def rescue_details(rescue_id):
             "priority": rescue.priority,
             "status": rescue.status,
             "notes": rescue.notes,
-            "created_at": rescue.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            "created_at": rescue.created_at.strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
         }
     }), 200
-    
+
+
 @rescues_bp.route("/<int:rescue_id>/status", methods=["PUT"])
 @jwt_required()
 def change_status(rescue_id):
 
-    if "status" not in request.json:
+    if not request.json or "status" not in request.json:
         return jsonify({
             "success": False,
             "message": "Status is required"
         }), 400
 
-    rescue = update_rescue_status(rescue_id, request.json)
+    rescue = update_rescue_status(
+        rescue_id,
+        request.json
+    )
 
     if rescue is None:
         return jsonify({
@@ -115,8 +127,9 @@ def change_status(rescue_id):
         "success": True,
         "message": "Rescue status updated successfully",
         "status": rescue.status
-    }), 
-    
+    }), 200
+
+
 @rescues_bp.route("/<int:rescue_id>/assign-ngo", methods=["PUT"])
 @jwt_required()
 def assign_ngo_route(rescue_id):
@@ -138,12 +151,19 @@ def assign_ngo_route(rescue_id):
             "message": "Rescue not found"
         }), 404
 
+    if rescue is False:
+        return jsonify({
+            "success": False,
+            "message": "NGO not found"
+        }), 404
+
     return jsonify({
         "success": True,
         "message": "NGO assigned successfully",
         "assigned_ngo": rescue.assigned_ngo
     }), 200
-    
+
+
 @rescues_bp.route("/<int:rescue_id>/assign-volunteer", methods=["PUT"])
 @jwt_required()
 def assign_volunteer_route(rescue_id):
@@ -176,7 +196,8 @@ def assign_volunteer_route(rescue_id):
         "message": "Volunteer assigned successfully",
         "assigned_volunteer": rescue.assigned_volunteer
     }), 200
-    
+
+
 @rescues_bp.route("/<int:rescue_id>", methods=["DELETE"])
 @jwt_required()
 def remove_rescue(rescue_id):

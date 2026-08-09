@@ -56,7 +56,13 @@ def reject_adoption(adoption_id):
     if adoption is None:
         return None
 
+    animal = Animal.query.get(adoption.animal_id)
+
+    if animal is None:
+        return False
+
     adoption.status = "Rejected"
+    animal.adoption_status = "Available"
 
     db.session.commit()
 
