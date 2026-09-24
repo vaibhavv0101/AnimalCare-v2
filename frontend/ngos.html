@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnimalCare | NGOs</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f7f9fb;color:#1f2937}
+.navbar{min-height:72px;background:#fff;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;padding:0 7%;position:sticky;top:0;z-index:10}
+.logo{font-size:22px;font-weight:700;color:#138a78}
+nav{display:flex;gap:25px}
+nav a{text-decoration:none;color:#526173;font-weight:600}
+nav a:hover{color:#138a78}
+.user-area{display:flex;align-items:center;gap:10px;font-weight:700}
+.btn{border:0;border-radius:9px;padding:10px 15px;font-weight:700;cursor:pointer}
+.dashboard{background:#12a789;color:#fff}
+.logout{background:#ef4b3a;color:#fff}
+.page{max-width:1150px;margin:auto;padding:55px 25px}
+.badge{color:#138a78;font-weight:800;font-size:13px;letter-spacing:1px}
+h1{font-size:42px;margin:8px 0}
+h1 span{color:#12a789}
+.subtitle{color:#667085;margin-bottom:30px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.count{font-size:20px;font-weight:700}
+.refresh{background:#12a789;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:#fff;border:1px solid #e4e8ed;border-radius:16px;padding:22px;box-shadow:0 7px 22px rgba(0,0,0,.05)}
+.icon{width:58px;height:58px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:#e8f7f3;font-size:28px;margin-bottom:15px}
+.card h2{margin:0 0 7px;font-size:21px}
+.role{color:#138a78;font-weight:700;margin-bottom:15px}
+.info{padding:9px 0;border-bottom:1px solid #eef0f2;color:#5f6b7a}
+.info:last-child{border-bottom:0}
+.loading,.empty,.error{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:35px;text-align:center}
+.error{color:#b42318}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}nav{gap:12px}}
+@media(max-width:650px){.navbar{padding:12px 15px;flex-wrap:wrap}.logo{width:100%}nav{order:3;width:100%;overflow:auto}.grid{grid-template-columns:1fr}.page{padding:35px 15px}h1{font-size:34px}}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">🐾 AnimalCare</div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="animals.html">Animals</a>
+        <a href="rescues.html">Rescues</a>
+        <a href="adoptions.html">Adoptions</a>
+        <a href="ngos.html">NGOs</a>
+        <a href="volunteers.html">Volunteers</a>
+    </nav>
+    <div class="user-area">
+        <span id="userName">Account</span>
+        <button id="dashboardBtn" class="btn dashboard" style="display:none">Admin Dashboard</button>
+        <button id="logoutBtn" class="btn logout">Logout</button>
+    </div>
+</header>
+
+<main class="page">
+    <div class="badge">OUR NETWORK</div>
+    <h1>Partner <span>NGOs</span></h1>
+    <p class="subtitle">Organizations working with AnimalCare to rescue, protect and support animals.</p>
+
+    <div class="toolbar">
+        <div class="count" id="count">0 NGOs</div>
+        <button class="btn refresh" id="refreshBtn">🔄 Refresh</button>
+    </div>
+
+    <div id="loading" class="loading">Loading NGOs...</div>
+    <div id="error" class="error" style="display:none"></div>
+    <div id="empty" class="empty" style="display:none">No NGOs found.</div>
+    <section id="grid" class="grid"></section>
+</main>
+
+<script src="js/api.js"></script>
+<script>
+function getUserSafe(){
+    try{
+        if(typeof getCurrentUser==="function") return getCurrentUser();
+        return JSON.parse(localStorage.getItem("user"));
+    }catch(e){return null;}
+}
+
+function setupUser(){
+    const user=getUserSafe();
+    const token=typeof getToken==="function"
+        ? getToken()
+        : localStorage.getItem("access_token");
+
+    if(!token || !user){
+        window.location.href="login.html";
+        return false;
+    }
+
+    document.getElementById("userName").textContent =
+        user.full_name || user.email || "Account";
+
+    if(String(user.role||"").toLowerCase()==="admin"){
+        document.getElementById("dashboardBtn").style.display="inline-block";
+    }
+
+    return true;
+}
+
+async function loadNGOs(){
+    const loading=document.getElementById("loading");
+    const error=document.getElementById("error");
+    const empty=document.getElementById("empty");
+    const grid=document.getElementById("grid");
+
+    loading.style.display="block";
+    error.style.display="none";
+    empty.style.display="none";
+    grid.innerHTML="";
+
+    try{
+        const data=await apiRequest("/api/ngos/");
+        console.log("NGOS RESPONSE:",data);
+
+        const ngos=data?.ngos || [];
+
+        loading.style.display="none";
+        document.getElementById("count").textContent =
+            `${ngos.length} NGO${ngos.length===1?"":"s"}`;
+
+        if(!ngos.length){
+            empty.style.display="block";
+            return;
+        }
+
+        ngos.forEach(ngo=>{
+            const card=document.createElement("article");
+            card.className="card";
+
+            const name=ngo.name || ngo.organization_name ||
+                ngo.ngo_name || `NGO #${ngo.id ?? ""}`;
+
+            const type=ngo.type || ngo.category ||
+                ngo.specialization || "Animal Welfare NGO";
+
+            card.innerHTML=`
+                <div class="icon">🏢</div>
+                <h2>${escapeHtml(name)}</h2>
+                <div class="role">${escapeHtml(type)}</div>
+                ${info("Phone",ngo.phone)}
+                ${info("Email",ngo.email)}
+                ${info("Address",ngo.address || ngo.location)}
+                ${info("Website",ngo.website)}
+                ${info("Status",ngo.status || (ngo.is_active === false ? "Inactive" : "Active"))}
+                <div style="margin-top:15px;">
+    <button
+        onclick="contactNGO('${ngo.phone || ""}', '${ngo.email || ""}')"
+        style="padding:10px 16px; cursor:pointer;">
+        📞 Contact NGO
+    </button>
+</div>
+            `;
+
+            grid.appendChild(card);
+        });
+
+    }catch(err){
+        console.error("NGOS ERROR:",err);
+        loading.style.display="none";
+        error.textContent=err.message || "Unable to load NGOs.";
+        error.style.display="block";
+    }
+}
+
+function info(label,value){
+    if(value===undefined || value===null || value==="") return "";
+    return `<div class="info"><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</div>`;
+}
+
+function escapeHtml(value){
+    const div=document.createElement("div");
+    div.textContent=String(value ?? "");
+    return div.innerHTML;
+}
+
+document.getElementById("refreshBtn").addEventListener("click",loadNGOs);
+
+document.getElementById("dashboardBtn").addEventListener("click",()=>{
+    window.location.href="admin-dashboard.html";
+});
+
+document.getElementById("logoutBtn").addEventListener("click",()=>{
+    if(typeof logout==="function") logout();
+});
+
+if(setupUser()) loadNGOs();
+function contactNGO(phone, email) {
+
+    if (phone) {
+        const callNow = confirm(
+            "NGO Phone: " + phone +
+            "\n\nPress OK to call this NGO." +
+            "\nPress Cancel to use email instead."
+        );
+
+        if (callNow) {
+            window.location.href = "tel:" + phone;
+            return;
+        }
+    }
+
+    if (email) {
+        window.location.href =
+            "mailto:" + email +
+            "?subject=AnimalCare NGO Contact Request";
+        return;
+    }
+
+    alert("Contact information is not available for this NGO.");
+}
+</script>
+</body>
+</html>

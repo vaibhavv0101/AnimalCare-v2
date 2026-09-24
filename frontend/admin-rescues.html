@@ -1,0 +1,3689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AnimalCare | Rescue Management</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f8fb;
+            color: #1f2937;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            min-height: 72px;
+
+            background: #ffffff;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #f58220;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-actions button {
+            border: none;
+            cursor: pointer;
+
+            padding: 9px 14px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+        .dashboard-btn {
+            background: #eef2f7;
+            color: #374151;
+        }
+
+        .home-btn {
+            background: #eef2f7;
+            color: #374151;
+        }
+
+        .logout-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container {
+            max-width: 1450px;
+
+            margin: auto;
+
+            padding: 35px 25px 60px;
+        }
+
+        .page-header {
+            display: flex;
+
+            justify-content: space-between;
+            align-items: flex-start;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+        }
+
+        .page-header span {
+            color: #f58220;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+        .page-header h1 {
+            margin: 7px 0;
+
+            font-size: 32px;
+        }
+
+        .page-header p {
+            margin: 0;
+
+            color: #6b7280;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+            border: none;
+
+            cursor: pointer;
+
+            padding: 10px 16px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #f58220;
+
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: #eef2f7;
+
+            color: #374151;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+
+            color: #b91c1c;
+        }
+
+        .btn-success {
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* =====================================================
+           TOOLBAR
+        ===================================================== */
+
+        .toolbar {
+            background: #ffffff;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            padding: 18px;
+
+            display: grid;
+
+            grid-template-columns:
+                2fr
+                1fr
+                1fr
+                1fr
+                auto;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            width: 100%;
+
+            padding: 11px 13px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            background: #ffffff;
+        }
+
+        .toolbar input:focus,
+        .toolbar select:focus {
+            border-color: #f58220;
+        }
+
+        /* =====================================================
+           SUMMARY
+        ===================================================== */
+
+        .summary {
+            display: flex;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+
+            flex-wrap: wrap;
+        }
+
+        .summary-card {
+            background: #ffffff;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 12px;
+
+            padding: 14px 20px;
+
+            min-width: 150px;
+        }
+
+        .summary-card span {
+            display: block;
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            margin-bottom: 5px;
+        }
+
+        .summary-card strong {
+            font-size: 22px;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-card {
+            background: #ffffff;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 13px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #eef0f3;
+
+            white-space: nowrap;
+        }
+
+        th {
+            background: #fafafa;
+
+            color: #6b7280;
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rescue-id {
+            font-weight: 700;
+
+            color: #f58220;
+        }
+
+        /* =====================================================
+           STATUS BADGES
+        ===================================================== */
+
+        .badge {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+
+            color: #92400e;
+        }
+
+        .badge-progress {
+            background: #dbeafe;
+
+            color: #1d4ed8;
+        }
+
+        .badge-completed {
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        .badge-cancelled {
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        .badge-high {
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        .badge-medium {
+            background: #fef3c7;
+
+            color: #92400e;
+        }
+
+        .badge-low {
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+
+            gap: 7px;
+        }
+
+        .action-btn {
+            border: none;
+
+            cursor: pointer;
+
+            padding: 7px 10px;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+        .view-btn {
+            background: #e0f2fe;
+
+            color: #0369a1;
+        }
+
+        .status-btn {
+            background: #fff7ed;
+
+            color: #c2410c;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+
+            color: #b91c1c;
+        }
+
+        .assign-btn {
+            background: #ecfdf5;
+
+            color: #047857;
+        }
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message {
+            padding: 50px 20px;
+
+            text-align: center;
+
+            color: #6b7280;
+        }
+
+        .error-message {
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal {
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.55);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+
+            max-width: 760px;
+
+            max-height: 92vh;
+
+            overflow-y: auto;
+
+            background: #ffffff;
+
+            border-radius: 16px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 22px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close-btn {
+            border: none;
+
+            background: #f3f4f6;
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            font-size: 18px;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 6px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            background: #ffffff;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #f58220;
+        }
+
+        .form-actions {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .details-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 14px;
+        }
+
+        .detail-box {
+            background: #f9fafb;
+
+            border: 1px solid #eef0f3;
+
+            border-radius: 10px;
+
+            padding: 14px;
+        }
+
+        .detail-box.full {
+            grid-column: 1 / -1;
+        }
+
+        .detail-label {
+            font-size: 11px;
+
+            color: #6b7280;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+
+            font-weight: 600;
+
+            word-break: break-word;
+        }
+
+        /* =====================================================
+           STATUS MODAL
+        ===================================================== */
+
+        .status-options {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+        .status-option {
+            border: 1px solid #d1d5db;
+
+            background: #ffffff;
+
+            padding: 13px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+        .status-option:hover {
+            border-color: #f58220;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .toolbar {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .container {
+                padding: 25px 15px 45px;
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .toolbar {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid,
+            .details-grid,
+            .status-options {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full,
+            .detail-box.full {
+                grid-column: auto;
+            }
+
+            .actions {
+                flex-wrap: wrap;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+        🚑 AnimalCare Admin
+    </div>
+
+
+    <div class="nav-actions">
+
+        <button
+            class="dashboard-btn"
+            id="dashboardBtn"
+        >
+            📊 Dashboard
+        </button>
+
+
+        <button
+            class="home-btn"
+            id="homeBtn"
+        >
+            🏠 Home
+        </button>
+
+
+        <button
+            class="logout-btn"
+            id="logoutBtn"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="container">
+
+
+    <div class="page-header">
+
+        <div>
+
+            <span>
+                ADMINISTRATION
+            </span>
+
+            <h1>
+                Rescue Management
+            </h1>
+
+            <p>
+                Manage animal rescue requests and their current status.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            id="addRescueBtn"
+        >
+            + Add Rescue
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         SUMMARY
+    ====================================================== -->
+
+    <div class="summary">
+
+
+        <div class="summary-card">
+
+            <span>
+                Total Rescues
+            </span>
+
+            <strong id="totalCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                Pending
+            </span>
+
+            <strong id="pendingCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                In Progress
+            </span>
+
+            <strong id="progressCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                Completed
+            </span>
+
+            <strong id="completedCount">
+                0
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="toolbar">
+
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by rescue ID, animal ID or address..."
+        >
+
+
+        <select id="priorityFilter">
+
+            <option value="">
+                All Priorities
+            </option>
+
+            <option value="High">
+                High
+            </option>
+
+            <option value="Medium">
+                Medium
+            </option>
+
+            <option value="Low">
+                Low
+            </option>
+
+        </select>
+
+
+        <select id="statusFilter">
+
+            <option value="">
+                All Status
+            </option>
+
+            <option value="Pending">
+                Pending
+            </option>
+
+            <option value="In Progress">
+                In Progress
+            </option>
+
+            <option value="Completed">
+                Completed
+            </option>
+
+            <option value="Cancelled">
+                Cancelled
+            </option>
+
+        </select>
+
+
+        <select id="animalFilter">
+
+            <option value="">
+                All Animals
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn btn-secondary"
+            id="refreshBtn"
+        >
+            🔄 Refresh
+        </button>
+
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TABLE
+    ====================================================== -->
+
+    <div class="table-card">
+
+        <div
+            class="table-wrapper"
+            id="tableContainer"
+        >
+
+            <div class="message">
+                Loading rescue requests...
+            </div>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     ADD RESCUE MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="rescueModal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h2>
+                Add Rescue Request
+            </h2>
+
+
+            <button
+                class="close-btn"
+                id="closeRescueBtn"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="rescueForm">
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="animal_id">
+                        Animal *
+                    </label>
+
+                    <select
+                        id="animal_id"
+                        required
+                    >
+
+                        <option value="">
+                            Select Animal
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="priority">
+                        Priority *
+                    </label>
+
+                    <select
+                        id="priority"
+                        required
+                    >
+
+                        <option value="Medium">
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="latitude">
+                        Latitude *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="latitude"
+                        step="any"
+                        placeholder="18.4088"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="longitude">
+                        Longitude *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="longitude"
+                        step="any"
+                        placeholder="76.5604"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="address">
+                        Rescue Address *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="address"
+                        placeholder="Enter rescue location"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="notes">
+                        Notes
+                    </label>
+
+                    <textarea
+                        id="notes"
+                        placeholder="Describe the rescue situation..."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelRescueBtn"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="saveRescueBtn"
+                >
+                    Create Rescue
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     VIEW RESCUE MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="detailsModal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h2>
+                Rescue Details
+            </h2>
+
+
+            <button
+                class="close-btn"
+                id="closeDetailsBtn"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="details-grid"
+            id="detailsContainer"
+        ></div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     STATUS MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="statusModal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h2>
+                Update Rescue Status
+            </h2>
+
+
+            <button
+                class="close-btn"
+                id="closeStatusBtn"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <p>
+            Select the new status for this rescue request.
+        </p>
+
+
+        <div class="status-options">
+
+
+            <button
+                class="status-option"
+                data-status="Pending"
+            >
+                🟡 Pending
+            </button>
+
+
+            <button
+                class="status-option"
+                data-status="In Progress"
+            >
+                🔵 In Progress
+            </button>
+
+
+            <button
+                class="status-option"
+                data-status="Completed"
+            >
+                🟢 Completed
+            </button>
+
+
+            <button
+                class="status-option"
+                data-status="Cancelled"
+            >
+                🔴 Cancelled
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     ASSIGN NGO / VOLUNTEER MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="assignModal"
+>
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>
+                🤝 Assign Rescue
+            </h2>
+
+            <button
+                class="close-btn"
+                id="closeAssignBtn"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <p>
+            Assign an NGO and volunteer to this rescue request.
+        </p>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label for="assignNgo">
+                    NGO
+                </label>
+
+                <select id="assignNgo">
+                    <option value="">
+                        Select NGO
+                    </option>
+                </select>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="assignVolunteer">
+                    Volunteer
+                </label>
+
+                <select id="assignVolunteer">
+                    <option value="">
+                        Select Volunteer
+                    </option>
+                </select>
+
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+
+            <button
+                type="button"
+                class="btn btn-secondary"
+                id="cancelAssignBtn"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                id="saveAssignmentBtn"
+            >
+                Save Assignment
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     API
+========================================================= -->
+
+<script src="js/api.js"></script>
+
+
+<script>
+
+
+// ============================================================
+// STATE
+// ============================================================
+
+let allRescues = [];
+
+let animals = [];
+
+let ngos = [];
+
+let volunteers = [];
+
+let selectedStatusRescueId = null;
+
+let selectedAssignRescueId = null;
+
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initialize
+);
+
+
+async function initialize() {
+
+    const token =
+        getToken();
+
+
+    const user =
+        getCurrentUser();
+
+
+    if (!token || !user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    const role =
+        String(
+            user.role || ""
+        ).toLowerCase();
+
+
+    if (role !== "admin") {
+
+        alert(
+            "Admin access required."
+        );
+
+        window.location.href =
+            "index.html";
+
+        return;
+
+    }
+
+
+    await Promise.all([
+
+        loadAnimals(),
+
+        loadNgos(),
+
+        loadVolunteers(),
+
+        loadRescues()
+
+    ]);
+
+}
+
+
+// ============================================================
+// LOAD ANIMALS
+// ============================================================
+
+async function loadAnimals() {
+
+    try {
+
+        const data =
+            await getAnimals();
+
+
+        animals =
+            data.animals || [];
+
+
+        populateAnimalOptions();
+
+
+    } catch (error) {
+
+        console.error(
+            "ANIMALS LOAD ERROR:",
+            error
+        );
+
+        animals = [];
+
+    }
+
+}
+
+
+// ============================================================
+// LOAD NGOs
+// ============================================================
+
+async function loadNgos() {
+
+    try {
+
+        const data =
+            await getNGOs();
+
+        ngos =
+            data.ngos || [];
+
+        populateNgoOptions();
+
+    } catch (error) {
+
+        console.error(
+            "NGOS LOAD ERROR:",
+            error
+        );
+
+        ngos = [];
+
+        populateNgoOptions();
+
+    }
+
+}
+
+
+// ============================================================
+// LOAD VOLUNTEERS
+// ============================================================
+
+async function loadVolunteers() {
+
+    try {
+
+        const data =
+            await getVolunteers();
+
+        volunteers =
+            data.volunteers || [];
+
+        populateVolunteerOptions();
+
+    } catch (error) {
+
+        console.error(
+            "VOLUNTEERS LOAD ERROR:",
+            error
+        );
+
+        volunteers = [];
+
+        populateVolunteerOptions();
+
+    }
+
+}
+
+
+// ============================================================
+// POPULATE ASSIGNMENT OPTIONS
+// ============================================================
+
+function populateNgoOptions() {
+
+    const select =
+        document.getElementById(
+            "assignNgo"
+        );
+
+    if (!select) {
+        return;
+    }
+
+    select.innerHTML = `
+
+        <option value="">
+            Select NGO
+        </option>
+
+        ${ngos.map(
+            ngo => `
+
+            <option
+                value="${Number(ngo.id)}"
+            >
+                #${Number(ngo.id)} -
+                ${escapeHTML(
+                    ngo.name ||
+                    "NGO"
+                )}
+            </option>
+
+        `
+        ).join("")}
+
+    `;
+
+}
+
+
+function populateVolunteerOptions() {
+
+    const select =
+        document.getElementById(
+            "assignVolunteer"
+        );
+
+    if (!select) {
+        return;
+    }
+
+    select.innerHTML = `
+
+        <option value="">
+            Select Volunteer
+        </option>
+
+        ${volunteers.map(
+            volunteer => `
+
+            <option
+                value="${Number(volunteer.id)}"
+            >
+                #${Number(volunteer.id)} -
+                ${escapeHTML(
+                    volunteer.name ||
+                    volunteer.full_name ||
+                    "Volunteer"
+                )}
+            </option>
+
+        `
+        ).join("")}
+
+    `;
+
+}
+
+
+// ============================================================
+// POPULATE ANIMAL OPTIONS
+// ============================================================
+
+function populateAnimalOptions() {
+
+    const formSelect =
+        document.getElementById(
+            "animal_id"
+        );
+
+
+    const filterSelect =
+        document.getElementById(
+            "animalFilter"
+        );
+
+
+    formSelect.innerHTML = `
+
+        <option value="">
+            Select Animal
+        </option>
+
+        ${animals.map(
+            animal => `
+
+            <option
+                value="${Number(animal.id)}"
+            >
+                #${Number(animal.id)}
+                -
+                ${escapeHTML(
+                    animal.name ||
+                    animal.species ||
+                    "Animal"
+                )}
+            </option>
+
+        `
+        ).join("")}
+
+    `;
+
+
+    filterSelect.innerHTML = `
+
+        <option value="">
+            All Animals
+        </option>
+
+        ${animals.map(
+            animal => `
+
+            <option
+                value="${Number(animal.id)}"
+            >
+                #${Number(animal.id)}
+                -
+                ${escapeHTML(
+                    animal.name ||
+                    animal.species ||
+                    "Animal"
+                )}
+            </option>
+
+        `
+        ).join("")}
+
+    `;
+
+}
+
+
+// ============================================================
+// LOAD RESCUES
+// ============================================================
+
+async function loadRescues() {
+
+    const container =
+        document.getElementById(
+            "tableContainer"
+        );
+
+
+    container.innerHTML = `
+
+        <div class="message">
+            Loading rescue requests...
+        </div>
+
+    `;
+
+
+    try {
+
+        const data =
+            await getRescues();
+
+
+        allRescues =
+            data.rescues || [];
+
+
+        updateSummary();
+
+
+        renderRescues();
+
+
+    } catch (error) {
+
+        console.error(
+            "RESCUES LOAD ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="message error-message">
+
+                Unable to load rescue requests.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// SUMMARY
+// ============================================================
+
+function updateSummary() {
+
+    const total =
+        allRescues.length;
+
+
+    const pending =
+        allRescues.filter(
+            rescue =>
+                normalizeStatus(
+                    rescue.status
+                ) === "pending"
+        ).length;
+
+
+    const progress =
+        allRescues.filter(
+            rescue =>
+                normalizeStatus(
+                    rescue.status
+                ) === "in progress"
+        ).length;
+
+
+    const completed =
+        allRescues.filter(
+            rescue =>
+                normalizeStatus(
+                    rescue.status
+                ) === "completed"
+        ).length;
+
+
+    document.getElementById(
+        "totalCount"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "pendingCount"
+    ).textContent =
+        pending;
+
+
+    document.getElementById(
+        "progressCount"
+    ).textContent =
+        progress;
+
+
+    document.getElementById(
+        "completedCount"
+    ).textContent =
+        completed;
+
+}
+
+
+// ============================================================
+// FILTER
+// ============================================================
+
+function getFilteredRescues() {
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const priority =
+        document.getElementById(
+            "priorityFilter"
+        ).value;
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const animalId =
+        document.getElementById(
+            "animalFilter"
+        ).value;
+
+
+    return allRescues.filter(
+        rescue => {
+
+
+            const searchText =
+                [
+                    rescue.id,
+                    rescue.animal_id,
+                    rescue.address,
+                    rescue.reported_by,
+                    rescue.notes
+                ]
+                .join(" ")
+                .toLowerCase();
+
+
+            const matchesSearch =
+                !search ||
+                searchText.includes(
+                    search
+                );
+
+
+            const matchesPriority =
+                !priority ||
+                String(
+                    rescue.priority || ""
+                ).toLowerCase() ===
+                priority.toLowerCase();
+
+
+            const matchesStatus =
+                !status ||
+                normalizeStatus(
+                    rescue.status
+                ) ===
+                normalizeStatus(
+                    status
+                );
+
+
+            const matchesAnimal =
+                !animalId ||
+                String(
+                    rescue.animal_id
+                ) ===
+                String(
+                    animalId
+                );
+
+
+            return (
+                matchesSearch &&
+                matchesPriority &&
+                matchesStatus &&
+                matchesAnimal
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================================
+// RENDER RESCUES
+// ============================================================
+
+function renderRescues() {
+
+    const container =
+        document.getElementById(
+            "tableContainer"
+        );
+
+
+    const rescues =
+        getFilteredRescues();
+
+
+    if (!rescues.length) {
+
+        container.innerHTML = `
+
+            <div class="message">
+
+                No rescue requests found.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Animal</th>
+
+                    <th>Address</th>
+
+                    <th>Priority</th>
+
+                    <th>Status</th>
+
+                    <th>Assignment</th>
+
+                    <th>Reported By</th>
+
+                    <th>Created</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                ${rescues.map(
+                    rescue => `
+
+                    <tr>
+
+                        <td>
+
+                            <span
+                                class="rescue-id"
+                            >
+                                #${rescue.id}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            #${rescue.animal_id}
+
+                            ${getAnimalName(
+                                rescue.animal_id
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                rescue.address ||
+                                "N/A"
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${priorityBadge(
+                                rescue.priority
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${statusBadge(
+                                rescue.status
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <div style="font-size:12px; line-height:1.5;">
+
+                                <div>
+                                    <strong>NGO:</strong>
+                                    ${getNgoName(rescue.assigned_ngo)}
+                                </div>
+
+                                <div>
+                                    <strong>Volunteer:</strong>
+                                    ${getVolunteerName(rescue.assigned_volunteer)}
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            User #${escapeHTML(
+                                rescue.reported_by ??
+                                "N/A"
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${formatDate(
+                                rescue.created_at
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <div class="actions">
+
+
+                                <button
+                                    class="action-btn view-btn"
+                                    onclick="viewRescue(${rescue.id})"
+                                >
+                                    👁 View
+                                </button>
+
+
+                                <button
+                                    class="action-btn status-btn"
+                                    onclick="openStatusModal(${rescue.id})"
+                                >
+                                    🔄 Status
+                                </button>
+
+
+                                <button
+                                    class="action-btn assign-btn"
+                                    onclick="openAssignModal(${rescue.id})"
+                                >
+                                    🤝 Assign
+                                </button>
+
+
+                                <button
+                                    class="action-btn delete-btn"
+                                    onclick="deleteRescue(${rescue.id})"
+                                >
+                                    🗑 Delete
+                                </button>
+
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `
+                ).join("")}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+
+
+// ============================================================
+// GET NGO NAME
+// ============================================================
+
+function getNgoName(
+    ngoId
+) {
+
+    if (!ngoId) {
+        return '<span style="color:#9ca3af;">Not assigned</span>';
+    }
+
+    const ngo =
+        ngos.find(
+            item =>
+                Number(item.id) ===
+                Number(ngoId)
+        );
+
+    return escapeHTML(
+        ngo?.name ||
+        `NGO #${ngoId}`
+    );
+
+}
+
+
+// ============================================================
+// GET VOLUNTEER NAME
+// ============================================================
+
+function getVolunteerName(
+    volunteerId
+) {
+
+    if (!volunteerId) {
+        return '<span style="color:#9ca3af;">Not assigned</span>';
+    }
+
+    const volunteer =
+        volunteers.find(
+            item =>
+                Number(item.id) ===
+                Number(volunteerId)
+        );
+
+    return escapeHTML(
+        volunteer?.name ||
+        volunteer?.full_name ||
+        `Volunteer #${volunteerId}`
+    );
+
+}
+
+
+// ============================================================
+// GET ANIMAL NAME
+// ============================================================
+
+function getAnimalName(
+    animalId
+) {
+
+    const animal =
+        animals.find(
+            item =>
+                Number(item.id) ===
+                Number(animalId)
+        );
+
+
+    if (!animal) {
+
+        return "";
+
+    }
+
+
+    return `
+
+        <br>
+
+        <small
+            style="color:#6b7280;"
+        >
+            ${escapeHTML(
+                animal.name ||
+                animal.species ||
+                ""
+            )}
+        </small>
+
+    `;
+
+}
+
+
+// ============================================================
+// VIEW RESCUE
+// ============================================================
+
+async function viewRescue(
+    id
+) {
+
+    const modal =
+        document.getElementById(
+            "detailsModal"
+        );
+
+
+    const container =
+        document.getElementById(
+            "detailsContainer"
+        );
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    container.innerHTML = `
+
+        <div class="message">
+            Loading rescue details...
+        </div>
+
+    `;
+
+
+    try {
+
+        const data =
+            await apiRequest(
+                `/api/rescues/${id}`,
+                {
+                    method: "GET"
+                }
+            );
+
+
+        const rescue =
+            data.rescue;
+
+
+        if (!rescue) {
+
+            throw new Error(
+                "Rescue details not found."
+            );
+
+        }
+
+
+        container.innerHTML = `
+
+            ${detail(
+                "Rescue ID",
+                "#" + rescue.id
+            )}
+
+            ${detail(
+                "Animal ID",
+                "#" + rescue.animal_id
+            )}
+
+            ${detail(
+                "Animal",
+                getAnimalNameText(
+                    rescue.animal_id
+                )
+            )}
+
+            ${detail(
+                "Reported By",
+                rescue.reported_by
+                    ? "User #" +
+                      rescue.reported_by
+                    : "N/A"
+            )}
+
+            ${detail(
+                "Priority",
+                rescue.priority
+            )}
+
+            ${detail(
+                "Status",
+                rescue.status
+            )}
+
+            ${detail(
+                "Latitude",
+                rescue.latitude
+            )}
+
+            ${detail(
+                "Longitude",
+                rescue.longitude
+            )}
+
+            ${detail(
+                "Assigned NGO",
+                rescue.assigned_ngo
+                    ? getNgoNameText(
+                        rescue.assigned_ngo
+                    )
+                    : "Not assigned"
+            )}
+
+            ${detail(
+                "Assigned Volunteer",
+                rescue.assigned_volunteer
+                    ? getVolunteerNameText(
+                        rescue.assigned_volunteer
+                    )
+                    : "Not assigned"
+            )}
+
+            ${detail(
+                "Created At",
+                formatDate(
+                    rescue.created_at
+                )
+            )}
+
+            ${detail(
+                "Address",
+                rescue.address,
+                true
+            )}
+
+            ${detail(
+                "Notes",
+                rescue.notes,
+                true
+            )}
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(
+            "VIEW RESCUE ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="message error-message">
+
+                Unable to load rescue details.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// OPEN ADD FORM
+// ============================================================
+
+function openAddRescue() {
+
+    document.getElementById(
+        "rescueForm"
+    ).reset();
+
+
+    document.getElementById(
+        "priority"
+    ).value =
+        "Medium";
+
+
+    document.getElementById(
+        "rescueModal"
+    ).classList.add(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// CREATE RESCUE
+// ============================================================
+
+async function createRescue(
+    event
+) {
+
+    event.preventDefault();
+
+
+    const saveButton =
+        document.getElementById(
+            "saveRescueBtn"
+        );
+
+
+    const animalId =
+        Number(
+            document.getElementById(
+                "animal_id"
+            ).value
+        );
+
+
+    const latitude =
+        Number(
+            document.getElementById(
+                "latitude"
+            ).value
+        );
+
+
+    const longitude =
+        Number(
+            document.getElementById(
+                "longitude"
+            ).value
+        );
+
+
+    const address =
+        document.getElementById(
+            "address"
+        ).value.trim();
+
+
+    const priority =
+        document.getElementById(
+            "priority"
+        ).value;
+
+
+    const notes =
+        document.getElementById(
+            "notes"
+        ).value.trim();
+
+
+    if (!animalId) {
+
+        alert(
+            "Please select an animal."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !Number.isFinite(latitude) ||
+        !Number.isFinite(longitude)
+    ) {
+
+        alert(
+            "Please enter valid latitude and longitude."
+        );
+
+        return;
+
+    }
+
+
+    if (!address) {
+
+        alert(
+            "Rescue address is required."
+        );
+
+        return;
+
+    }
+
+
+    const payload = {
+
+        animal_id:
+            animalId,
+
+        latitude:
+            latitude,
+
+        longitude:
+            longitude,
+
+        address:
+            address,
+
+        priority:
+            priority,
+
+        notes:
+            notes
+
+    };
+
+
+    saveButton.disabled =
+        true;
+
+
+    saveButton.textContent =
+        "Creating...";
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                "/api/rescues/",
+                {
+                    method: "POST",
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+                }
+            );
+
+
+        alert(
+            response.message ||
+            "Rescue request created successfully."
+        );
+
+
+        closeRescueModal();
+
+
+        await loadRescues();
+
+
+    } catch (error) {
+
+        console.error(
+            "CREATE RESCUE ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to create rescue:\n\n" +
+            error.message
+        );
+
+
+    } finally {
+
+        saveButton.disabled =
+            false;
+
+
+        saveButton.textContent =
+            "Create Rescue";
+
+    }
+
+}
+
+
+// ============================================================
+// OPEN STATUS MODAL
+// ============================================================
+
+function openStatusModal(
+    id
+) {
+
+    selectedStatusRescueId =
+        id;
+
+
+    document.getElementById(
+        "statusModal"
+    ).classList.add(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// UPDATE STATUS
+// ============================================================
+
+async function updateStatus(
+    status
+) {
+
+    if (
+        !selectedStatusRescueId
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                `/api/rescues/${selectedStatusRescueId}/status`,
+                {
+                    method: "PUT",
+
+                    body:
+                        JSON.stringify({
+                            status:
+                                status
+                        })
+                }
+            );
+
+
+        alert(
+            response.message ||
+            "Rescue status updated successfully."
+        );
+
+
+        closeStatusModal();
+
+
+        await loadRescues();
+
+
+    } catch (error) {
+
+        console.error(
+            "STATUS UPDATE ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to update status:\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// OPEN ASSIGNMENT MODAL
+// ============================================================
+
+function openAssignModal(
+    id
+) {
+
+    selectedAssignRescueId =
+        id;
+
+    const rescue =
+        allRescues.find(
+            item =>
+                Number(item.id) ===
+                Number(id)
+        );
+
+    if (!rescue) {
+
+        alert(
+            "Rescue not found."
+        );
+
+        return;
+
+    }
+
+    populateNgoOptions();
+
+    populateVolunteerOptions();
+
+    document.getElementById(
+        "assignNgo"
+    ).value =
+        rescue.assigned_ngo ?? "";
+
+    document.getElementById(
+        "assignVolunteer"
+    ).value =
+        rescue.assigned_volunteer ?? "";
+
+    document.getElementById(
+        "assignModal"
+    ).classList.add(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// SAVE ASSIGNMENT
+// ============================================================
+
+async function saveAssignment() {
+
+    if (!selectedAssignRescueId) {
+
+        alert(
+            "Rescue not selected."
+        );
+
+        return;
+
+    }
+
+    const ngoValue =
+        document.getElementById(
+            "assignNgo"
+        ).value;
+
+    const volunteerValue =
+        document.getElementById(
+            "assignVolunteer"
+        ).value;
+
+    if (!ngoValue && !volunteerValue) {
+
+        alert(
+            "Please select an NGO or a volunteer."
+        );
+
+        return;
+
+    }
+
+    const button =
+        document.getElementById(
+            "saveAssignmentBtn"
+        );
+
+    button.disabled = true;
+
+    button.textContent =
+        "Saving...";
+
+    try {
+
+        if (ngoValue) {
+
+            await apiRequest(
+                `/api/rescues/${selectedAssignRescueId}/assign-ngo`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        ngo_id: Number(ngoValue)
+                    })
+                }
+            );
+
+        }
+
+        if (volunteerValue) {
+
+            await apiRequest(
+                `/api/rescues/${selectedAssignRescueId}/assign-volunteer`,
+                {
+                    method: "PUT",
+                    body: JSON.stringify({
+                        volunteer_id: Number(
+                            volunteerValue
+                        )
+                    })
+                }
+            );
+
+        }
+
+        alert(
+            "NGO / Volunteer assigned successfully."
+        );
+
+        closeAssignModal();
+
+        await loadRescues();
+
+    } catch (error) {
+
+        console.error(
+            "ASSIGNMENT ERROR:",
+            error
+        );
+
+        alert(
+            "Unable to assign NGO / Volunteer:\n\n" +
+            error.message
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Save Assignment";
+
+    }
+
+}
+
+
+// ============================================================
+// CLOSE ASSIGNMENT MODAL
+// ============================================================
+
+function closeAssignModal() {
+
+    selectedAssignRescueId =
+        null;
+
+    document.getElementById(
+        "assignModal"
+    ).classList.remove(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// DELETE RESCUE
+// ============================================================
+
+async function deleteRescue(
+    id
+) {
+
+    const confirmed =
+        confirm(
+            `Are you sure you want to delete Rescue #${id}?`
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                `/api/rescues/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        alert(
+            response.message ||
+            "Rescue deleted successfully."
+        );
+
+
+        await loadRescues();
+
+
+    } catch (error) {
+
+        console.error(
+            "DELETE RESCUE ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to delete rescue:\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// CLOSE ADD MODAL
+// ============================================================
+
+function closeRescueModal() {
+
+    document.getElementById(
+        "rescueModal"
+    ).classList.remove(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// CLOSE DETAILS
+// ============================================================
+
+function closeDetailsModal() {
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.remove(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// CLOSE STATUS
+// ============================================================
+
+function closeStatusModal() {
+
+    selectedStatusRescueId =
+        null;
+
+
+    document.getElementById(
+        "statusModal"
+    ).classList.remove(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// NGO / VOLUNTEER NAME TEXT
+// ============================================================
+
+function getNgoNameText(
+    ngoId
+) {
+
+    if (!ngoId) {
+        return "Not assigned";
+    }
+
+    const ngo =
+        ngos.find(
+            item =>
+                Number(item.id) ===
+                Number(ngoId)
+        );
+
+    return (
+        ngo?.name ||
+        "NGO #" +
+        ngoId
+    );
+
+}
+
+
+function getVolunteerNameText(
+    volunteerId
+) {
+
+    if (!volunteerId) {
+        return "Not assigned";
+    }
+
+    const volunteer =
+        volunteers.find(
+            item =>
+                Number(item.id) ===
+                Number(volunteerId)
+        );
+
+    return (
+        volunteer?.name ||
+        volunteer?.full_name ||
+        "Volunteer #" +
+        volunteerId
+    );
+
+}
+
+
+// ============================================================
+// DETAIL HTML
+
+function detail(
+    label,
+    value,
+    full = false
+) {
+
+    return `
+
+        <div
+            class="detail-box ${full ? "full" : ""}"
+        >
+
+            <div class="detail-label">
+
+                ${escapeHTML(
+                    label
+                )}
+
+            </div>
+
+
+            <div class="detail-value">
+
+                ${escapeHTML(
+                    value ??
+                    "N/A"
+                )}
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+// ============================================================
+// STATUS BADGE
+// ============================================================
+
+function statusBadge(
+    status
+) {
+
+    const value =
+        String(
+            status ||
+            "Pending"
+        );
+
+
+    const normalized =
+        normalizeStatus(
+            value
+        );
+
+
+    let className =
+        "badge-pending";
+
+
+    if (
+        normalized ===
+        "in progress"
+    ) {
+
+        className =
+            "badge-progress";
+
+    }
+    else if (
+        normalized ===
+        "completed"
+    ) {
+
+        className =
+            "badge-completed";
+
+    }
+    else if (
+        normalized ===
+        "cancelled"
+    ) {
+
+        className =
+            "badge-cancelled";
+
+    }
+
+
+    return `
+
+        <span
+            class="badge ${className}"
+        >
+            ${escapeHTML(value)}
+        </span>
+
+    `;
+
+}
+
+
+// ============================================================
+// PRIORITY BADGE
+// ============================================================
+
+function priorityBadge(
+    priority
+) {
+
+    const value =
+        String(
+            priority ||
+            "Medium"
+        );
+
+
+    const normalized =
+        value.toLowerCase();
+
+
+    let className =
+        "badge-medium";
+
+
+    if (
+        normalized ===
+        "high"
+    ) {
+
+        className =
+            "badge-high";
+
+    }
+    else if (
+        normalized ===
+        "low"
+    ) {
+
+        className =
+            "badge-low";
+
+    }
+
+
+    return `
+
+        <span
+            class="badge ${className}"
+        >
+            ${escapeHTML(value)}
+        </span>
+
+    `;
+
+}
+
+
+// ============================================================
+// NORMALIZE STATUS
+// ============================================================
+
+function normalizeStatus(
+    value
+) {
+
+    return String(
+        value ||
+        ""
+    )
+    .trim()
+    .toLowerCase();
+
+}
+
+
+// ============================================================
+// ANIMAL NAME TEXT
+// ============================================================
+
+function getAnimalNameText(
+    animalId
+) {
+
+    const animal =
+        animals.find(
+            item =>
+                Number(item.id) ===
+                Number(animalId)
+        );
+
+
+    if (!animal) {
+
+        return "Animal #" +
+            animalId;
+
+    }
+
+
+    return (
+        animal.name ||
+        animal.species ||
+        "Animal #" +
+        animalId
+    );
+
+}
+
+
+// ============================================================
+// DATE
+// ============================================================
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+
+        return "N/A";
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return value;
+
+    }
+
+
+    return date.toLocaleString();
+
+}
+
+
+// ============================================================
+// ESCAPE HTML
+// ============================================================
+
+function escapeHTML(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+// ============================================================
+// EVENTS
+// ============================================================
+
+document
+    .getElementById(
+        "addRescueBtn"
+    )
+    .addEventListener(
+        "click",
+        openAddRescue
+    );
+
+
+document
+    .getElementById(
+        "rescueForm"
+    )
+    .addEventListener(
+        "submit",
+        createRescue
+    );
+
+
+document
+    .getElementById(
+        "closeRescueBtn"
+    )
+    .addEventListener(
+        "click",
+        closeRescueModal
+    );
+
+
+document
+    .getElementById(
+        "cancelRescueBtn"
+    )
+    .addEventListener(
+        "click",
+        closeRescueModal
+    );
+
+
+document
+    .getElementById(
+        "closeDetailsBtn"
+    )
+    .addEventListener(
+        "click",
+        closeDetailsModal
+    );
+
+
+document
+    .getElementById(
+        "closeStatusBtn"
+    )
+    .addEventListener(
+        "click",
+        closeStatusModal
+    );
+
+
+document
+    .getElementById(
+        "closeAssignBtn"
+    )
+    .addEventListener(
+        "click",
+        closeAssignModal
+    );
+
+
+document
+    .getElementById(
+        "cancelAssignBtn"
+    )
+    .addEventListener(
+        "click",
+        closeAssignModal
+    );
+
+
+document
+    .getElementById(
+        "saveAssignmentBtn"
+    )
+    .addEventListener(
+        "click",
+        saveAssignment
+    );
+
+
+document
+    .getElementById(
+        "refreshBtn"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            await loadAnimals();
+
+            await loadNgos();
+
+            await loadVolunteers();
+
+            await loadRescues();
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "searchInput"
+    )
+    .addEventListener(
+        "input",
+        renderRescues
+    );
+
+
+document
+    .getElementById(
+        "priorityFilter"
+    )
+    .addEventListener(
+        "change",
+        renderRescues
+    );
+
+
+document
+    .getElementById(
+        "statusFilter"
+    )
+    .addEventListener(
+        "change",
+        renderRescues
+    );
+
+
+document
+    .getElementById(
+        "animalFilter"
+    )
+    .addEventListener(
+        "change",
+        renderRescues
+    );
+
+
+// ============================================================
+// STATUS BUTTONS
+// ============================================================
+
+document
+    .querySelectorAll(
+        ".status-option"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    updateStatus(
+                        button.dataset.status
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+document
+    .getElementById(
+        "dashboardBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "admin-dashboard.html";
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "homeBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "logoutBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            logout();
+
+        }
+    );
+
+
+// ============================================================
+// CLOSE MODALS WHEN CLICKING OUTSIDE
+// ============================================================
+
+document
+    .getElementById(
+        "rescueModal"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "rescueModal"
+            ) {
+
+                closeRescueModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "detailsModal"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "detailsModal"
+            ) {
+
+                closeDetailsModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "assignModal"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "assignModal"
+            ) {
+
+                closeAssignModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "statusModal"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "statusModal"
+            ) {
+
+                closeStatusModal();
+
+            }
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

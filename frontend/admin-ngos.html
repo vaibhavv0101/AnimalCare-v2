@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AnimalCare | Manage NGOs</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f6f8fb;
+    color:#1f2937;
+}
+
+/* NAVBAR */
+.navbar{
+    min-height:72px;
+    background:#fff;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 32px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:700;
+    color:#f58220;
+}
+
+.nav-actions{
+    display:flex;
+    gap:10px;
+}
+
+.nav-actions button,
+.btn{
+    border:0;
+    cursor:pointer;
+    padding:10px 15px;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.home-btn{
+    background:#eef2f7;
+    color:#374151;
+}
+
+.logout-btn{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+/* MAIN */
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:35px 25px 60px;
+}
+
+.header{
+    margin-bottom:25px;
+}
+
+.header span{
+    color:#f58220;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:1.5px;
+}
+
+.header h1{
+    margin:7px 0;
+    font-size:34px;
+}
+
+.header p{
+    margin:0;
+    color:#6b7280;
+}
+
+/* CARD */
+
+.card{
+    background:#fff;
+    border:1px solid #e5e7eb;
+    border-radius:16px;
+    padding:25px;
+    box-shadow:0 6px 20px rgba(0,0,0,.04);
+    margin-bottom:25px;
+}
+
+.card h2{
+    margin-top:0;
+}
+
+/* FORM */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+label{
+    font-size:13px;
+    font-weight:600;
+    margin-bottom:7px;
+}
+
+input,
+textarea{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    font-size:14px;
+    outline:none;
+}
+
+input:focus,
+textarea:focus{
+    border-color:#f58220;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.form-actions{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+.save-btn{
+    background:#f58220;
+    color:white;
+}
+
+.cancel-btn{
+    background:#eef2f7;
+    color:#374151;
+}
+
+/* TOOLBAR */
+
+.toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.toolbar-right{
+    display:flex;
+    gap:10px;
+}
+
+.search-input{
+    width:260px;
+}
+
+.refresh-btn{
+    background:#f58220;
+    color:white;
+}
+
+/* TABLE */
+
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    padding:14px 12px;
+    text-align:left;
+    border-bottom:1px solid #eef0f3;
+    font-size:14px;
+}
+
+th{
+    font-size:12px;
+    text-transform:uppercase;
+    color:#6b7280;
+    letter-spacing:.5px;
+}
+
+.status{
+    display:inline-block;
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.active{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.inactive{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.edit-btn{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.delete-btn{
+    background:#fee2e2;
+    color:#b91c1c;
+}
+
+.loading,
+.empty,
+.error{
+    padding:35px;
+    text-align:center;
+    color:#6b7280;
+}
+
+.error{
+    color:#b91c1c;
+}
+
+@media(max-width:800px){
+
+    .navbar{
+        padding:0 15px;
+    }
+
+    .container{
+        padding:25px 15px;
+    }
+
+    .header h1{
+        font-size:27px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+    .toolbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .toolbar-right{
+        width:100%;
+    }
+
+    .search-input{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="logo">
+        AnimalCare Admin
+    </div>
+
+    <div class="nav-actions">
+
+        <button
+            class="home-btn"
+            id="dashboardBtn">
+            Dashboard
+        </button>
+
+        <button
+            class="logout-btn"
+            id="logoutBtn">
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <div class="header">
+
+        <span>ADMINISTRATION</span>
+
+        <h1>Manage NGOs</h1>
+
+        <p>
+            Add, view, update and remove AnimalCare partner NGOs.
+        </p>
+
+    </div>
+
+
+    <!-- ADD / EDIT NGO -->
+
+    <section class="card">
+
+        <h2 id="formTitle">
+            Add New NGO
+        </h2>
+
+        <form id="ngoForm">
+
+            <input
+                type="hidden"
+                id="ngoId"
+            >
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>NGO Name *</label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        required
+                        placeholder="Enter NGO name"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Email *</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        required
+                        placeholder="ngo@example.com"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Phone *</label>
+
+                    <input
+                        type="text"
+                        id="phone"
+                        required
+                        placeholder="Enter phone number"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>Registration Number</label>
+
+                    <input
+                        type="text"
+                        id="registration_number"
+                        placeholder="Enter registration number"
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>Address *</label>
+
+                    <input
+                        type="text"
+                        id="address"
+                        required
+                        placeholder="Enter NGO address"
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>Description</label>
+
+                    <textarea
+                        id="description"
+                        placeholder="Enter NGO description"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="btn save-btn"
+                    id="saveBtn">
+                    Add NGO
+                </button>
+
+                <button
+                    type="button"
+                    class="btn cancel-btn"
+                    id="cancelBtn"
+                    style="display:none;">
+                    Cancel Edit
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- NGO LIST -->
+
+    <section class="card">
+
+        <div class="toolbar">
+
+            <div>
+                <strong>
+                    Total NGOs:
+                    <span id="ngoCount">-</span>
+                </strong>
+            </div>
+
+            <div class="toolbar-right">
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Search NGOs..."
+                >
+
+                <button
+                    class="btn refresh-btn"
+                    id="refreshBtn">
+                    Refresh
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="ngoTable"
+            class="table-wrapper">
+
+            <div class="loading">
+                Loading NGOs...
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="js/api.js"></script>
+
+<script>
+
+let allNGOs = []; 
+function escapeHTML(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+/* =========================================================
+   INITIALIZE PAGE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializePage
+);
+
+
+async function initializePage(){
+
+    const token = getToken();
+    const user = getCurrentUser();
+    
+
+    if(!token || !user){
+
+        window.location.href = "login.html";
+        return;
+
+    }
+
+
+    const role =
+        String(user.role || "")
+        .trim()
+        .toLowerCase();
+
+
+    if(role !== "admin"){
+ let allNGOs = [];
+
+
+
+
+
+
+        alert("Admin access required.");
+
+        window.location.href = "index.html";
+
+        return;
+
+    }
+
+
+    await loadNGOs();
+
+}
+
+
+/* =========================================================
+   LOAD NGOs
+========================================================= */
+
+async function loadNGOs(){
+
+    const container =
+        document.getElementById("ngoTable");
+
+
+    container.innerHTML =
+        '<div class="loading">Loading NGOs...</div>';
+
+
+    try{
+
+        const data =
+            await apiRequest("/api/ngos/");
+
+
+        allNGOs = data.ngos || [];
+
+
+        document
+            .getElementById("ngoCount")
+            .textContent =
+            data.count ?? allNGOs.length;
+
+
+        renderNGOs(allNGOs);
+
+    }
+    catch(error){
+
+        console.error(
+            "NGO loading error:",
+            error
+        );
+
+
+        container.innerHTML =
+            '<div class="error">Unable to load NGOs.</div>';
+
+    }
+
+}
+
+
+/* =========================================================
+   DISPLAY NGOs
+========================================================= */
+
+function renderNGOs(ngos){
+
+    const container =
+        document.getElementById("ngoTable");
+
+
+    if(!ngos.length){
+
+        container.innerHTML =
+            '<div class="empty">No NGOs found.</div>';
+
+        return;
+
+    }
+
+
+    container.innerHTML = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Registration</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                ${ngos.map(ngo => `
+
+                    <tr>
+
+                        <td>
+                            #${escapeHTML(ngo.id)}
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(ngo.name || "N/A")}
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(ngo.email || "N/A")}
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(ngo.phone || "N/A")}
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(
+                                ngo.registration_number || "N/A"
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(ngo.address || "N/A")}
+                        </td>
+
+
+                        <td>
+
+                            <span class="
+                                status
+                                ${
+                                    String(
+                                        ngo.status || ""
+                                    ).toLowerCase()
+                                    === "active"
+                                    ? "active"
+                                    : "inactive"
+                                }
+                            ">
+
+                                ${escapeHTML(
+                                    ngo.status || "Active"
+                                )}
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(
+                                ngo.created_at || "N/A"
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="btn edit-btn"
+                                onclick="editNGO(${Number(ngo.id)})">
+
+                                Edit
+
+                            </button>
+
+
+                            <button
+                                class="btn delete-btn"
+                                onclick="deleteNGO(${Number(ngo.id)})">
+
+                                Delete
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `).join("")}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+
+
+/* =========================================================
+   ADD / UPDATE NGO
+========================================================= */
+
+document
+    .getElementById("ngoForm")
+    .addEventListener(
+        "submit",
+        async function(event){
+
+            event.preventDefault();
+
+
+            const ngoId =
+                document
+                    .getElementById("ngoId")
+                    .value;
+
+
+            const payload = {
+
+                name:
+                    document
+                        .getElementById("name")
+                        .value
+                        .trim(),
+
+                email:
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim(),
+
+                phone:
+                    document
+                        .getElementById("phone")
+                        .value
+                        .trim(),
+
+                address:
+                    document
+                        .getElementById("address")
+                        .value
+                        .trim(),
+
+                registration_number:
+                    document
+                        .getElementById(
+                            "registration_number"
+                        )
+                        .value
+                        .trim(),
+
+                description:
+                    document
+                        .getElementById("description")
+                        .value
+                        .trim()
+
+            };
+
+
+            try{
+
+                if(ngoId){
+
+                    await apiRequest(
+                        `/api/ngos/${ngoId}`,
+                        {
+                            method:"PUT",
+                            body:JSON.stringify(payload)
+                        }
+                    );
+
+
+                    alert(
+                        "NGO updated successfully."
+                    );
+
+                }
+                else{
+
+                    await apiRequest(
+                        "/api/ngos/",
+                        {
+                            method:"POST",
+                            body:JSON.stringify(payload)
+                        }
+                    );
+
+
+                    alert(
+                        "NGO added successfully."
+                    );
+
+                }
+
+
+                resetForm();
+
+                await loadNGOs();
+
+            }
+            catch(error){
+
+                console.error(
+                    "Save NGO error:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Unable to save NGO."
+                );
+
+            }
+
+        }
+    );
+
+
+/* =========================================================
+   EDIT NGO
+========================================================= */
+
+function editNGO(id){
+
+    const ngo =
+        allNGOs.find(
+            item => Number(item.id) === Number(id)
+        );
+
+
+    if(!ngo){
+
+        alert("NGO not found.");
+        return;
+
+    }
+
+
+    document.getElementById("ngoId").value =
+        ngo.id;
+
+
+    document.getElementById("name").value =
+        ngo.name || "";
+
+
+    document.getElementById("email").value =
+        ngo.email || "";
+
+
+    document.getElementById("phone").value =
+        ngo.phone || "";
+
+
+    document.getElementById("address").value =
+        ngo.address || "";
+
+
+    document
+        .getElementById("registration_number")
+        .value =
+        ngo.registration_number || "";
+
+
+    document
+        .getElementById("description")
+        .value =
+        ngo.description || "";
+
+
+    document.getElementById("formTitle").textContent =
+        "Edit NGO";
+
+
+    document.getElementById("saveBtn").textContent =
+        "Update NGO";
+
+
+    document.getElementById("cancelBtn").style.display =
+        "inline-block";
+
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================================================
+   DELETE NGO
+========================================================= */
+
+async function deleteNGO(id){
+
+    const ngo =
+        allNGOs.find(
+            item => Number(item.id) === Number(id)
+        );
+
+
+    const name =
+        ngo?.name || "this NGO";
+
+
+    if(
+        !confirm(
+            `Are you sure you want to delete ${name}?`
+        )
+    ){
+        return;
+    }
+
+
+    try{
+
+        await apiRequest(
+            `/api/ngos/${id}`,
+            {
+                method:"DELETE"
+            }
+        );
+
+
+        alert(
+            "NGO deleted successfully."
+        );
+
+
+        await loadNGOs();
+
+    }
+    catch(error){
+
+        console.error(
+            "Delete NGO error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Unable to delete NGO."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   RESET FORM
+========================================================= */
+
+function resetForm(){
+
+    document
+        .getElementById("ngoForm")
+        .reset();
+
+
+    document
+        .getElementById("ngoId")
+        .value = "";
+
+
+    document
+        .getElementById("formTitle")
+        .textContent =
+        "Add New NGO";
+
+
+    document
+        .getElementById("saveBtn")
+        .textContent =
+        "Add NGO";
+
+
+    document
+        .getElementById("cancelBtn")
+        .style.display =
+        "none";
+
+}
+
+
+/* =========================================================
+   CANCEL EDIT
+========================================================= */
+
+document
+    .getElementById("cancelBtn")
+    .addEventListener(
+        "click",
+        resetForm
+    );
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+    .getElementById("searchInput")
+    .addEventListener(
+        "input",
+        function(){
+
+            const search =
+                this.value
+                    .trim()
+                    .toLowerCase();
+
+
+            const filtered =
+                allNGOs.filter(ngo =>
+
+                    String(
+                        ngo.name || ""
+                    )
+                    .toLowerCase()
+                    .includes(search)
+
+                    ||
+
+                    String(
+                        ngo.email || ""
+                    )
+                    .toLowerCase()
+                    .includes(search)
+
+                    ||
+
+                    String(
+                        ngo.address || ""
+                    )
+                    .toLowerCase()
+                    .includes(search)
+
+                    ||
+
+                    String(
+                        ngo.registration_number || ""
+                    )
+                    .toLowerCase()
+                    .includes(search)
+
+                );
+
+
+            renderNGOs(filtered);
+
+        }
+    );
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
+
+document
+    .getElementById("refreshBtn")
+    .addEventListener(
+        "click",
+        loadNGOs
+    );
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+document
+    .getElementById("dashboardBtn")
+    .addEventListener(
+        "click",
+        function(){
+
+            window.location.href =
+                "admin-dashboard.html";
+
+        }
+    );
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document
+    .getElementById("logoutBtn")
+    .addEventListener(
+        "click",
+        function(){
+
+            if(
+                typeof logout === "function"
+            ){
+
+                logout();
+
+            }
+            else{
+
+                localStorage.removeItem(
+                    "access_token"
+                );
+
+                localStorage.removeItem(
+                    "user"
+                );
+
+                window.location.href =
+                    "login.html";
+
+            }
+
+        }
+    );
+
+</script>
+
+</body>
+</html>cd 

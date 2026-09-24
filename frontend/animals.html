@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Animals | AnimalCare</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .animals-page {
+            min-height: 100vh;
+            background: #f8faf9;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .page-header {
+            padding: 70px 7% 45px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(22, 160, 133, 0.16),
+                    transparent 35%
+                ),
+                white;
+        }
+
+
+        .page-header-inner {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+
+        .badge {
+            display: inline-block;
+
+            padding: 9px 16px;
+
+            border-radius: 30px;
+
+            background: #e8f8f5;
+
+            color: #117864;
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+        }
+
+
+        .page-header h1 {
+            font-size: clamp(2.4rem, 5vw, 4rem);
+
+            line-height: 1.1;
+
+            margin: 0 0 15px;
+
+            color: #17202a;
+        }
+
+
+        .page-header h1 span {
+            color: #16a085;
+        }
+
+
+        .page-header p {
+            max-width: 700px;
+
+            font-size: 1.05rem;
+
+            line-height: 1.7;
+
+            color: #566573;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .animals-content {
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding: 45px 7% 80px;
+        }
+
+
+        /* =====================================================
+           TOOLBAR
+        ===================================================== */
+
+        .animals-toolbar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 35px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .animal-count {
+            font-size: 1.1rem;
+
+            font-weight: 700;
+
+            color: #17202a;
+        }
+
+
+        .filters {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .filters select {
+            padding: 11px 15px;
+
+            border: 1px solid #d5dbdb;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #34495e;
+
+            outline: none;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           LOADING
+        ===================================================== */
+
+        .loading {
+            text-align: center;
+
+            padding: 70px 20px;
+
+            color: #566573;
+
+            font-size: 1.1rem;
+        }
+
+
+        .loading-icon {
+            font-size: 2.5rem;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =====================================================
+           ERROR
+        ===================================================== */
+
+        .error-box {
+            display: none;
+
+            padding: 20px;
+
+            border-radius: 14px;
+
+            background: #fdedec;
+
+            color: #c0392b;
+
+            margin-bottom: 30px;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .empty-state {
+            display: none;
+
+            text-align: center;
+
+            padding: 70px 20px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            border: 1px solid #e5e7e9;
+        }
+
+
+        .empty-state .icon {
+            font-size: 4rem;
+
+            margin-bottom: 15px;
+        }
+
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+
+            color: #17202a;
+        }
+
+
+        .empty-state p {
+            color: #566573;
+        }
+
+
+        /* =====================================================
+           ANIMAL GRID
+        ===================================================== */
+
+        .animals-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fill,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 25px;
+        }
+
+
+        /* =====================================================
+           ANIMAL CARD
+        ===================================================== */
+
+        .animal-card {
+            background: white;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            border: 1px solid #e5e7e9;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.06);
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+
+        .animal-card:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 18px 40px
+                rgba(0, 0, 0, 0.10);
+        }
+
+
+        .animal-image {
+            height: 210px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e8f8f5,
+                    #f8faf9
+                );
+
+            font-size: 6rem;
+        }
+
+
+        .animal-info {
+            padding: 22px;
+        }
+
+
+        .animal-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-bottom: 12px;
+        }
+
+
+        .animal-name {
+            margin: 0;
+
+            font-size: 1.4rem;
+
+            color: #17202a;
+        }
+
+
+        .status {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 0.75rem;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+
+        .status.available {
+            background: #eafaf1;
+
+            color: #1e8449;
+        }
+
+
+        .status.adopted {
+            background: #fef5e7;
+
+            color: #b9770e;
+        }
+
+
+        .status.other {
+            background: #ebedef;
+
+            color: #566573;
+        }
+
+
+        .animal-breed {
+            color: #117864;
+
+            font-weight: 700;
+
+            margin-bottom: 15px;
+        }
+
+
+        .animal-details {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .detail {
+            padding: 10px;
+
+            background: #f8faf9;
+
+            border-radius: 10px;
+        }
+
+
+        .detail-label {
+            display: block;
+
+            font-size: 0.75rem;
+
+            color: #7b7d7d;
+
+            margin-bottom: 3px;
+        }
+
+
+        .detail-value {
+            font-weight: 700;
+
+            color: #34495e;
+        }
+
+
+        .animal-actions {
+            display: flex;
+
+            gap: 10px;
+        }
+
+
+        .animal-actions button {
+            flex: 1;
+
+            padding: 11px;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            border: none;
+        }
+
+
+        .view-btn {
+            background: #16a085;
+
+            color: white;
+        }
+
+
+        .adopt-btn {
+            background: white;
+
+            color: #117864;
+
+            border: 1px solid #16a085 !important;
+        }
+
+
+        .adopt-btn:disabled {
+            opacity: 0.5;
+
+            cursor: not-allowed;
+        }
+
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 1000;
+
+            background: rgba(0, 0, 0, 0.5);
+
+            padding: 20px;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+
+
+        .modal.show {
+            display: flex;
+        }
+
+
+        .modal-card {
+            width: 100%;
+
+            max-width: 600px;
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 30px;
+
+            position: relative;
+        }
+
+
+        .modal-close {
+            position: absolute;
+
+            top: 15px;
+
+            right: 18px;
+
+            border: none;
+
+            background: #f2f3f4;
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            font-size: 1.2rem;
+        }
+
+
+        .modal-title {
+            font-size: 2rem;
+
+            margin-bottom: 5px;
+
+            color: #17202a;
+        }
+
+
+        .modal-subtitle {
+            color: #117864;
+
+            font-weight: 700;
+
+            margin-bottom: 25px;
+        }
+
+
+        .modal-grid {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 12px;
+        }
+
+
+        .modal-item {
+            padding: 14px;
+
+            background: #f8faf9;
+
+            border-radius: 10px;
+        }
+
+
+        .modal-item strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #7b7d7d;
+
+            font-size: 0.8rem;
+        }
+
+
+        /* =====================================================
+           ADOPTION FORM
+        ===================================================== */
+
+        .adoption-form {
+            margin-top: 20px;
+        }
+
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: 700;
+
+            color: #34495e;
+        }
+
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+
+            padding: 12px 14px;
+
+            border: 1px solid #d5dbdb;
+
+            border-radius: 10px;
+
+            outline: none;
+
+            font-family: inherit;
+
+            transition:
+                border-color 0.2s ease;
+        }
+
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #16a085;
+        }
+
+
+        .form-group textarea {
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        .required {
+            color: #e74c3c;
+        }
+
+
+        .submit-adoption {
+            width: 100%;
+
+            margin-top: 5px;
+        }
+
+
+        .submit-adoption:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+
+        .form-message {
+            display: none;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            margin-bottom: 18px;
+
+            text-align: center;
+        }
+
+
+        .form-message.success {
+            display: block;
+
+            background: #eafaf1;
+
+            color: #1e8449;
+        }
+
+
+        .form-message.error {
+            display: block;
+
+            background: #fdedec;
+
+            color: #c0392b;
+        }
+
+
+        .selected-animal {
+            padding: 14px;
+
+            background: #e8f8f5;
+
+            border-radius: 12px;
+
+            margin-bottom: 20px;
+
+            color: #117864;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            .page-header {
+                padding: 50px 5% 35px;
+            }
+
+            .animals-content {
+                padding: 30px 5% 60px;
+            }
+
+            .animals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .animal-top {
+                flex-direction: column;
+            }
+
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-card {
+                padding: 25px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="animals-page">
+
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <section class="page-header">
+
+        <div class="page-header-inner">
+
+            <div class="badge">
+                🐾 Find a Friend
+            </div>
+
+            <h1>
+                Animals Looking for
+                <span>A Home.</span>
+            </h1>
+
+            <p>
+                Meet rescued animals who are waiting
+                for a safe, loving and caring family.
+                Every adoption gives an animal a
+                second chance at life.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         CONTENT
+    ================================================== -->
+
+    <main class="animals-content">
+
+
+        <!-- TOOLBAR -->
+
+        <div class="animals-toolbar">
+
+            <div
+                id="animalCount"
+                class="animal-count"
+            >
+                Loading animals...
+            </div>
+
+
+            <div class="filters">
+
+                <select id="speciesFilter">
+
+                    <option value="all">
+                        All Species
+                    </option>
+
+                    <option value="Dog">
+                        🐶 Dogs
+                    </option>
+
+                    <option value="Cat">
+                        🐱 Cats
+                    </option>
+
+                    <option value="Cow">
+                        🐄 Cows
+                    </option>
+
+                    <option value="Buffalo">
+                        🐃 Buffaloes
+                    </option>
+
+                    <option value="Goat">
+                        🐐 Goats
+                    </option>
+
+                    <option value="Horse">
+                        🐴 Horses
+                    </option>
+
+                    <option value="Bird">
+                        🐦 Birds
+                    </option>
+
+                    <option value="Other">
+                        🐾 Other
+                    </option>
+
+                </select>
+
+
+                <select id="statusFilter">
+
+                    <option value="all">
+                        All Status
+                    </option>
+
+                    <option value="Available">
+                        Available
+                    </option>
+
+                    <option value="Adopted">
+                        Adopted
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div
+            id="errorBox"
+            class="error-box"
+        ></div>
+
+
+        <!-- LOADING -->
+
+        <div
+            id="loading"
+            class="loading"
+        >
+
+            <div class="loading-icon">
+                🐾
+            </div>
+
+            Loading animals...
+
+        </div>
+
+
+        <!-- EMPTY -->
+
+        <div
+            id="emptyState"
+            class="empty-state"
+        >
+
+            <div class="icon">
+                🐶
+            </div>
+
+            <h3>
+                No animals found
+            </h3>
+
+            <p>
+                Try changing your filters.
+            </p>
+
+        </div>
+
+
+        <!-- ANIMALS -->
+
+        <div
+            id="animalsGrid"
+            class="animals-grid"
+        ></div>
+
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     DETAILS MODAL
+====================================================== -->
+
+<div
+    id="animalModal"
+    class="modal"
+>
+
+    <div class="modal-card">
+
+        <button
+            class="modal-close"
+            onclick="closeAnimalModal()"
+        >
+            ×
+        </button>
+
+
+        <h2
+            id="modalName"
+            class="modal-title"
+        >
+            Animal
+        </h2>
+
+
+        <div
+            id="modalBreed"
+            class="modal-subtitle"
+        ></div>
+
+
+        <div
+            id="modalDetails"
+            class="modal-grid"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ADOPTION MODAL
+====================================================== -->
+
+<div
+    id="adoptionModal"
+    class="modal"
+>
+
+    <div class="modal-card">
+
+        <button
+            class="modal-close"
+            onclick="closeAdoptionModal()"
+        >
+            ×
+        </button>
+
+
+        <h2 class="modal-title">
+            Adoption Application
+        </h2>
+
+
+        <div
+            id="selectedAnimal"
+            class="selected-animal"
+        ></div>
+
+
+        <div
+            id="adoptionMessage"
+            class="form-message"
+        ></div>
+
+
+        <form
+            id="adoptionForm"
+            class="adoption-form"
+        >
+
+
+            <!-- REASON -->
+
+            <div class="form-group">
+
+                <label for="reason">
+
+                    Why do you want to adopt?
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+
+                <textarea
+                    id="reason"
+                    placeholder="Tell us why you would like to adopt this animal..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="form-group">
+
+                <label for="phone">
+
+                    Phone Number
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="Enter your phone number"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="form-group">
+
+                <label for="address">
+
+                    Address
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+
+                <textarea
+                    id="address"
+                    placeholder="Enter your complete address"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- OCCUPATION -->
+
+            <div class="form-group">
+
+                <label for="occupation">
+
+                    Occupation
+
+                    <span class="required">
+                        *
+                    </span>
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="occupation"
+                    placeholder="e.g. Student, Software Developer"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="submitAdoption"
+                class="btn btn-primary submit-adoption"
+            >
+
+                Submit Adoption Application
+
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     API
+====================================================== -->
+
+<script src="js/api.js"></script>
+
+
+<script>
+
+
+// ========================================================
+// GLOBAL DATA
+// ========================================================
+
+let allAnimals = [];
+
+let selectedAnimalId = null;
+
+
+// ========================================================
+// LOAD ANIMALS
+// ========================================================
+
+async function loadAnimals() {
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const grid =
+        document.getElementById(
+            "animalsGrid"
+        );
+
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
+
+
+    try {
+
+        loading.style.display =
+            "block";
+
+        errorBox.style.display =
+            "none";
+
+        grid.innerHTML = "";
+
+
+        const data =
+            await getAnimals();
+
+
+        console.log(
+            "ANIMALS RESPONSE:",
+            data
+        );
+
+
+        if (
+            !data ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data?.message ||
+                "Unable to load animals."
+            );
+
+        }
+
+
+        allAnimals =
+            data.animals || [];
+
+
+        loading.style.display =
+            "none";
+
+
+        applyFilters();
+
+
+    } catch (error) {
+
+        console.error(
+            "ANIMAL ERROR:",
+            error
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        errorBox.textContent =
+            error.message ||
+            "Unable to load animals.";
+
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+}
+
+
+// ========================================================
+// APPLY FILTERS
+// ========================================================
+
+function applyFilters() {
+
+    const species =
+        document.getElementById(
+            "speciesFilter"
+        ).value;
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    let filtered =
+        [...allAnimals];
+
+
+    if (species !== "all") {
+
+        filtered =
+            filtered.filter(
+                animal =>
+                    String(
+                        animal.species
+                    ).toLowerCase() ===
+                    species.toLowerCase()
+            );
+
+    }
+
+
+    if (status !== "all") {
+
+        filtered =
+            filtered.filter(
+                animal =>
+                    String(
+                        animal.adoption_status
+                    ).toLowerCase() ===
+                    status.toLowerCase()
+            );
+
+    }
+
+
+    renderAnimals(
+        filtered
+    );
+
+}
+
+
+// ========================================================
+// RENDER ANIMALS
+// ========================================================
+
+function renderAnimals(
+    animals
+) {
+
+    const grid =
+        document.getElementById(
+            "animalsGrid"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    const count =
+        document.getElementById(
+            "animalCount"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    count.textContent =
+        `${animals.length} animal${
+            animals.length !== 1
+                ? "s"
+                : ""
+        } found`;
+
+
+    if (
+        animals.length === 0
+    ) {
+
+        empty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    animals.forEach(
+        animal => {
+
+            grid.appendChild(
+                createAnimalCard(
+                    animal
+                )
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================================
+// CREATE ANIMAL CARD
+// ========================================================
+
+function createAnimalCard(
+    animal
+) {
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+
+    card.className =
+        "animal-card";
+
+
+    const status =
+        animal.adoption_status ||
+        "Available";
+
+
+    let statusClass =
+        "other";
+
+
+    if (
+        status.toLowerCase() ===
+        "available"
+    ) {
+
+        statusClass =
+            "available";
+
+    }
+    else if (
+        status.toLowerCase() ===
+        "adopted"
+    ) {
+
+        statusClass =
+            "adopted";
+
+    }
+
+
+    const speciesIconMap = {
+        dog: "🐶",
+        cat: "🐱",
+        cow: "🐄",
+        buffalo: "🐃",
+        goat: "🐐",
+        horse: "🐴",
+        bird: "🐦",
+        other: "🐾"
+    };
+
+    const speciesKey = String(animal.species || "")
+        .trim()
+        .toLowerCase();
+
+    const emoji = speciesIconMap[speciesKey] || "🐾";
+
+
+    const isAvailable =
+        status.toLowerCase() ===
+        "available";
+
+
+    card.innerHTML = `
+
+        <div class="animal-image">
+            ${emoji}
+        </div>
+
+
+        <div class="animal-info">
+
+
+            <div class="animal-top">
+
+                <h2 class="animal-name">
+                    ${escapeHtml(
+                        animal.name ||
+                        "Unnamed"
+                    )}
+                </h2>
+
+
+                <span
+                    class="status ${statusClass}"
+                >
+                    ${escapeHtml(
+                        status
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="animal-breed">
+
+                ${escapeHtml(
+                    animal.breed ||
+                    animal.species ||
+                    "Unknown breed"
+                )}
+
+            </div>
+
+
+            <div class="animal-details">
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Age
+                    </span>
+
+                    <span class="detail-value">
+                        ${animal.age ?? "N/A"}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Gender
+                    </span>
+
+                    <span class="detail-value">
+                        ${escapeHtml(
+                            animal.gender ||
+                            "N/A"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Health
+                    </span>
+
+                    <span class="detail-value">
+                        ${escapeHtml(
+                            animal.health_status ||
+                            "N/A"
+                        )}
+                    </span>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <span class="detail-label">
+                        Weight
+                    </span>
+
+                    <span class="detail-value">
+                        ${
+                            animal.weight != null
+                                ? animal.weight +
+                                  " kg"
+                                : "N/A"
+                        }
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="animal-actions">
+
+
+                <button
+                    class="view-btn"
+                    onclick="viewAnimal(${animal.id})"
+                >
+                    View Details
+                </button>
+
+
+                <button
+                    class="adopt-btn"
+                    ${
+                        !isAvailable
+                            ? "disabled"
+                            : ""
+                    }
+                    onclick="adoptAnimal(
+                        ${animal.id}
+                    )"
+                >
+
+                    ${
+                        isAvailable
+                            ? "Adopt"
+                            : "Adopted"
+                    }
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+// ========================================================
+// VIEW ANIMAL
+// ========================================================
+
+function viewAnimal(
+    id
+) {
+
+    const animal =
+        allAnimals.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!animal) {
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "modalName"
+    ).textContent =
+        animal.name ||
+        "Animal";
+
+
+    document.getElementById(
+        "modalBreed"
+    ).textContent =
+        `${animal.species || "Animal"} • ${
+            animal.breed ||
+            "Unknown breed"
+        }`;
+
+
+    const details =
+        document.getElementById(
+            "modalDetails"
+        );
+
+
+    details.innerHTML = `
+
+        <div class="modal-item">
+
+            <strong>
+                Age
+            </strong>
+
+            ${animal.age ?? "N/A"}
+
+        </div>
+
+
+        <div class="modal-item">
+
+            <strong>
+                Gender
+            </strong>
+
+            ${escapeHtml(
+                animal.gender ||
+                "N/A"
+            )}
+
+        </div>
+
+
+        <div class="modal-item">
+
+            <strong>
+                Color
+            </strong>
+
+            ${escapeHtml(
+                animal.color ||
+                "N/A"
+            )}
+
+        </div>
+
+
+        <div class="modal-item">
+
+            <strong>
+                Weight
+            </strong>
+
+            ${
+                animal.weight != null
+                    ? animal.weight + " kg"
+                    : "N/A"
+            }
+
+        </div>
+
+
+        <div class="modal-item">
+
+            <strong>
+                Health Status
+            </strong>
+
+            ${escapeHtml(
+                animal.health_status ||
+                "N/A"
+            )}
+
+        </div>
+
+
+        <div class="modal-item">
+
+            <strong>
+                Adoption Status
+            </strong>
+
+            ${escapeHtml(
+                animal.adoption_status ||
+                "N/A"
+            )}
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "animalModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+// ========================================================
+// CLOSE DETAILS MODAL
+// ========================================================
+
+function closeAnimalModal() {
+
+    document.getElementById(
+        "animalModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+// ========================================================
+// OPEN ADOPTION FORM
+// ========================================================
+
+function adoptAnimal(
+    id
+) {
+
+    const token =
+        localStorage.getItem(
+            "access_token"
+        );
+
+
+    if (!token) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+
+    }
+
+
+    const animal =
+        allAnimals.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!animal) {
+
+        alert(
+            "Animal not found."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        String(
+            animal.adoption_status
+        ).toLowerCase() !==
+        "available"
+    ) {
+
+        alert(
+            `${animal.name} is not currently available for adoption.`
+        );
+
+        return;
+
+    }
+
+
+    selectedAnimalId =
+        id;
+
+
+    document.getElementById(
+        "selectedAnimal"
+    ).textContent =
+        `🐾 Applying to adopt: ${animal.name}`;
+
+
+    document.getElementById(
+        "adoptionForm"
+    ).reset();
+
+
+    const message =
+        document.getElementById(
+            "adoptionMessage"
+        );
+
+
+    message.className =
+        "form-message";
+
+
+    message.textContent =
+        "";
+
+
+    document.getElementById(
+        "adoptionModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+// ========================================================
+// CLOSE ADOPTION MODAL
+// ========================================================
+
+function closeAdoptionModal() {
+
+    document.getElementById(
+        "adoptionModal"
+    ).classList.remove(
+        "show"
+    );
+
+
+    selectedAnimalId =
+        null;
+
+}
+
+
+// ========================================================
+// SUBMIT ADOPTION
+// ========================================================
+
+async function submitAdoption(
+    event
+) {
+
+    event.preventDefault();
+
+
+    if (!selectedAnimalId) {
+
+        return;
+
+    }
+
+
+    const button =
+        document.getElementById(
+            "submitAdoption"
+        );
+
+
+    const message =
+        document.getElementById(
+            "adoptionMessage"
+        );
+
+
+    const reason =
+        document.getElementById(
+            "reason"
+        ).value.trim();
+
+
+    const phone =
+        document.getElementById(
+            "phone"
+        ).value.trim();
+
+
+    const address =
+        document.getElementById(
+            "address"
+        ).value.trim();
+
+
+    const occupation =
+        document.getElementById(
+            "occupation"
+        ).value.trim();
+
+
+    // =====================================================
+    // VALIDATION
+    // =====================================================
+
+    if (
+        !reason ||
+        !phone ||
+        !address ||
+        !occupation
+    ) {
+
+        message.className =
+            "form-message error";
+
+
+        message.textContent =
+            "Please fill in all required fields.";
+
+
+        return;
+
+    }
+
+
+    if (
+        phone.length < 10
+    ) {
+
+        message.className =
+            "form-message error";
+
+
+        message.textContent =
+            "Please enter a valid phone number.";
+
+
+        return;
+
+    }
+
+
+    button.disabled =
+        true;
+
+
+    button.textContent =
+        "Submitting...";
+
+
+    message.className =
+        "form-message";
+
+
+    message.textContent =
+        "";
+
+
+    try {
+
+
+        // =================================================
+        // POST TO BACKEND
+        // =================================================
+
+        const data =
+            await apiRequest(
+                "/api/adoptions/",
+                {
+                    method: "POST",
+
+                    body: JSON.stringify({
+
+                        animal_id:
+                            selectedAnimalId,
+
+                        reason:
+                            reason,
+
+                        phone:
+                            phone,
+
+                        address:
+                            address,
+
+                        occupation:
+                            occupation
+
+                    })
+                }
+            );
+
+
+        console.log(
+            "ADOPTION RESPONSE:",
+            data
+        );
+
+
+        if (
+            !data ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data?.message ||
+                "Unable to submit adoption application."
+            );
+
+        }
+
+
+        // =================================================
+        // SUCCESS
+        // =================================================
+
+        message.className =
+            "form-message success";
+
+
+        message.textContent =
+            "Adoption application submitted successfully!";
+
+
+        button.textContent =
+            "Application Submitted";
+
+
+        // Close after short delay
+
+        setTimeout(
+            function() {
+
+                closeAdoptionModal();
+
+            },
+            1500
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "ADOPTION ERROR:",
+            error
+        );
+
+
+        message.className =
+            "form-message error";
+
+
+        message.textContent =
+            error.message ||
+            "Unable to submit application.";
+
+
+        button.disabled =
+            false;
+
+
+        button.textContent =
+            "Submit Adoption Application";
+
+    }
+
+}
+
+
+// ========================================================
+// ESCAPE HTML
+// ========================================================
+
+function escapeHtml(
+    value
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        String(
+            value ?? ""
+        );
+
+
+    return div.innerHTML;
+
+}
+
+
+// ========================================================
+// FILTER EVENTS
+// ========================================================
+
+document
+    .getElementById(
+        "speciesFilter"
+    )
+    .addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+document
+    .getElementById(
+        "statusFilter"
+    )
+    .addEventListener(
+        "change",
+        applyFilters
+    );
+
+
+// ========================================================
+// ADOPTION FORM EVENT
+// ========================================================
+
+document
+    .getElementById(
+        "adoptionForm"
+    )
+    .addEventListener(
+        "submit",
+        submitAdoption
+    );
+
+
+// ========================================================
+// CLOSE MODALS WHEN CLICKING OUTSIDE
+// ========================================================
+
+document
+    .getElementById(
+        "animalModal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeAnimalModal();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "adoptionModal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeAdoptionModal();
+
+            }
+
+        }
+    );
+
+
+// ========================================================
+// ESC KEY
+// ========================================================
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeAnimalModal();
+
+            closeAdoptionModal();
+
+        }
+
+    }
+);
+
+
+// ========================================================
+// START
+// ========================================================
+
+loadAnimals();
+
+</script>
+
+
+</body>
+
+</html>

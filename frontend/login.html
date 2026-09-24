@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | AnimalCare</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        body {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(22, 160, 133, 0.15),
+                    transparent 35%
+                ),
+                #f7f9f9;
+        }
+
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 450px;
+
+            padding: 25px;
+        }
+
+
+        .login-card {
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.10);
+
+            border: 1px solid #e5e7e9;
+        }
+
+
+        .login-logo {
+            text-align: center;
+
+            font-size: 1.8rem;
+
+            font-weight: 800;
+
+            color: #117864;
+
+            margin-bottom: 10px;
+        }
+
+
+        .login-subtitle {
+            text-align: center;
+
+            color: #566573;
+
+            margin-bottom: 30px;
+        }
+
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: 700;
+        }
+
+
+        .form-group input {
+            width: 100%;
+
+            padding: 13px 15px;
+
+            border: 1px solid #d5dbdb;
+
+            border-radius: 10px;
+
+            outline: none;
+        }
+
+
+        .form-group input:focus {
+            border-color: #16a085;
+        }
+
+
+        .login-button {
+            width: 100%;
+
+            margin-top: 5px;
+        }
+
+
+        .message {
+            margin-top: 18px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            display: none;
+
+            text-align: center;
+        }
+
+
+        .message.error {
+            display: block;
+
+            background: #fdedec;
+
+            color: #c0392b;
+        }
+
+
+        .message.success {
+            display: block;
+
+            background: #eafaf1;
+
+            color: #1e8449;
+        }
+
+
+        .back-link {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #117864;
+
+            font-weight: 600;
+        }
+
+
+        .loading-button {
+            opacity: 0.7;
+
+            pointer-events: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-wrapper">
+
+    <div class="login-card">
+
+
+        <!-- LOGO -->
+
+        <div class="login-logo">
+
+            🐾 AnimalCare
+
+        </div>
+
+
+        <p class="login-subtitle">
+
+            Sign in to your AnimalCare account
+
+        </p>
+
+
+        <!-- LOGIN FORM -->
+
+        <form id="loginForm">
+
+
+            <div class="form-group">
+
+                <label for="email">
+
+                    Email
+
+                </label>
+
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+
+                    Password
+
+                </label>
+
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="loginButton"
+                class="btn btn-primary login-button"
+            >
+
+                Login
+
+            </button>
+
+
+        </form>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+        <!-- BACK -->
+
+        <a
+            href="index.html"
+            class="back-link"
+        >
+
+            ← Back to AnimalCare
+
+        </a>
+
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================
+     API SCRIPT
+========================================================= -->
+
+<script src="js/api.js"></script>
+
+
+<!-- ========================================================
+     LOGIN SCRIPT
+========================================================= -->
+
+<script>
+
+const loginForm =
+    document.getElementById("loginForm");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const message =
+    document.getElementById("message");
+
+
+// ========================================================
+// MESSAGE FUNCTION
+// ========================================================
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent = text;
+
+    message.className =
+        `message ${type}`;
+
+}
+
+
+// ========================================================
+// LOGIN
+// ========================================================
+
+loginForm.addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
+
+
+        if (!email || !password) {
+
+            showMessage(
+                "Please enter email and password.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        // Disable button
+
+        loginButton.disabled = true;
+
+        loginButton.classList.add(
+            "loading-button"
+        );
+
+        loginButton.textContent =
+            "Logging in...";
+
+
+        showMessage(
+            "Connecting to AnimalCare...",
+            "success"
+        );
+
+
+        try {
+
+
+            // =================================================
+            // CALL BACKEND LOGIN
+            // =================================================
+
+            const data =
+                await login(
+                    email,
+                    password
+                );
+
+
+            console.log(
+                "LOGIN RESPONSE:",
+                data
+            );
+
+
+            // =================================================
+            // VERIFY RESPONSE
+            // =================================================
+
+            if (
+                !data ||
+                !data.success ||
+                !data.access_token
+            ) {
+
+                throw new Error(
+                    data?.message ||
+                    data?.msg ||
+                    "Login failed."
+                );
+            }
+
+
+            // =================================================
+            // EXPLICITLY SAVE TOKEN
+            // =================================================
+
+            localStorage.setItem(
+                "access_token",
+                data.access_token
+            );
+
+
+            // =================================================
+            // SAVE USER
+            // =================================================
+
+            if (data.user) {
+
+                localStorage.setItem(
+                    "user",
+                    JSON.stringify(
+                        data.user
+                    )
+                );
+            }
+
+
+            // =================================================
+            // VERIFY TOKEN
+            // =================================================
+
+            const savedToken =
+                localStorage.getItem(
+                    "access_token"
+                );
+
+
+            console.log(
+                "TOKEN SAVED:",
+                savedToken
+                    ? "YES"
+                    : "NO"
+            );
+
+
+            if (!savedToken) {
+
+                throw new Error(
+                    "Unable to save login session."
+                );
+            }
+
+
+            // =================================================
+            // SUCCESS
+            // =================================================
+
+            showMessage(
+                "Login successful! Redirecting...",
+                "success"
+            );
+
+
+            // Redirect based on logged-in user's role
+            setTimeout(function() {
+
+                const user = JSON.parse(
+                    localStorage.getItem("user") || "{}"
+                );
+
+                const role = String(
+                    user.role || ""
+                ).trim().toLowerCase();
+
+                console.log("REDIRECT USER:", user);
+                console.log("REDIRECT ROLE:", role);
+
+                if (role === "admin") {
+                    window.location.href =
+                        "./admin-dashboard.html";
+                } else {
+                    window.location.href =
+                        "./index.html";
+                }
+
+            }, 700);
+
+
+        } catch (error) {
+
+
+            console.error(
+                "LOGIN ERROR:",
+                error
+            );
+
+
+            showMessage(
+                error.message ||
+                "Unable to login. Please try again.",
+                "error"
+            );
+
+
+            // Re-enable button
+
+            loginButton.disabled =
+                false;
+
+            loginButton.classList.remove(
+                "loading-button"
+            );
+
+            loginButton.textContent =
+                "Login";
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,30 +1,28 @@
-# Python
-venv/
-__pycache__/
-*.py[cod]
-*.pyo
-
-# Environment
+# Environment variables / secrets
 .env
+backend/.env
+
+# Python virtual environment
+venv/
+backend/venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
 
 # VS Code
 .vscode/
 
+# Operating system files
+.DS_Store
+Thumbs.db
+
 # Logs
 *.log
 
-# Python cache
-.pytest_cache/
-
-# Flask
-instance/
-
-# Node
-node_modules/
-dist/
-build/
-
-# OS
-.DS_Store
-Thumbs.db__temp_pipreqsnb_folder/
+# Local uploads/temp files
+backend/uploads/
+# Temporary dependency scan folder
 __temp_pipreqsnb_folder/

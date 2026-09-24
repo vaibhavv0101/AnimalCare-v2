@@ -1,19 +1,30 @@
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required
 
+from app.models.animal import Animal
+
 from app.adoptions import adoptions_bp
 from app.adoptions.schemas import AdoptionSchema
+
 from app.adoptions.service import (
     create_adoption,
     get_all_adoptions,
+    get_my_adoptions,
     get_adoption_by_id,
     approve_adoption,
     reject_adoption,
     delete_adoption
 )
 
+from app.auth.decorators import role_required
+
+
 schema = AdoptionSchema()
 
+
+# ============================================================
+# APPLY FOR ADOPTION
+# ============================================================
 
 @adoptions_bp.route("/", methods=["POST"])
 @jwt_required()
@@ -33,6 +44,93 @@ def apply_for_adoption():
     }), 201
 
 
+# ============================================================
+# GET MY ADOPTION REQUESTS
+# NORMAL LOGGED-IN USER
+# ============================================================
+
+@adoptions_bp.route("/my", methods=["GET"])
+@jwt_required()
+def my_adoption_requests():
+
+    adoptions = get_my_adoptions()
+
+    result = []
+
+    for adoption in adoptions:
+
+        # Get the animal connected to this adoption request
+        animal = Animal.query.get(adoption.animal_id)
+
+        result.append({
+
+            # Adoption information
+            "id": adoption.id,
+            "animal_id": adoption.animal_id,
+            "user_id": adoption.user_id,
+            "reason": adoption.reason,
+            "phone": adoption.phone,
+            "address": adoption.address,
+            "occupation": adoption.occupation,
+            "status": adoption.status,
+
+            # Animal information
+            "animal_name": (
+                animal.name
+                if animal
+                else None
+            ),
+
+            "animal_species": (
+                animal.species
+                if animal
+                else None
+            ),
+
+            "animal_breed": (
+                animal.breed
+                if animal
+                else None
+            ),
+
+            "animal_gender": (
+                animal.gender
+                if animal
+                else None
+            ),
+
+            "animal_age": (
+                animal.age
+                if animal
+                else None
+            ),
+
+            "animal_image": (
+                animal.image_url
+                if animal
+                else None
+            ),
+
+            "created_at": (
+                adoption.created_at.strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
+                if adoption.created_at
+                else None
+            )
+        })
+
+    return jsonify({
+        "success": True,
+        "count": len(result),
+        "adoptions": result
+    }), 200
+
+
+# ============================================================
+# GET ALL ADOPTIONS
+# ============================================================
+
 @adoptions_bp.route("/", methods=["GET"])
 @jwt_required()
 def list_adoptions():
@@ -44,121 +142,215 @@ def list_adoptions():
     for adoption in adoptions:
 
         result.append({
+
             "id": adoption.id,
+
             "animal_id": adoption.animal_id,
+
             "user_id": adoption.user_id,
+
             "reason": adoption.reason,
+
             "phone": adoption.phone,
+
             "address": adoption.address,
+
             "occupation": adoption.occupation,
+
             "status": adoption.status,
-            "created_at": adoption.created_at.strftime(
-                "%Y-%m-%d %H:%M:%S"
+
+            "created_at": (
+                adoption.created_at.strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
+                if adoption.created_at
+                else None
             )
         })
 
-
     return jsonify({
+
         "success": True,
+
         "count": len(result),
+
         "adoptions": result
+
     }), 200
-    
-@adoptions_bp.route("/<int:adoption_id>", methods=["GET"])
+
+
+# ============================================================
+# GET SINGLE ADOPTION
+# ============================================================
+
+@adoptions_bp.route(
+    "/<int:adoption_id>",
+    methods=["GET"]
+)
 @jwt_required()
 def adoption_details(adoption_id):
 
     adoption = get_adoption_by_id(adoption_id)
 
     if adoption is None:
+
         return jsonify({
+
             "success": False,
+
             "message": "Adoption application not found"
+
         }), 404
 
     return jsonify({
+
         "success": True,
+
         "adoption": {
+
             "id": adoption.id,
+
             "animal_id": adoption.animal_id,
+
             "user_id": adoption.user_id,
+
             "reason": adoption.reason,
+
             "phone": adoption.phone,
+
             "address": adoption.address,
+
             "occupation": adoption.occupation,
+
             "status": adoption.status,
-            "created_at": adoption.created_at.strftime(
-                "%Y-%m-%d %H:%M:%S"
+
+            "created_at": (
+                adoption.created_at.strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
+                if adoption.created_at
+                else None
             )
         }
+
     }), 200
-    
+
+
+# ============================================================
+# APPROVE ADOPTION
+# ADMIN ONLY
+# ============================================================
+
 @adoptions_bp.route(
     "/<int:adoption_id>/approve",
     methods=["PUT"]
 )
 @jwt_required()
+@role_required("Admin")
 def approve_adoption_application(adoption_id):
 
     adoption = approve_adoption(adoption_id)
 
     if adoption is None:
+
         return jsonify({
+
             "success": False,
+
             "message": "Adoption application not found"
+
         }), 404
 
     if adoption is False:
+
         return jsonify({
+
             "success": False,
+
             "message": "Animal not found"
+
         }), 404
 
     return jsonify({
+
         "success": True,
+
         "message": "Adoption approved successfully",
+
         "adoption_id": adoption.id,
+
         "status": adoption.status
+
     }), 200
-    
+
+
+# ============================================================
+# REJECT ADOPTION
+# ADMIN ONLY
+# ============================================================
+
 @adoptions_bp.route(
     "/<int:adoption_id>/reject",
     methods=["PUT"]
 )
 @jwt_required()
+@role_required("Admin")
 def reject_adoption_application(adoption_id):
 
     adoption = reject_adoption(adoption_id)
 
     if adoption is None:
+
         return jsonify({
+
             "success": False,
+
             "message": "Adoption application not found"
+
         }), 404
 
     return jsonify({
+
         "success": True,
+
         "message": "Adoption rejected successfully",
+
         "adoption_id": adoption.id,
+
         "status": adoption.status
+
     }), 200
-    
+
+
+# ============================================================
+# DELETE ADOPTION
+# ADMIN ONLY
+# ============================================================
+
 @adoptions_bp.route(
     "/<int:adoption_id>",
     methods=["DELETE"]
 )
 @jwt_required()
+@role_required("Admin")
 def remove_adoption(adoption_id):
 
     deleted = delete_adoption(adoption_id)
 
     if not deleted:
+
         return jsonify({
+
             "success": False,
+
             "message": "Adoption application not found"
+
         }), 404
 
     return jsonify({
+
         "success": True,
+
         "message": "Adoption application deleted successfully"
+
     }), 200

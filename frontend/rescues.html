@@ -1,0 +1,3807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Rescues | AnimalCare</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f9f9;
+            color: #17202a;
+            font-family: Arial, sans-serif;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .top-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 15px 6%;
+
+            background: rgba(255, 255, 255, 0.98);
+
+            border-bottom:
+                1px solid #e5e7e9;
+
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .brand {
+            color: #117864;
+
+            text-decoration: none;
+
+            font-size: 1.35rem;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+
+            align-items: center;
+
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: #34495e;
+
+            text-decoration: none;
+
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #16a085;
+        }
+
+        .user-area {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .user-name {
+            font-weight: 700;
+
+            color: #17202a;
+        }
+
+        .logout-btn {
+            border: none;
+
+            background: #e74c3c;
+
+            color: white;
+
+            padding: 10px 16px;
+
+            border-radius: 9px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            padding: 60px 6% 45px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(231, 76, 60, 0.14),
+                    transparent 35%
+                ),
+                white;
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+
+            margin: auto;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 15px;
+
+            border-radius: 30px;
+
+            background: #fdedec;
+
+            color: #c0392b;
+
+            font-weight: 700;
+        }
+
+        .hero h1 {
+            margin: 18px 0 12px;
+
+            font-size:
+                clamp(2.2rem, 5vw, 3.6rem);
+        }
+
+        .hero h1 span {
+            color: #e74c3c;
+        }
+
+        .hero p {
+            max-width: 700px;
+
+            color: #566573;
+
+            line-height: 1.7;
+
+            font-size: 1.05rem;
+        }
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
+
+        .content {
+            max-width: 1200px;
+
+            margin: auto;
+
+            padding:
+                40px 6% 80px;
+        }
+
+        /* =====================================================
+           ROLE BANNER
+        ===================================================== */
+
+        .role-banner {
+            padding: 15px 18px;
+
+            border-radius: 12px;
+
+            background: #e8f8f5;
+
+            color: #117864;
+
+            font-weight: 600;
+
+            margin-bottom: 25px;
+        }
+
+        .role-banner.admin {
+            background: #fff3cd;
+
+            color: #856404;
+        }
+
+        /* =====================================================
+           TOOLBAR
+        ===================================================== */
+
+        .toolbar {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 25px;
+        }
+
+        .toolbar-left {
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+        }
+
+        .search,
+        .filter {
+            padding: 12px 14px;
+
+            border:
+                1px solid #d5dbdb;
+
+            border-radius: 10px;
+
+            background: white;
+
+            outline: none;
+
+            font-size: 15px;
+        }
+
+        .search {
+            min-width: 240px;
+        }
+
+        .search:focus,
+        .filter:focus,
+        select:focus,
+        input:focus,
+        textarea:focus {
+            border-color: #16a085;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(22, 160, 133, 0.1);
+        }
+
+        .primary-btn {
+            border: none;
+
+            background: #e74c3c;
+
+            color: white;
+
+            padding: 12px 20px;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            font-size: 15px;
+        }
+
+        .primary-btn:hover {
+            background: #c0392b;
+        }
+
+        /* =====================================================
+           ERROR / LOADING / EMPTY
+        ===================================================== */
+
+        .loading {
+            text-align: center;
+
+            padding: 70px 20px;
+
+            font-size: 1.1rem;
+
+            color: #566573;
+        }
+
+        .empty {
+            display: none;
+
+            text-align: center;
+
+            padding: 70px 20px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            border:
+                1px solid #e5e7e9;
+        }
+
+        .error {
+            display: none;
+
+            padding: 15px;
+
+            margin-bottom: 20px;
+
+            border-radius: 10px;
+
+            background: #fdedec;
+
+            color: #c0392b;
+
+            font-weight: 600;
+        }
+
+        /* =====================================================
+           RESCUE GRID
+        ===================================================== */
+
+        .rescues {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fill,
+                    minmax(350px, 1fr)
+                );
+
+            gap: 22px;
+        }
+
+        .rescue-card {
+            background: white;
+
+            border:
+                1px solid #e5e7e9;
+
+            border-radius: 20px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.06);
+        }
+
+        .rescue-card:hover {
+            transform: translateY(-3px);
+
+            transition: 0.2s;
+        }
+
+        .card-header {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            margin-bottom: 18px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+
+            font-size: 1.3rem;
+        }
+
+        .rescue-id {
+            color: #7b7d7d;
+
+            font-size: 0.85rem;
+
+            margin-top: 5px;
+        }
+
+        /* =====================================================
+           STATUS BADGES
+        ===================================================== */
+
+        .status,
+        .priority {
+            display: inline-block;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 0.75rem;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .status.pending {
+            background: #fef5e7;
+
+            color: #b9770e;
+        }
+
+        .status.progress {
+            background: #eaf2f8;
+
+            color: #2471a3;
+        }
+
+        .status.completed {
+            background: #eafaf1;
+
+            color: #1e8449;
+        }
+
+        .status.cancelled {
+            background: #fdedec;
+
+            color: #c0392b;
+        }
+
+        .status.other {
+            background: #ebedef;
+
+            color: #566573;
+        }
+
+        .priority.high {
+            background: #fdedec;
+
+            color: #c0392b;
+        }
+
+        .priority.medium {
+            background: #fef5e7;
+
+            color: #b9770e;
+        }
+
+        .priority.low {
+            background: #eafaf1;
+
+            color: #1e8449;
+        }
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .details {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+
+            margin-bottom: 18px;
+        }
+
+        .detail {
+            padding: 12px;
+
+            background: #f8faf9;
+
+            border-radius: 10px;
+        }
+
+        .detail strong {
+            display: block;
+
+            font-size: 0.72rem;
+
+            color: #7b7d7d;
+
+            margin-bottom: 5px;
+        }
+
+        .detail span {
+            font-weight: 600;
+
+            color: #34495e;
+
+            word-break: break-word;
+        }
+
+        .notes {
+            padding: 13px;
+
+            border-radius: 10px;
+
+            background: #f8faf9;
+
+            margin-bottom: 18px;
+
+            color: #566573;
+
+            line-height: 1.5;
+        }
+
+        .notes strong {
+            color: #34495e;
+        }
+
+        /* =====================================================
+           ACTION BUTTONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+
+            gap: 8px;
+
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            flex: 1;
+
+            min-width: 100px;
+
+            border: none;
+
+            padding: 10px 12px;
+
+            border-radius: 9px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .view-btn {
+            background: #16a085;
+
+            color: white;
+        }
+
+        .assign-btn {
+            background: #3498db;
+
+            color: white;
+        }
+
+        .status-btn {
+            background: #f39c12;
+
+            color: white;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+
+            color: white;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 2000;
+
+            background:
+                rgba(0, 0, 0, 0.55);
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-card {
+            background: white;
+
+            width: 100%;
+
+            max-width: 620px;
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+            position: relative;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-card h2 {
+            margin-top: 0;
+
+            color: #17202a;
+        }
+
+        .close {
+            position: absolute;
+
+            right: 16px;
+
+            top: 16px;
+
+            width: 40px;
+
+            height: 40px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background: #f2f4f4;
+
+            cursor: pointer;
+
+            font-size: 22px;
+        }
+
+        .close:hover {
+            background: #e5e7e9;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: 700;
+
+            color: #34495e;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+
+            padding: 12px;
+
+            border:
+                1px solid #d5dbdb;
+
+            border-radius: 9px;
+
+            font: inherit;
+
+            background: white;
+
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        #newAnimalFields {
+            padding: 15px;
+            margin-bottom: 18px;
+            border: 1px solid #e5e7e9;
+            border-radius: 14px;
+            background: #fbfcfc;
+        }
+
+        #newAnimalFields::before {
+            content: "New Animal Details";
+            display: block;
+            margin-bottom: 15px;
+            color: #117864;
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+
+            border: none;
+
+            background: #e74c3c;
+
+            color: white;
+
+            padding: 13px;
+
+            border-radius: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            font-size: 15px;
+        }
+
+        .submit-btn:hover {
+            background: #c0392b;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast {
+            position: fixed;
+
+            right: 25px;
+
+            bottom: 25px;
+
+            z-index: 3000;
+
+            display: none;
+
+            max-width: 400px;
+
+            padding: 15px 20px;
+
+            border-radius: 12px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.15);
+        }
+
+        .toast.success {
+            display: block;
+
+            background: #eafaf1;
+
+            color: #1e8449;
+        }
+
+        .toast.error {
+            display: block;
+
+            background: #fdedec;
+
+            color: #c0392b;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            .top-navbar {
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                order: 3;
+
+                width: 100%;
+
+                overflow-x: auto;
+
+                padding-bottom: 5px;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .rescues {
+                grid-template-columns: 1fr;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+
+            .search {
+                min-width: 100%;
+            }
+
+            .toolbar-left {
+                width: 100%;
+            }
+
+            .filter {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVIGATION
+========================================================== -->
+
+<header class="top-navbar">
+
+    <a
+        href="index.html"
+        class="brand"
+    >
+        🐾 AnimalCare
+    </a>
+
+
+    <nav class="nav-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="animals.html">
+            Animals
+        </a>
+
+        <a href="rescues.html">
+            Rescues
+        </a>
+
+        <a href="adoptions.html">
+            Adoptions
+        </a>
+
+    </nav>
+
+
+    <div class="user-area">
+
+        <span
+            id="userName"
+            class="user-name"
+        >
+            User
+        </span>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     HERO
+========================================================== -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <div class="badge">
+            🚑 Animal Rescue Center
+        </div>
+
+        <h1>
+            Rescue & <span>Care</span>
+        </h1>
+
+        <p>
+            Report animals that need help and connect
+            rescue requests with NGOs and volunteers.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     MAIN CONTENT
+========================================================== -->
+
+<main class="content">
+
+
+    <!-- ROLE -->
+
+    <div
+        id="roleBanner"
+        class="role-banner"
+    >
+        Rescue requests are loading...
+    </div>
+
+
+    <!-- TOOLBAR -->
+
+    <div class="toolbar">
+
+
+        <div class="toolbar-left">
+
+
+            <input
+                id="searchInput"
+                class="search"
+                type="search"
+                placeholder="Search rescue..."
+            >
+
+
+            <select
+                id="statusFilter"
+                class="filter"
+            >
+
+                <option value="all">
+                    All Status
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Assigned">
+                    Assigned
+                </option>
+
+                <option value="In Progress">
+                    In Progress
+                </option>
+
+                <option value="Completed">
+                    Completed
+                </option>
+
+                <option value="Cancelled">
+                    Cancelled
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+        <button
+            id="reportBtn"
+            class="primary-btn"
+        >
+            🚑 Report Rescue
+        </button>
+
+
+    </div>
+
+
+    <!-- ERROR -->
+
+    <div
+        id="error"
+        class="error"
+    ></div>
+
+
+    <!-- LOADING -->
+
+    <div
+        id="loading"
+        class="loading"
+    >
+        🚑 Loading rescue requests...
+    </div>
+
+
+    <!-- EMPTY -->
+
+    <div
+        id="empty"
+        class="empty"
+    >
+
+        <div style="font-size:3.5rem;">
+            🐾
+        </div>
+
+        <h2>
+            No rescue requests found
+        </h2>
+
+        <p>
+            Rescue requests will appear here.
+        </p>
+
+    </div>
+
+
+    <!-- RESCUES -->
+
+    <div
+        id="rescues"
+        class="rescues"
+    ></div>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     REPORT RESCUE MODAL
+========================================================== -->
+
+<div
+    id="reportModal"
+    class="modal"
+>
+
+    <div class="modal-card">
+
+
+        <button
+            class="close"
+            onclick="closeReportModal()"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            🚑 Report Animal Rescue
+        </h2>
+
+
+        <form id="rescueForm">
+
+
+            <!-- ANIMAL SOURCE -->
+            <div class="form-group">
+                <label>What are you reporting?</label>
+                <select id="animalMode" required>
+                    <option value="existing">🐾 Existing Animal</option>
+                    <option value="new">🆕 New Animal</option>
+                </select>
+            </div>
+
+            <!-- EXISTING ANIMAL -->
+            <div id="existingAnimalGroup" class="form-group">
+                <label>Select Animal</label>
+                <select id="animalId">
+                    <option value="">Loading animals...</option>
+                </select>
+            </div>
+
+            <!-- NEW ANIMAL -->
+            <div id="newAnimalFields" style="display:none;">
+
+                <div class="form-group">
+                    <label>Animal Name *</label>
+                    <input id="newAnimalName" type="text" placeholder="Example: Brown Dog">
+                </div>
+
+                <div class="form-group">
+                    <label>Species *</label>
+                    <select id="newAnimalSpecies">
+                <option value="">Select species</option>
+                <option value="Dog">Dog</option>
+                <option value="Cat">Cat</option>
+                <option value="Cow">Cow</option>
+                <option value="Buffalo">Buffalo</option>
+                <option value="Goat">Goat</option>
+                <option value="Horse">Horse</option>
+                <option value="Bird">Bird</option>
+                <option value="Other">Other</option>
+            </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Breed</label>
+                    <input id="newAnimalBreed" type="text" placeholder="Example: Indian Pariah">
+                </div>
+
+                <div class="form-group">
+                    <label>Gender</label>
+                    <select id="newAnimalGender">
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Unknown">Unknown</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Age</label>
+                    <input id="newAnimalAge" type="number" min="0" placeholder="Age in years">
+                </div>
+
+                <div class="form-group">
+                    <label>Color</label>
+                    <input id="newAnimalColor" type="text" placeholder="Example: Brown">
+                </div>
+
+                <div class="form-group">
+                    <label>Weight (kg)</label>
+                    <input id="newAnimalWeight" type="number" min="0" step="0.1" placeholder="Example: 12.5">
+                </div>
+
+                <div class="form-group">
+                    <label>Health Status</label>
+                    <input id="newAnimalHealth" type="text" placeholder="Example: Injured / Healthy">
+                </div>
+
+                <div class="form-group">
+                    <label>Vaccination Status</label>
+                    <input id="newAnimalVaccination" type="text" placeholder="Example: Unknown">
+                </div>
+
+                <div class="form-group">
+                    <label>Animal Description</label>
+                    <textarea id="newAnimalDescription" placeholder="Describe the animal..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Animal Picture</label>
+                    <input id="newAnimalPicture" type="file" accept="image/*">
+                    <small style="display:block;margin-top:7px;color:#566573;">
+                        Add a clear picture of the animal (JPG, PNG or WEBP).
+                    </small>
+                    <div id="animalPicturePreview" style="display:none;margin-top:12px;">
+                        <img id="animalPicturePreviewImg"
+                             src=""
+                             alt="Animal preview"
+                             style="width:140px;height:140px;object-fit:cover;border-radius:14px;border:1px solid #ddd;">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- LATITUDE -->
+
+            <div class="form-group">
+
+                <label>
+                    Latitude
+                </label>
+
+                <input
+                    id="latitude"
+                    type="number"
+                    step="any"
+                    placeholder="Example: 18.4088"
+                    required
+                >
+
+            </div>
+
+
+            <!-- LONGITUDE -->
+
+            <div class="form-group">
+
+                <label>
+                    Longitude
+                </label>
+
+                <input
+                    id="longitude"
+                    type="number"
+                    step="any"
+                    placeholder="Example: 76.5604"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ADDRESS -->
+
+            <div class="form-group">
+
+                <label>
+                    Address / Location
+                </label>
+
+                <input
+                    id="address"
+                    type="text"
+                    placeholder="Example: Latur Bus Stand"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PRIORITY -->
+
+            <div class="form-group">
+
+                <label>
+                    Priority
+                </label>
+
+                <select
+                    id="priority"
+                    required
+                >
+
+                    <option value="">
+                        Select priority
+                    </option>
+
+                    <option value="Low">
+                        Low
+                    </option>
+
+                    <option value="Medium">
+                        Medium
+                    </option>
+
+                    <option value="High">
+                        High
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- NOTES -->
+
+            <div class="form-group">
+
+                <label>
+                    Notes
+                </label>
+
+                <textarea
+                    id="notes"
+                    placeholder="Describe the rescue situation..."
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="submitRescueBtn"
+                class="submit-btn"
+            >
+                Submit Rescue Report
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     DETAILS MODAL
+========================================================== -->
+
+<div
+    id="detailsModal"
+    class="modal"
+>
+
+    <div class="modal-card">
+
+
+        <button
+            class="close"
+            onclick="closeDetailsModal()"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Rescue Details
+        </h2>
+
+
+        <div
+            id="detailsContent"
+        ></div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     STATUS MODAL
+========================================================== -->
+
+<div
+    id="statusModal"
+    class="modal"
+>
+
+    <div class="modal-card">
+
+
+        <button
+            class="close"
+            onclick="closeStatusModal()"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Update Rescue Status
+        </h2>
+
+
+        <form id="statusForm">
+
+
+            <input
+                type="hidden"
+                id="statusRescueId"
+            >
+
+
+            <div class="form-group">
+
+                <label>
+                    New Status
+                </label>
+
+                <select
+                    id="newStatus"
+                    required
+                >
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="Assigned">
+                        Assigned
+                    </option>
+
+                    <option value="In Progress">
+                        In Progress
+                    </option>
+
+                    <option value="Completed">
+                        Completed
+                    </option>
+
+                    <option value="Cancelled">
+                        Cancelled
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="submit-btn"
+                type="submit"
+            >
+                Update Status
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     ASSIGN TEAM MODAL
+========================================================== -->
+
+<div
+    id="assignModal"
+    class="modal"
+>
+
+    <div class="modal-card">
+
+
+        <button
+            class="close"
+            onclick="closeAssignModal()"
+        >
+            ×
+        </button>
+
+
+        <h2>
+            Assign Rescue Team
+        </h2>
+
+
+        <form id="assignForm">
+
+
+            <input
+                type="hidden"
+                id="assignRescueId"
+            >
+
+
+            <!-- NGO -->
+
+            <div class="form-group">
+
+                <label>
+                    Select NGO
+                </label>
+
+                <select
+                    id="ngoId"
+                >
+
+                    <option value="">
+                        Loading NGOs...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- VOLUNTEER -->
+
+            <div class="form-group">
+
+                <label>
+                    Select Volunteer
+                </label>
+
+                <select
+                    id="volunteerId"
+                >
+
+                    <option value="">
+                        Loading volunteers...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="submit-btn"
+                type="submit"
+            >
+                Assign Team
+            </button>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- TOAST -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+
+<!-- =========================================================
+     API
+========================================================== -->
+
+<script src="js/api.js"></script>
+
+
+
+<script>
+
+/* ============================================================
+   GLOBAL STATE
+============================================================ */
+
+let allRescues = [];
+let allAnimals = [];
+
+let currentUser = null;
+
+let adminMode = false;
+
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
+
+function initializePage() {
+
+    currentUser =
+        getCurrentUser();
+
+
+    if (!currentUser) {
+
+        window.location.href =
+            "login.html";
+
+        return false;
+    }
+
+
+    /*
+       Your login stores the user object
+       in localStorage.
+
+       Role can be:
+       "Admin"
+       "Adopter"
+       "NGO"
+       "Volunteer"
+       "Veterinarian"
+    */
+
+    let role =
+        currentUser.role || "";
+
+
+    /*
+       Handle possible object role:
+       { name: "Admin" }
+    */
+
+    if (
+        typeof role === "object" &&
+        role !== null
+    ) {
+
+        role =
+            role.name || "";
+
+    }
+
+
+    adminMode =
+        String(role)
+            .toLowerCase()
+            .trim() === "admin";
+
+
+    document.getElementById(
+        "userName"
+    ).textContent =
+        currentUser.full_name ||
+        currentUser.name ||
+        currentUser.email ||
+        "User";
+
+
+    const banner =
+        document.getElementById(
+            "roleBanner"
+        );
+
+
+    if (adminMode) {
+
+        banner.className =
+            "role-banner admin";
+
+        banner.textContent =
+            "👑 Admin Mode — Manage rescue assignments, statuses and requests.";
+
+    } else {
+
+        banner.className =
+            "role-banner";
+
+        banner.textContent =
+            "🚑 Report animals that need rescue and track rescue requests.";
+
+    }
+
+
+    return true;
+}
+
+
+/* ============================================================
+   LOAD RESCUES
+============================================================ */
+
+async function loadRescuesPage() {
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const error =
+        document.getElementById(
+            "error"
+        );
+
+
+    try {
+
+        loading.style.display =
+            "block";
+
+        error.style.display =
+            "none";
+
+
+        const data =
+            await getRescues();
+
+
+        console.log(
+            "RESCUES RESPONSE:",
+            data
+        );
+
+
+        if (!data) {
+
+            throw new Error(
+                "No response received from server."
+            );
+
+        }
+
+
+        allRescues =
+            data.rescues || [];
+
+
+        loading.style.display =
+            "none";
+
+
+        renderRescues();
+
+
+    } catch (err) {
+
+        console.error(
+            "LOAD RESCUES ERROR:",
+            err
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        error.textContent =
+            err.message ||
+            "Unable to load rescue requests.";
+
+
+        error.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* ============================================================
+   RENDER RESCUES
+============================================================ */
+
+function renderRescues() {
+
+    const container =
+        document.getElementById(
+            "rescues"
+        );
+
+
+    const empty =
+        document.getElementById(
+            "empty"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        ).value
+        .toLowerCase()
+        .trim();
+
+
+    const selectedStatus =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const filtered =
+        allRescues.filter(
+            rescue => {
+
+                const searchableText =
+                    [
+
+                        rescue.id,
+
+                        rescue.animal_id,
+
+                        rescue.address,
+
+                        rescue.priority,
+
+                        rescue.status,
+
+                        rescue.notes,
+
+                        rescue.assigned_ngo,
+
+                        rescue.assigned_volunteer
+
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                const searchMatch =
+                    !search ||
+                    searchableText.includes(
+                        search
+                    );
+
+
+                const statusMatch =
+                    selectedStatus === "all" ||
+                    String(
+                        rescue.status || ""
+                    ).toLowerCase() ===
+                    selectedStatus.toLowerCase();
+
+
+                return (
+                    searchMatch &&
+                    statusMatch
+                );
+
+            }
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        filtered.length === 0
+    ) {
+
+        empty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    filtered.forEach(
+        rescue => {
+
+            container.appendChild(
+                createRescueCard(
+                    rescue
+                )
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   CREATE RESCUE CARD
+============================================================ */
+
+function createRescueCard(
+    rescue
+) {
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+
+    card.className =
+        "rescue-card";
+
+
+    const status =
+        rescue.status ||
+        "Pending";
+
+
+    const priority =
+        rescue.priority ||
+        "N/A";
+
+
+    const statusClass =
+        getStatusClass(
+            status
+        );
+
+
+    const priorityClass =
+        String(priority)
+            .toLowerCase();
+
+
+    card.innerHTML = `
+
+        <div class="card-header">
+
+            <div>
+
+                <h2>
+                    🚑 Rescue #${escapeHtml(
+                        rescue.id
+                    )}
+                </h2>
+
+                <div class="rescue-id">
+                    
+
+                    Animal #${escapeHtml(
+                        rescue.animal_id
+                    )}
+                </div>
+
+                ${
+                    (() => {
+                        const animal =
+                            allAnimals.find(
+                                item =>
+                                    Number(item.id) ===
+                                    Number(rescue.animal_id)
+                            );
+
+                        const picture =
+                            animal &&
+                            (
+                                animal.image ||
+                                animal.image_url ||
+                                animal.photo ||
+                                animal.picture
+                            );
+
+                        return picture
+                            ? `
+                                <img
+                                    src="${escapeHtml(picture)}"
+                                    alt="Animal #${escapeHtml(rescue.animal_id)}"
+                                    style="width:72px;height:72px;object-fit:cover;border-radius:12px;margin-top:10px;border:1px solid #ddd;"
+                                >
+                              `
+                            : "";
+                    })()
+                }
+
+            </div>
+
+
+            <span
+                class="status ${statusClass}"
+            >
+                ${escapeHtml(status)}
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+
+            <div class="detail">
+
+                <strong>
+                    Priority
+                </strong>
+
+                <span>
+
+                    <span
+                        class="priority ${priorityClass}"
+                    >
+                        ${escapeHtml(
+                            priority
+                        )}
+                    </span>
+
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Address
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        rescue.address ||
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Assigned NGO
+                </strong>
+
+                <span>
+                    ${
+                        rescue.assigned_ngo
+                            ? "NGO #" +
+                              escapeHtml(
+                                  rescue.assigned_ngo
+                              )
+                            : "Not assigned"
+                    }
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Volunteer
+                </strong>
+
+                <span>
+                    ${
+                        rescue.assigned_volunteer
+                            ? "Volunteer #" +
+                              escapeHtml(
+                                  rescue.assigned_volunteer
+                              )
+                            : "Not assigned"
+                    }
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        ${
+            rescue.notes
+                ? `
+
+                    <div class="notes">
+
+                        <strong>
+                            Notes
+                        </strong>
+
+                        <br>
+
+                        ${escapeHtml(
+                            rescue.notes
+                        )}
+
+                    </div>
+
+                `
+                : ""
+        }
+
+
+        <div class="actions">
+
+
+            <button
+                class="action-btn view-btn"
+                onclick="viewRescue(
+                    ${Number(rescue.id)}
+                )"
+            >
+                View Details
+            </button>
+
+
+            ${
+                adminMode
+                    ? `
+
+                        <button
+                            class="action-btn assign-btn"
+                            onclick="openAssignModal(
+                                ${Number(rescue.id)}
+                            )"
+                        >
+                            Assign Team
+                        </button>
+
+
+                        <button
+                            class="action-btn status-btn"
+                            onclick="openStatusModal(
+                                ${Number(rescue.id)}
+                            )"
+                        >
+                            Status
+                        </button>
+
+
+                        <button
+                            class="action-btn delete-btn"
+                            onclick="deleteRescue(
+                                ${Number(rescue.id)}
+                            )"
+                        >
+                            Delete
+                        </button>
+
+                    `
+                    : ""
+            }
+
+
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+/* ============================================================
+   STATUS CLASS
+============================================================ */
+
+function getStatusClass(
+    status
+) {
+
+    const value =
+        String(status)
+            .toLowerCase();
+
+
+    if (
+        value === "pending"
+    ) {
+
+        return "pending";
+
+    }
+
+
+    if (
+        value.includes(
+            "progress"
+        )
+    ) {
+
+        return "progress";
+
+    }
+
+
+    if (
+        value === "completed"
+    ) {
+
+        return "completed";
+
+    }
+
+
+    if (
+        value === "cancelled"
+    )
+    {
+
+        return "cancelled";
+
+    }
+
+
+    return "other";
+
+}
+
+
+/* ============================================================
+   LOAD ANIMALS DROPDOWN
+============================================================ */
+
+async function loadAnimalDropdown() {
+
+    const select =
+        document.getElementById(
+            "animalId"
+        );
+
+
+    try {
+
+        const data =
+            await getAnimals();
+
+
+        const animals =
+            data.animals || [];
+
+        allAnimals = animals;
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Select an animal
+            </option>
+
+        `;
+
+
+        animals.forEach(
+            animal => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    animal.id;
+
+
+                option.textContent =
+                    `#${animal.id} - ${
+                        animal.name ||
+                        "Animal"
+                    }${
+                        animal.breed
+                            ? " - " +
+                              animal.breed
+                            : ""
+                    }`;
+
+
+                select.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        if (
+            animals.length === 0
+        ) {
+
+            select.innerHTML = `
+
+                <option value="">
+                    No animals available
+                </option>
+
+            `;
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "ANIMAL DROPDOWN ERROR:",
+            error
+        );
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Unable to load animals
+            </option>
+
+        `;
+
+    }
+
+}
+
+
+/* ============================================================
+   LOAD NGO DROPDOWN
+============================================================ */
+
+async function loadNGODropdown() {
+
+    const select =
+        document.getElementById(
+            "ngoId"
+        );
+
+
+    try {
+
+        const data =
+            await getNGOs();
+
+
+        const ngos =
+            data.ngos || [];
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Select an NGO
+            </option>
+
+        `;
+
+
+        ngos.forEach(
+            ngo => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    ngo.id;
+
+
+                option.textContent =
+                    `#${ngo.id} - ${
+                        ngo.name ||
+                        "NGO"
+                    }`;
+
+
+                select.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        if (
+            ngos.length === 0
+        ) {
+
+            select.innerHTML = `
+
+                <option value="">
+                    No NGOs available
+                </option>
+
+            `;
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "NGO DROPDOWN ERROR:",
+            error
+        );
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Unable to load NGOs
+            </option>
+
+        `;
+
+    }
+
+}
+
+
+/* ============================================================
+   LOAD VOLUNTEER DROPDOWN
+============================================================ */
+
+async function loadVolunteerDropdown() {
+
+    const select =
+        document.getElementById(
+            "volunteerId"
+        );
+
+
+    try {
+
+        const data =
+            await getVolunteers();
+
+
+        const volunteers =
+            data.volunteers || [];
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Select a volunteer
+            </option>
+
+        `;
+
+
+        volunteers.forEach(
+            volunteer => {
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    volunteer.id;
+
+
+                option.textContent =
+                    `#${volunteer.id} - ${
+                        volunteer.name ||
+                        volunteer.full_name ||
+                        "Volunteer"
+                    }`;
+
+
+                select.appendChild(
+                    option
+                );
+
+            }
+        );
+
+
+        if (
+            volunteers.length === 0
+        ) {
+
+            select.innerHTML = `
+
+                <option value="">
+                    No volunteers available
+                </option>
+
+            `;
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "VOLUNTEER DROPDOWN ERROR:",
+            error
+        );
+
+
+        select.innerHTML = `
+
+            <option value="">
+                Unable to load volunteers
+            </option>
+
+        `;
+
+    }
+
+}
+
+
+/* ============================================================
+   VIEW RESCUE DETAILS
+============================================================ */
+
+async function viewRescue(
+    id
+) {
+
+    try {
+
+        const data =
+            await getRescue(id);
+
+
+        const rescue =
+            data.rescue ||
+            data;
+
+
+        const detailAnimal =
+            allAnimals.find(
+                item =>
+                    Number(item.id) ===
+                    Number(rescue.animal_id)
+            );
+
+        const detailPicture =
+            detailAnimal &&
+            (
+                detailAnimal.image ||
+                detailAnimal.image_url ||
+                detailAnimal.photo ||
+                detailAnimal.picture
+            );
+
+        document.getElementById(
+            "detailsContent"
+        ).innerHTML = `
+
+            ${
+                detailPicture
+                    ? `
+                        <div style="text-align:center;margin-bottom:18px;">
+                            <img
+                                src="${escapeHtml(detailPicture)}"
+                                alt="Animal #${escapeHtml(rescue.animal_id)}"
+                                style="width:190px;height:190px;object-fit:cover;border-radius:18px;border:1px solid #ddd;"
+                            >
+                        </div>
+                      `
+                    : ""
+            }
+
+
+            <div class="detail">
+
+                <strong>
+                    Rescue ID
+                </strong>
+
+                <span>
+                    #${escapeHtml(
+                        rescue.id
+                    )}
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="detail">
+
+                <strong>
+                    Animal ID
+                </strong>
+
+                <span>
+                    #${escapeHtml(
+                        rescue.animal_id
+                    )}
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="detail">
+
+                <strong>
+                    Address
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        rescue.address ||
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="detail">
+
+                <strong>
+                    Priority
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        rescue.priority ||
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="detail">
+
+                <strong>
+                    Status
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        rescue.status ||
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="detail">
+
+                <strong>
+                    Assigned NGO
+                </strong>
+
+                <span>
+                    ${
+                        rescue.assigned_ngo
+                            ? "NGO #" +
+                              escapeHtml(
+                                  rescue.assigned_ngo
+                              )
+                            : "Not assigned"
+                    }
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="detail">
+
+                <strong>
+                    Assigned Volunteer
+                </strong>
+
+                <span>
+                    ${
+                        rescue.assigned_volunteer
+                            ? "Volunteer #" +
+                              escapeHtml(
+                                  rescue.assigned_volunteer
+                              )
+                            : "Not assigned"
+                    }
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="detail">
+
+                <strong>
+                    Latitude
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        rescue.latitude ??
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="detail">
+
+                <strong>
+                    Longitude
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        rescue.longitude ??
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+
+            <br>
+
+
+            <div class="notes">
+
+                <strong>
+                    Notes
+                </strong>
+
+                <br>
+
+                ${escapeHtml(
+                    rescue.notes ||
+                    "No notes provided."
+                )}
+
+            </div>
+
+        `;
+
+
+        document.getElementById(
+            "detailsModal"
+        ).classList.add(
+            "show"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "VIEW RESCUE ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "Unable to load rescue details.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   REPORT RESCUE MODAL
+============================================================ */
+
+function toggleAnimalMode() {
+
+    const mode =
+        document.getElementById(
+            "animalMode"
+        ).value;
+
+    const existingGroup =
+        document.getElementById(
+            "existingAnimalGroup"
+        );
+
+    const newFields =
+        document.getElementById(
+            "newAnimalFields"
+        );
+
+    const animalSelect =
+        document.getElementById(
+            "animalId"
+        );
+
+    const name =
+        document.getElementById(
+            "newAnimalName"
+        );
+
+    const species =
+        document.getElementById(
+            "newAnimalSpecies"
+        );
+
+    if (mode === "new") {
+
+        existingGroup.style.display = "none";
+        newFields.style.display = "block";
+
+        animalSelect.required = false;
+        name.required = true;
+        species.required = true;
+
+    } else {
+
+        existingGroup.style.display = "block";
+        newFields.style.display = "none";
+
+        animalSelect.required = true;
+        name.required = false;
+        species.required = false;
+    }
+}
+
+document.getElementById(
+    "animalMode"
+).addEventListener(
+    "change",
+    toggleAnimalMode
+);
+
+/* ============================================================
+   ANIMAL PICTURE PREVIEW
+============================================================ */
+
+document.getElementById(
+    "newAnimalPicture"
+).addEventListener(
+    "change",
+    function(event) {
+
+        const file =
+            event.target.files &&
+            event.target.files[0];
+
+        const preview =
+            document.getElementById(
+                "animalPicturePreview"
+            );
+
+        const previewImg =
+            document.getElementById(
+                "animalPicturePreviewImg"
+            );
+
+        if (!file) {
+            preview.style.display = "none";
+            previewImg.src = "";
+            return;
+        }
+
+        if (!file.type.startsWith("image/")) {
+            showToast(
+                "Please select an image file.",
+                "error"
+            );
+            event.target.value = "";
+            preview.style.display = "none";
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            previewImg.src = reader.result;
+            preview.style.display = "block";
+        };
+
+        reader.readAsDataURL(file);
+    }
+);
+
+async function getAnimalPictureData() {
+
+    const input =
+        document.getElementById(
+            "newAnimalPicture"
+        );
+
+    const file =
+        input.files &&
+        input.files[0];
+
+    if (!file) {
+        return null;
+    }
+
+    return await new Promise(
+        function(resolve, reject) {
+
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                resolve(reader.result);
+            };
+
+            reader.onerror = function() {
+                reject(
+                    new Error(
+                        "Unable to read the animal picture."
+                    )
+                );
+            };
+
+            reader.readAsDataURL(file);
+        }
+    );
+}
+
+document.getElementById(
+    "reportBtn"
+).addEventListener(
+    "click",
+    async function() {
+
+        document.getElementById(
+            "reportModal"
+        ).classList.add(
+            "show"
+        );
+
+
+        /*
+           Make sure animals are
+           loaded when modal opens.
+        */
+
+        await loadAnimalDropdown();
+
+    }
+);
+
+
+/* ============================================================
+   REPORT RESCUE SUBMIT
+============================================================ */
+
+document.getElementById(
+    "rescueForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const submitButton =
+            document.getElementById("submitRescueBtn");
+
+        const animalMode =
+            document.getElementById("animalMode").value;
+
+        const latitude =
+            document.getElementById("latitude").value;
+
+        const longitude =
+            document.getElementById("longitude").value;
+
+        const address =
+            document.getElementById("address").value.trim();
+
+        const priority =
+            document.getElementById("priority").value;
+
+        const notes =
+            document.getElementById("notes").value.trim();
+
+        if (!address) {
+            showToast(
+                "Please enter the rescue location.",
+                "error"
+            );
+            return;
+        }
+
+        if (!latitude || !longitude) {
+            showToast(
+                "Please enter latitude and longitude.",
+                "error"
+            );
+            return;
+        }
+
+        if (!priority) {
+            showToast(
+                "Please select a priority.",
+                "error"
+            );
+            return;
+        }
+
+        try {
+
+            submitButton.disabled = true;
+            submitButton.textContent =
+                animalMode === "new"
+                    ? "Creating animal & rescue..."
+                    : "Submitting...";
+
+            let animalId;
+
+            /* ----------------------------------------------------
+               EXISTING ANIMAL
+            ---------------------------------------------------- */
+            if (animalMode === "existing") {
+
+                animalId =
+                    document.getElementById(
+                        "animalId"
+                    ).value;
+
+                if (!animalId) {
+                    throw new Error(
+                        "Please select an existing animal."
+                    );
+                }
+
+                animalId = Number(animalId);
+            }
+
+            /* ----------------------------------------------------
+               NEW ANIMAL
+               Create the animal first, then create its rescue.
+            ---------------------------------------------------- */
+            if (animalMode === "new") {
+
+                const name =
+                    document.getElementById(
+                        "newAnimalName"
+                    ).value.trim();
+
+                const species =
+                    document.getElementById(
+                        "newAnimalSpecies"
+                    ).value;
+
+                if (!name) {
+                    throw new Error(
+                        "Please enter the animal name."
+                    );
+                }
+
+                if (!species) {
+                    throw new Error(
+                        "Please select the animal species."
+                    );
+                }
+
+                const ageValue =
+                    document.getElementById(
+                        "newAnimalAge"
+                    ).value;
+
+                const weightValue =
+                    document.getElementById(
+                        "newAnimalWeight"
+                    ).value;
+
+                const animalPicture =
+                    await getAnimalPictureData();
+
+                const animalData = {
+                    name: name,
+                    species: species,
+                    breed:
+                        document.getElementById(
+                            "newAnimalBreed"
+                        ).value.trim(),
+                    gender:
+                        document.getElementById(
+                            "newAnimalGender"
+                        ).value,
+                    age:
+                        ageValue
+                            ? Number(ageValue)
+                            : null,
+                    color:
+                        document.getElementById(
+                            "newAnimalColor"
+                        ).value.trim(),
+                    weight:
+                        weightValue
+                            ? Number(weightValue)
+                            : null,
+                    rescue_location: address,
+                    health_status:
+                        document.getElementById(
+                            "newAnimalHealth"
+                        ).value.trim(),
+                    vaccination_status:
+                        document.getElementById(
+                            "newAnimalVaccination"
+                        ).value.trim(),
+                    description:
+                        document.getElementById(
+                            "newAnimalDescription"
+                        ).value.trim()
+                };
+
+                const animalResponse =
+                    await apiRequest(
+                        "/api/animals/",
+                        {
+                            method: "POST",
+                            body: JSON.stringify(
+                                animalData
+                            )
+                        }
+                    );
+
+                console.log(
+                    "CREATE ANIMAL RESPONSE:",
+                    animalResponse
+                );
+
+                animalId =
+                    animalResponse.animal_id ||
+                    animalResponse.id ||
+                    animalResponse.animal?.id;
+
+                if (!animalId) {
+                    throw new Error(
+                        "Animal was created, but the server did not return an animal ID."
+                    );
+                }
+
+                animalId = Number(animalId);
+            }
+
+            /* ----------------------------------------------------
+               CREATE RESCUE
+            ---------------------------------------------------- */
+            const rescueData = {
+                animal_id: animalId,
+                latitude: Number(latitude),
+                longitude: Number(longitude),
+                address: address,
+                priority: priority,
+                notes: notes
+            };
+
+            const response =
+                await apiRequest(
+                    "/api/rescues/",
+                    {
+                        method: "POST",
+                        body: JSON.stringify(
+                            rescueData
+                        )
+                    }
+                );
+
+            console.log(
+                "CREATE RESCUE RESPONSE:",
+                response
+            );
+
+            showToast(
+                response.message ||
+                "Rescue reported successfully.",
+                "success"
+            );
+
+            closeReportModal();
+
+            document.getElementById(
+                "rescueForm"
+            ).reset();
+
+            document.getElementById(
+                "animalPicturePreview"
+            ).style.display = "none";
+
+            document.getElementById(
+                "animalPicturePreviewImg"
+            ).src = "";
+
+            toggleAnimalMode();
+
+            await loadRescuesPage();
+            await loadAnimalDropdown();
+
+        } catch (error) {
+
+            console.error(
+                "CREATE RESCUE ERROR:",
+                error
+            );
+
+            showToast(
+                error.message ||
+                "Unable to create rescue.",
+                "error"
+            );
+
+        } finally {
+
+            submitButton.disabled = false;
+            submitButton.textContent =
+                "Submit Rescue Report";
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   STATUS MODAL
+============================================================ */
+
+function openStatusModal(
+    rescueId
+) {
+
+    document.getElementById(
+        "statusRescueId"
+    ).value =
+        rescueId;
+
+
+    const rescue =
+        allRescues.find(
+            item =>
+                Number(item.id) ===
+                Number(rescueId)
+        );
+
+
+    if (rescue) {
+
+        document.getElementById(
+            "newStatus"
+        ).value =
+            rescue.status ||
+            "Pending";
+
+    }
+
+
+    document.getElementById(
+        "statusModal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+function closeStatusModal() {
+
+    document.getElementById(
+        "statusModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* ============================================================
+   STATUS SUBMIT
+============================================================ */
+
+document.getElementById(
+    "statusForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const id =
+            document.getElementById(
+                "statusRescueId"
+            ).value;
+
+
+        const status =
+            document.getElementById(
+                "newStatus"
+            ).value;
+
+
+        try {
+
+            const response =
+                await apiRequest(
+                    `/api/rescues/${id}/status`,
+                    {
+                        method: "PUT",
+
+                        body:
+                            JSON.stringify({
+                                status:
+                                    status
+                            })
+                    }
+                );
+
+
+            showToast(
+                response.message ||
+                "Rescue status updated successfully.",
+                "success"
+            );
+
+
+            closeStatusModal();
+
+
+            await loadRescuesPage();
+
+
+        } catch (error) {
+
+            console.error(
+                "STATUS UPDATE ERROR:",
+                error
+            );
+
+
+            showToast(
+                error.message ||
+                "Unable to update rescue status.",
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   ASSIGN TEAM MODAL
+============================================================ */
+
+async function openAssignModal(
+    rescueId
+) {
+
+    document.getElementById(
+        "assignRescueId"
+    ).value =
+        rescueId;
+
+
+    document.getElementById(
+        "assignModal"
+    ).classList.add(
+        "show"
+    );
+
+
+    /*
+       Load latest NGO and
+       volunteer lists.
+    */
+
+    await Promise.all([
+        loadNGODropdown(),
+        loadVolunteerDropdown()
+    ]);
+
+}
+
+
+/* ============================================================
+   CLOSE ASSIGN MODAL
+============================================================ */
+
+function closeAssignModal() {
+
+    document.getElementById(
+        "assignModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* ============================================================
+   ASSIGN TEAM SUBMIT
+============================================================ */
+
+document.getElementById(
+    "assignForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        const rescueId =
+            document.getElementById(
+                "assignRescueId"
+            ).value;
+
+
+        const ngoId =
+            document.getElementById(
+                "ngoId"
+            ).value;
+
+
+        const volunteerId =
+            document.getElementById(
+                "volunteerId"
+            ).value;
+
+
+        if (
+            !ngoId &&
+            !volunteerId
+        ) {
+
+            showToast(
+                "Please select an NGO or volunteer.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+
+            /*
+               Assign NGO
+            */
+
+            if (ngoId) {
+
+                await apiRequest(
+                    `/api/rescues/${rescueId}/assign-ngo`,
+                    {
+                        method: "PUT",
+
+                        body:
+                            JSON.stringify({
+                                ngo_id:
+                                    Number(
+                                        ngoId
+                                    )
+                            })
+                    }
+                );
+
+            }
+
+
+            /*
+               Assign Volunteer
+            */
+
+            if (volunteerId) {
+
+                await apiRequest(
+                    `/api/rescues/${rescueId}/assign-volunteer`,
+                    {
+                        method: "PUT",
+
+                        body:
+                            JSON.stringify({
+                                volunteer_id:
+                                    Number(
+                                        volunteerId
+                                    )
+                            })
+                    }
+                );
+
+            }
+
+
+            showToast(
+                "Rescue team assigned successfully.",
+                "success"
+            );
+
+
+            closeAssignModal();
+
+
+            document.getElementById(
+                "assignForm"
+            ).reset();
+
+
+            await loadRescuesPage();
+
+
+        } catch (error) {
+
+            console.error(
+                "ASSIGN TEAM ERROR:",
+                error
+            );
+
+
+            showToast(
+                error.message ||
+                "Unable to assign rescue team.",
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   DELETE RESCUE
+============================================================ */
+
+async function deleteRescue(
+    rescueId
+) {
+
+    if (!adminMode) {
+
+        showToast(
+            "Admin access required.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        confirm(
+            `Are you sure you want to delete Rescue #${rescueId}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                `/api/rescues/${rescueId}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        showToast(
+            response.message ||
+            "Rescue deleted successfully.",
+            "success"
+        );
+
+
+        await loadRescuesPage();
+
+
+    } catch (error) {
+
+        console.error(
+            "DELETE RESCUE ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "Unable to delete rescue.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   CLOSE REPORT MODAL
+============================================================ */
+
+function closeReportModal() {
+
+    document.getElementById(
+        "reportModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* ============================================================
+   CLOSE DETAILS MODAL
+============================================================ */
+
+function closeDetailsModal() {
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* ============================================================
+   CLICK OUTSIDE MODAL
+============================================================ */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target.classList.contains(
+                "modal"
+            )
+        ) {
+
+            event.target.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   SEARCH
+============================================================ */
+
+document.getElementById(
+    "searchInput"
+).addEventListener(
+    "input",
+    renderRescues
+);
+
+
+/* ============================================================
+   STATUS FILTER
+============================================================ */
+
+document.getElementById(
+    "statusFilter"
+).addEventListener(
+    "change",
+    renderRescues
+);
+
+
+/* ============================================================
+   LOGOUT
+============================================================ */
+
+document.getElementById(
+    "logoutBtn"
+).addEventListener(
+    "click",
+    function() {
+
+        logout();
+
+    }
+);
+
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+function showToast(
+    message,
+    type
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.className =
+        `toast ${type}`;
+
+
+    setTimeout(
+        function() {
+
+            toast.className =
+                "toast";
+
+        },
+        3500
+    );
+
+}
+
+
+/* ============================================================
+   SECURITY / HTML ESCAPING
+============================================================ */
+
+function escapeHtml(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        String(value);
+
+
+    return div.innerHTML;
+
+}
+
+
+/* ============================================================
+   START PAGE
+============================================================ */
+
+if (
+    initializePage()
+) {
+
+    toggleAnimalMode();
+
+    /*
+       Load rescue data.
+    */
+
+    loadRescuesPage();
+
+
+    /*
+       Load animals immediately
+       for Report Rescue.
+    */
+
+    loadAnimalDropdown();
+
+
+    /*
+       Admin gets NGO and
+       Volunteer dropdown data.
+    */
+
+    if (adminMode) {
+
+        loadNGODropdown();
+
+        loadVolunteerDropdown();
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

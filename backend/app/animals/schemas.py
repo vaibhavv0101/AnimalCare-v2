@@ -7,20 +7,22 @@ class AnimalSchema(Schema):
 
     species = fields.Str(required=True)
 
-    breed = fields.Str()
+    breed = fields.Str(allow_none=True)
 
-    gender = fields.Str()
+    gender = fields.Str(allow_none=True)
 
-    age = fields.Int()
+    age = fields.Int(allow_none=True)
 
-    color = fields.Str()
+    color = fields.Str(allow_none=True)
 
-    weight = fields.Float()
+    weight = fields.Float(allow_none=True)
 
-    rescue_location = fields.Str()
+    rescue_location = fields.Str(allow_none=True)
 
-    health_status = fields.Str()
+    health_status = fields.Str(allow_none=True)
 
-    vaccination_status = fields.Str()
+    vaccination_status = fields.Str(allow_none=True)
 
-    description = fields.Str()
+    description = fields.Str(allow_none=True)
+
+    adoption_status = fields.Str()

@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Adoptions | AnimalCare</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        body {
+            margin: 0;
+            background: #f7f9f9;
+            color: #17202a;
+            font-family: Arial, sans-serif;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .top-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 900;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 16px 7%;
+
+            background: rgba(255,255,255,0.96);
+
+            border-bottom: 1px solid #e5e7e9;
+
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .brand {
+            color: #117864;
+            font-size: 1.35rem;
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: #34495e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #16a085;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: #34495e;
+        }
+
+        .dashboard-btn {
+            border: none;
+            padding: 9px 14px;
+            border-radius: 9px;
+            background: #16a085;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .dashboard-btn:hover {
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            border: none;
+            padding: 9px 14px;
+            border-radius: 9px;
+            background: #e74c3c;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .page {
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            padding: 65px 7% 45px;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(22,160,133,0.15),
+                    transparent 35%
+                ),
+                white;
+        }
+
+        .hero-inner {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 30px;
+            background: #e8f8f5;
+            color: #117864;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            margin: 0 0 12px;
+            font-size: clamp(2.2rem,5vw,3.7rem);
+        }
+
+        .hero h1 span {
+            color: #16a085;
+        }
+
+        .hero p {
+            max-width: 700px;
+            color: #566573;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px 7% 80px;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .count {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .filter {
+            padding: 11px 15px;
+            border: 1px solid #d5dbdb;
+            border-radius: 10px;
+            background: white;
+            outline: none;
+        }
+
+        /* =====================================================
+           ROLE INFO
+        ===================================================== */
+
+        .role-banner {
+            padding: 15px 18px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            background: #e8f8f5;
+            color: #117864;
+            font-weight: 600;
+        }
+
+        .role-banner.admin {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        /* =====================================================
+           STATES
+        ===================================================== */
+
+        .loading,
+        .empty {
+            text-align: center;
+            padding: 70px 20px;
+        }
+
+        .loading-icon,
+        .empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            display: none;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            background: #fdedec;
+            color: #c0392b;
+            text-align: center;
+        }
+
+        .empty {
+            display: none;
+            background: white;
+            border: 1px solid #e5e7e9;
+            border-radius: 20px;
+        }
+
+        /* =====================================================
+           APPLICATIONS
+        ===================================================== */
+
+        .applications {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fill,minmax(340px,1fr));
+            gap: 22px;
+        }
+
+        .application-card {
+            background: white;
+            border: 1px solid #e5e7e9;
+            border-radius: 20px;
+            padding: 23px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.06);
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .application-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 16px 35px rgba(0,0,0,0.09);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .animal-title {
+            margin: 0;
+            font-size: 1.35rem;
+        }
+
+        .application-id {
+            margin-top: 5px;
+            color: #7b7d7d;
+            font-size: 0.85rem;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-block;
+            padding: 7px 11px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status.pending {
+            background: #fef5e7;
+            color: #b9770e;
+        }
+
+        .status.approved {
+            background: #eafaf1;
+            color: #1e8449;
+        }
+
+        .status.rejected {
+            background: #fdedec;
+            color: #c0392b;
+        }
+
+        .status.other {
+            background: #ebedef;
+            color: #566573;
+        }
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .detail {
+            background: #f8faf9;
+            border-radius: 10px;
+            padding: 11px;
+        }
+
+        .detail strong {
+            display: block;
+            color: #7b7d7d;
+            font-size: 0.75rem;
+            margin-bottom: 4px;
+        }
+
+        .detail span {
+            color: #34495e;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .reason {
+            padding: 14px;
+            border-radius: 12px;
+            background: #f8faf9;
+            margin-bottom: 18px;
+        }
+
+        .reason strong {
+            display: block;
+            margin-bottom: 6px;
+            color: #566573;
+            font-size: 0.8rem;
+        }
+
+        .reason p {
+            margin: 0;
+            line-height: 1.5;
+            color: #34495e;
+        }
+
+        .date {
+            color: #7b7d7d;
+            font-size: 0.85rem;
+            margin-bottom: 18px;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 100px;
+            padding: 11px 14px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .view-btn {
+            background: #16a085;
+            color: white;
+        }
+
+        .approve-btn {
+            background: #27ae60;
+            color: white;
+        }
+
+        .reject-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+
+            background: rgba(0,0,0,0.5);
+
+            padding: 20px;
+
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+
+            background: white;
+            border-radius: 22px;
+            padding: 30px;
+
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 18px;
+
+            width: 38px;
+            height: 38px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: #f2f3f4;
+
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .modal-row {
+            margin-bottom: 15px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #f8faf9;
+        }
+
+        .modal-row strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #7b7d7d;
+            font-size: 0.8rem;
+        }
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        .toast {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            z-index: 2000;
+
+            display: none;
+
+            max-width: 350px;
+
+            padding: 15px 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.15);
+
+            font-weight: 600;
+        }
+
+        .toast.success {
+            display: block;
+            background: #eafaf1;
+            color: #1e8449;
+        }
+
+        .toast.error {
+            display: block;
+            background: #fdedec;
+            color: #c0392b;
+        }
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 850px) {
+
+            .top-navbar {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .hero {
+                padding: 50px 5% 35px;
+            }
+
+            .content {
+                padding: 30px 5% 60px;
+            }
+
+            .applications {
+                grid-template-columns: 1fr;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .card-top {
+                flex-direction: column;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- ============================================================
+     NAVBAR
+============================================================= -->
+
+<header class="top-navbar">
+
+    <a
+        href="index.html"
+        class="brand"
+    >
+        🐾 AnimalCare
+    </a>
+
+    <nav class="nav-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="animals.html">
+            Animals
+        </a>
+
+        <a href="rescues.html">
+            Rescues
+        </a>
+
+        <a href="adoptions.html">
+            Adoptions
+        </a>
+
+        <a href="ngos.html">
+            NGOs
+        </a>
+
+        <a href="volunteers.html">
+            Volunteers
+        </a>
+
+    </nav>
+
+    <div class="user-area">
+
+        <span
+            id="userName"
+            class="user-name"
+        >
+            User
+        </span>
+
+        <button
+            id="dashboardBtn"
+            class="dashboard-btn"
+            style="display:none;"
+        >
+            Admin Dashboard
+        </button>
+
+        <button
+            id="logoutBtn"
+            class="logout-btn"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<div class="page">
+
+    <!-- ========================================================
+         HERO
+    ========================================================= -->
+
+    <section class="hero">
+
+        <div class="hero-inner">
+
+            <div
+                id="pageBadge"
+                class="badge"
+            >
+                🏠 Adoption Center
+            </div>
+
+            <h1 id="pageTitle">
+
+                Adoption
+                <span>Applications</span>
+
+            </h1>
+
+            <p id="pageDescription">
+
+                View your adoption applications and
+                track their status.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         CONTENT
+    ========================================================= -->
+
+    <main class="content">
+
+        <div
+            id="roleBanner"
+            class="role-banner"
+        ></div>
+
+
+        <div class="toolbar">
+
+            <div
+                id="count"
+                class="count"
+            >
+                Loading applications...
+            </div>
+
+
+            <select
+                id="statusFilter"
+                class="filter"
+            >
+
+                <option value="all">
+                    All Applications
+                </option>
+
+                <option value="Pending">
+                    Pending
+                </option>
+
+                <option value="Approved">
+                    Approved
+                </option>
+
+                <option value="Rejected">
+                    Rejected
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+
+        <div
+            id="loading"
+            class="loading"
+        >
+
+            <div class="loading-icon">
+                🐾
+            </div>
+
+            Loading applications...
+
+        </div>
+
+
+        <div
+            id="empty"
+            class="empty"
+        >
+
+            <div class="empty-icon">
+                🏠
+            </div>
+
+            <h2>
+                No applications found
+            </h2>
+
+            <p>
+                Adoption applications will appear here.
+            </p>
+
+        </div>
+
+
+        <div
+            id="applications"
+            class="applications"
+        ></div>
+
+    </main>
+
+</div>
+
+
+<!-- ============================================================
+     DETAILS MODAL
+============================================================= -->
+
+<div
+    id="modal"
+    class="modal"
+>
+
+    <div class="modal-card">
+
+        <button
+            class="close"
+            onclick="closeModal()"
+        >
+            ×
+        </button>
+
+        <h2>
+            Application Details
+        </h2>
+
+        <div
+            id="modalContent"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     TOAST
+============================================================= -->
+
+<div
+    id="toast"
+    class="toast"
+></div>
+
+
+<script src="js/api.js"></script>
+
+
+<script>
+
+/* ============================================================
+   GLOBAL DATA
+============================================================ */
+
+let allApplications = [];
+
+let currentUser = null;
+
+let adminMode = false;
+
+
+/* ============================================================
+   INITIALIZE USER
+============================================================ */
+
+function initializeUser() {
+
+    currentUser = getCurrentUser();
+
+    if (!currentUser) {
+
+        window.location.href = "login.html";
+
+        return false;
+    }
+
+
+    const role =
+        String(
+            currentUser.role || ""
+        ).toLowerCase();
+
+
+    adminMode =
+        role === "admin";
+
+
+    const userName =
+        document.getElementById(
+            "userName"
+        );
+
+
+    userName.textContent =
+        currentUser.full_name ||
+        currentUser.name ||
+        currentUser.email ||
+        "User";
+
+
+    const roleBanner =
+        document.getElementById(
+            "roleBanner"
+        );
+
+
+    if (adminMode) {
+
+        roleBanner.className =
+            "role-banner admin";
+
+        roleBanner.textContent =
+            "👑 Admin Mode — You can approve or reject pending adoption applications.";
+
+        document.getElementById(
+            "pageBadge"
+        ).textContent =
+            "👑 Admin Adoption Center";
+
+        document.getElementById(
+            "pageTitle"
+        ).innerHTML =
+            "Adoption <span>Management</span>";
+
+        document.getElementById(
+            "pageDescription"
+        ).textContent =
+            "Review adoption applications and manage their approval status.";
+
+        document.getElementById(
+            "dashboardBtn"
+        ).style.display = "inline-block";
+
+    } else {
+
+        roleBanner.className =
+            "role-banner";
+
+        roleBanner.textContent =
+            "🏠 Your adoption applications are shown below.";
+
+        document.getElementById(
+            "pageBadge"
+        ).textContent =
+            "🏠 My Adoptions";
+
+        document.getElementById(
+            "pageTitle"
+        ).innerHTML =
+            "My <span>Applications</span>";
+
+        document.getElementById(
+            "pageDescription"
+        ).textContent =
+            "Track your adoption applications and their current status.";
+
+    }
+
+
+    return true;
+}
+
+
+/* ============================================================
+   LOAD APPLICATIONS
+============================================================ */
+
+async function loadApplications() {
+
+    const loading =
+        document.getElementById(
+            "loading"
+        );
+
+    const error =
+        document.getElementById(
+            "error"
+        );
+
+
+    try {
+
+        loading.style.display =
+            "block";
+
+        error.style.display =
+            "none";
+
+
+        const data =
+            await getAdoptions();
+
+
+        console.log(
+            "ADOPTIONS RESPONSE:",
+            data
+        );
+
+
+        if (
+            !data ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data?.message ||
+                data?.msg ||
+                "Unable to load applications."
+            );
+
+        }
+
+
+        allApplications =
+            data.adoptions || [];
+
+
+        loading.style.display =
+            "none";
+
+
+        applyStatusFilter();
+
+
+    } catch (err) {
+
+        console.error(
+            "ADOPTION LOAD ERROR:",
+            err
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        error.textContent =
+            err.message ||
+            "Unable to load applications.";
+
+
+        error.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* ============================================================
+   FILTER
+============================================================ */
+
+function applyStatusFilter() {
+
+    const selected =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    let filtered =
+        [...allApplications];
+
+
+    if (
+        selected !== "all"
+    ) {
+
+        filtered =
+            filtered.filter(
+                application =>
+
+                    String(
+                        application.status
+                    ).toLowerCase() ===
+                    selected.toLowerCase()
+            );
+
+    }
+
+
+    renderApplications(
+        filtered
+    );
+
+}
+
+
+/* ============================================================
+   RENDER APPLICATIONS
+============================================================ */
+
+function renderApplications(
+    applications
+) {
+
+    const container =
+        document.getElementById(
+            "applications"
+        );
+
+    const empty =
+        document.getElementById(
+            "empty"
+        );
+
+    const count =
+        document.getElementById(
+            "count"
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    count.textContent =
+        `${applications.length} application${
+            applications.length !== 1
+                ? "s"
+                : ""
+        }`;
+
+
+    if (
+        applications.length === 0
+    ) {
+
+        empty.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    empty.style.display =
+        "none";
+
+
+    applications.forEach(
+        application => {
+
+            container.appendChild(
+                createApplicationCard(
+                    application
+                )
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+   CREATE APPLICATION CARD
+============================================================ */
+
+function createApplicationCard(
+    application
+) {
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+
+    card.className =
+        "application-card";
+
+
+    const status =
+        application.status ||
+        "Pending";
+
+
+    let statusClass =
+        "other";
+
+
+    if (
+        status.toLowerCase() ===
+        "pending"
+    ) {
+
+        statusClass =
+            "pending";
+
+    }
+
+    else if (
+        status.toLowerCase() ===
+        "approved"
+    ) {
+
+        statusClass =
+            "approved";
+
+    }
+
+    else if (
+        status.toLowerCase() ===
+        "rejected"
+    ) {
+
+        statusClass =
+            "rejected";
+
+    }
+
+
+    const isPending =
+        status.toLowerCase() ===
+        "pending";
+
+
+    const adminButtons =
+        adminMode && isPending
+            ? `
+
+                <button
+                    class="action-btn approve-btn"
+                    onclick="approveApplication(
+                        ${application.id}
+                    )"
+                >
+                    ✓ Approve
+                </button>
+
+                <button
+                    class="action-btn reject-btn"
+                    onclick="rejectApplication(
+                        ${application.id}
+                    )"
+                >
+                    ✕ Reject
+                </button>
+
+            `
+            : "";
+
+
+    card.innerHTML = `
+
+        <div class="card-top">
+
+            <div>
+
+                <h2 class="animal-title">
+                    🐾 Animal #${application.animal_id}
+                </h2>
+
+                <div class="application-id">
+                    Application #${application.id}
+                </div>
+
+            </div>
+
+
+            <span
+                class="status ${statusClass}"
+            >
+                ${escapeHtml(status)}
+            </span>
+
+        </div>
+
+
+        <div class="details">
+
+            ${
+                adminMode
+                    ? `
+
+                        <div class="detail">
+
+                            <strong>
+                                Applicant
+                            </strong>
+
+                            <span>
+                                User #${application.user_id}
+                            </span>
+
+                        </div>
+
+                    `
+                    : ""
+            }
+
+
+            <div class="detail">
+
+                <strong>
+                    Phone
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        application.phone ||
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Occupation
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        application.occupation ||
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Address
+                </strong>
+
+                <span>
+                    ${escapeHtml(
+                        application.address ||
+                        "N/A"
+                    )}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="reason">
+
+            <strong>
+                Reason for Adoption
+            </strong>
+
+            <p>
+                ${escapeHtml(
+                    application.reason ||
+                    "No reason provided."
+                )}
+            </p>
+
+        </div>
+
+
+        <div class="date">
+
+            📅 Applied:
+            ${formatDate(
+                application.created_at
+            )}
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="action-btn view-btn"
+                onclick="viewApplication(
+                    ${application.id}
+                )"
+            >
+                View Details
+            </button>
+
+
+            ${adminButtons}
+
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+/* ============================================================
+   APPROVE
+============================================================ */
+
+async function approveApplication(
+    adoptionId
+) {
+
+    if (!adminMode) {
+
+        showToast(
+            "Admin access required.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Approve adoption application #${adoptionId}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const data =
+            await apiRequest(
+                `/api/adoptions/${adoptionId}/approve`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        if (
+            !data ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data?.message ||
+                data?.msg ||
+                "Unable to approve application."
+            );
+
+        }
+
+
+        showToast(
+            "Adoption application approved successfully.",
+            "success"
+        );
+
+
+        await loadApplications();
+
+
+    } catch (error) {
+
+        console.error(
+            "APPROVE ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "Unable to approve application.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   REJECT
+============================================================ */
+
+async function rejectApplication(
+    adoptionId
+) {
+
+    if (!adminMode) {
+
+        showToast(
+            "Admin access required.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Reject adoption application #${adoptionId}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const data =
+            await apiRequest(
+                `/api/adoptions/${adoptionId}/reject`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        if (
+            !data ||
+            !data.success
+        ) {
+
+            throw new Error(
+                data?.message ||
+                data?.msg ||
+                "Unable to reject application."
+            );
+
+        }
+
+
+        showToast(
+            "Adoption application rejected.",
+            "success"
+        );
+
+
+        await loadApplications();
+
+
+    } catch (error) {
+
+        console.error(
+            "REJECT ERROR:",
+            error
+        );
+
+
+        showToast(
+            error.message ||
+            "Unable to reject application.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   VIEW DETAILS
+============================================================ */
+
+function viewApplication(
+    id
+) {
+
+    const application =
+        allApplications.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!application) {
+        return;
+    }
+
+
+    const content =
+        document.getElementById(
+            "modalContent"
+        );
+
+
+    content.innerHTML = `
+
+        <div class="modal-row">
+
+            <strong>
+                Application ID
+            </strong>
+
+            #${application.id}
+
+        </div>
+
+
+        <div class="modal-row">
+
+            <strong>
+                Animal ID
+            </strong>
+
+            #${application.animal_id}
+
+        </div>
+
+
+        ${
+            adminMode
+                ? `
+
+                    <div class="modal-row">
+
+                        <strong>
+                            Applicant User ID
+                        </strong>
+
+                        #${application.user_id}
+
+                    </div>
+
+                `
+                : ""
+        }
+
+
+        <div class="modal-row">
+
+            <strong>
+                Status
+            </strong>
+
+            ${escapeHtml(
+                application.status ||
+                "Pending"
+            )}
+
+        </div>
+
+
+        <div class="modal-row">
+
+            <strong>
+                Phone
+            </strong>
+
+            ${escapeHtml(
+                application.phone ||
+                "N/A"
+            )}
+
+        </div>
+
+
+        <div class="modal-row">
+
+            <strong>
+                Address
+            </strong>
+
+            ${escapeHtml(
+                application.address ||
+                "N/A"
+            )}
+
+        </div>
+
+
+        <div class="modal-row">
+
+            <strong>
+                Occupation
+            </strong>
+
+            ${escapeHtml(
+                application.occupation ||
+                "N/A"
+            )}
+
+        </div>
+
+
+        <div class="modal-row">
+
+            <strong>
+                Reason
+            </strong>
+
+            ${escapeHtml(
+                application.reason ||
+                "N/A"
+            )}
+
+        </div>
+
+
+        <div class="modal-row">
+
+            <strong>
+                Created At
+            </strong>
+
+            ${formatDate(
+                application.created_at
+            )}
+
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "modal"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+/* ============================================================
+   CLOSE MODAL
+============================================================ */
+
+function closeModal() {
+
+    document.getElementById(
+        "modal"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+function showToast(
+    message,
+    type
+) {
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.className =
+        `toast ${type}`;
+
+
+    setTimeout(
+        function() {
+
+            toast.className =
+                "toast";
+
+        },
+        3000
+    );
+
+}
+
+
+/* ============================================================
+   DATE
+============================================================ */
+
+function formatDate(
+    value
+) {
+
+    if (!value) {
+        return "N/A";
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return value;
+
+    }
+
+
+    return date.toLocaleString();
+
+}
+
+
+/* ============================================================
+   ESCAPE HTML
+============================================================ */
+
+function escapeHtml(
+    value
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        String(
+            value ?? ""
+        );
+
+
+    return div.innerHTML;
+
+}
+
+
+/* ============================================================
+   EVENTS
+============================================================ */
+
+document
+    .getElementById(
+        "statusFilter"
+    )
+    .addEventListener(
+        "change",
+        applyStatusFilter
+    );
+
+
+document
+    .getElementById(
+        "modal"
+    )
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target === this
+            ) {
+
+                closeModal();
+
+            }
+
+        }
+    );
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeModal();
+
+        }
+
+    }
+);
+
+
+document
+    .getElementById(
+        "dashboardBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+            window.location.href = "admin-dashboard.html";
+        }
+    );
+
+
+document
+    .getElementById(
+        "logoutBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            logout();
+
+        }
+    );
+
+
+/* ============================================================
+   START
+============================================================ */
+
+if (initializeUser()) {
+
+    loadApplications();
+
+}
+
+</script>
+
+</body>
+
+</html>

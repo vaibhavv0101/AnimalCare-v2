@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Requests | AnimalCare</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5faf9;
+            color: #1f2937;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================== */
+
+        .navbar {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #168b75;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #168b75;
+        }
+
+        /* =========================
+           PAGE
+        ========================== */
+
+        .container {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 16px;
+        }
+
+        /* =========================
+           SUMMARY
+        ========================== */
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .summary-card span {
+            display: block;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .summary-card strong {
+            font-size: 27px;
+        }
+
+        /* =========================
+           REQUEST CARDS
+        ========================== */
+
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+
+        .request-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.04);
+        }
+
+        .request-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .request-id {
+            color: #168b75;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .animal {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 7px 14px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fff7d6;
+            color: #9a6700;
+        }
+
+        .approved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        .message {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 9px;
+            background: #f8fafc;
+        }
+
+        .empty,
+        .loading,
+        .error {
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid #e5e7eb;
+        }
+
+        .error {
+            color: #b91c1c;
+        }
+
+        @media (max-width: 800px) {
+            .summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-links {
+                gap: 12px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .summary,
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .request-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+        
+    /* CSS here */
+.contact-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 14px;
+    background: #0f9d76;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.contact-btn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+    </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <a href="index.html" class="logo">
+        🐾 AnimalCare
+    </a>
+
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="animals.html">Animals</a>
+        <a href="rescues.html">Rescues</a>
+        <a href="adoptions.html">Adoptions</a>
+        <a href="my-requests.html">My Requests</a>
+    </nav>
+
+</header>
+
+
+<main class="container">
+
+    <div class="page-header">
+        <h1>My Adoption Requests</h1>
+
+        <p>
+            Track the current status of your animal adoption applications.
+        </p>
+    </div>
+
+
+    <section class="summary">
+
+        <div class="summary-card">
+            <span>Total Requests</span>
+            <strong id="totalCount">0</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>Pending</span>
+            <strong id="pendingCount">0</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>Approved</span>
+            <strong id="approvedCount">0</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>Rejected</span>
+            <strong id="rejectedCount">0</strong>
+        </div>
+
+    </section>
+
+
+    <h2 class="section-title">
+        🐾 Adoption Applications
+    </h2>
+
+    <div id="requestsContainer">
+
+        <div class="loading">
+            Loading your adoption requests...
+        </div>
+    </div>
+<!-- =====================================================
+     MY RESCUE REQUESTS
+====================================================== -->
+
+<h2 class="section-title" style="margin-top:40px;">
+    🚑 My Rescue Reports
+</h2>
+
+<div id="rescueRequestsContainer">
+
+    <div class="loading">
+        Loading your rescue requests...
+    </div>
+
+</div>
+</main>
+
+
+<script src="js/api.js"></script>
+
+<script>
+
+    // =========================================================
+    // SECURITY
+    // =========================================================
+
+    if (!localStorage.getItem("access_token")) {
+        window.location.href = "login.html";
+    }
+
+
+    // =========================================================
+    // SAFE HTML OUTPUT
+    // =========================================================
+
+    function escapeHtml(value) {
+
+        const div = document.createElement("div");
+
+        div.textContent = value ?? "";
+
+        return div.innerHTML;
+    }
+
+
+    // =========================================================
+    // LOAD MY ADOPTION REQUESTS
+    // =========================================================
+
+    async function loadMyRequests() {
+
+    const container =
+        document.getElementById("requestsContainer");
+
+    try {
+
+        const response = await apiRequest(
+            "/api/adoptions/my"
+        );
+
+        const adoptions =
+            response.adoptions || [];
+
+        updateSummary(adoptions);
+
+        if (adoptions.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    <h3>No adoption requests yet</h3>
+
+                    <p style="margin-top:10px;">
+                        When you apply to adopt an animal,
+                        your application will appear here.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = adoptions
+            .map(createRequestCard)
+            .join("");
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load adoption requests:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="error">
+                Unable to load your adoption requests.
+                Please try again.
+            </div>
+        `;
+    }
+}
+// =========================================================
+// ADOPTION SUMMARY COUNTS
+// =========================================================
+
+function updateSummary(adoptions) {
+
+    const pending = adoptions.filter(
+        item => String(item.status || "").toLowerCase() === "pending"
+    ).length;
+
+    const approved = adoptions.filter(
+        item => String(item.status || "").toLowerCase() === "approved"
+    ).length;
+
+    const rejected = adoptions.filter(
+        item => String(item.status || "").toLowerCase() === "rejected"
+    ).length;
+
+    document.getElementById("totalCount").textContent =
+        adoptions.length;
+
+    document.getElementById("pendingCount").textContent =
+        pending;
+
+    document.getElementById("approvedCount").textContent =
+        approved;
+
+    document.getElementById("rejectedCount").textContent =
+        rejected;
+}
+        // =========================================================
+// CREATE ADOPTION REQUEST CARD
+// =========================================================
+
+function createRequestCard(adoption) {
+
+    const status =
+        String(adoption.status || "Pending");
+
+    const normalizedStatus =
+        status.toLowerCase();
+
+    let statusClass = "pending";
+
+    let statusMessage =
+    "⏳ Your adoption application is currently under review.";
+
+if (normalizedStatus === "approved") {
+
+    statusClass = "approved";
+
+    statusMessage =
+        "✓ Congratulations! Your adoption application for " +
+        (adoption.animal_name || "this animal") +
+        " has been approved.";
+
+} else if (normalizedStatus === "rejected") {
+
+    statusClass = "rejected";
+
+    statusMessage =
+        "Your adoption application for " +
+        (adoption.animal_name || "this animal") +
+        " was not approved.";
+}
+
+
+    return `
+        <article class="request-card">
+
+            <div class="request-top">
+
+                <div>
+
+                    <div class="request-id">
+                        Adoption #${escapeHtml(adoption.id)}
+                    </div>
+
+                    <div class="animal">
+    🐾 ${escapeHtml(
+        adoption.animal_name || "Animal #" + adoption.animal_id
+    )}
+</div>
+
+<div style="margin-top:6px; color:#64748b; font-size:14px;">
+    ${escapeHtml(adoption.animal_species || "Unknown species")}
+    ${adoption.animal_breed
+        ? " • " + escapeHtml(adoption.animal_breed)
+        : ""}
+    ${adoption.animal_gender
+        ? " • " + escapeHtml(adoption.animal_gender)
+        : ""}
+</div>
+
+                </div>
+
+                <span class="status ${statusClass}">
+                    ${escapeHtml(status)}
+                </span>
+
+            </div>
+
+
+            <div class="details">
+
+                <div>
+                    <strong>Occupation:</strong>
+                    ${escapeHtml(
+                        adoption.occupation || "Not provided"
+                    )}
+                </div>
+
+                <div>
+                    <strong>Phone:</strong>
+                    ${escapeHtml(
+                        adoption.phone || "Not provided"
+                    )}
+                </div>
+
+                <div>
+                    <strong>Address:</strong>
+                    ${escapeHtml(
+                        adoption.address || "Not provided"
+                    )}
+                </div>
+
+                <div>
+                    <strong>Submitted:</strong>
+                    ${escapeHtml(
+                        adoption.created_at || "N/A"
+                    )}
+                </div>
+
+            </div>
+
+
+            <div class="message">
+                ${escapeHtml(statusMessage)}
+            </div>
+
+        </article>
+    `;
+}
+// =========================================================
+// LOAD MY RESCUE REQUESTS
+// =========================================================
+
+async function loadMyRescueRequests() {
+
+    const container =
+        document.getElementById("rescueRequestsContainer");
+
+    try {
+
+        const response = await apiRequest(
+            "/api/rescues/my"
+        );
+
+        const rescues = response.rescues || [];
+
+        if (rescues.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    <h3>No rescue reports yet</h3>
+
+                    <p style="margin-top:10px;">
+                        When you report an animal rescue,
+                        its progress will appear here.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML = rescues
+            .map(createRescueRequestCard)
+            .join("");
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load rescue requests:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="error">
+                Unable to load your rescue reports.
+                Please try again.
+            </div>
+        `;
+    }
+}
+
+
+// =========================================================
+// CREATE RESCUE REQUEST CARD
+// =========================================================
+
+function createRescueRequestCard(rescue) {
+
+    const status =
+        String(rescue.status || "Pending");
+
+    const normalizedStatus =
+        status.toLowerCase();
+
+    let statusClass = "pending";
+
+    let statusMessage =
+        "Your rescue report is waiting for review.";
+
+
+    if (
+        normalizedStatus === "in progress" ||
+        normalizedStatus === "in_progress"
+    ) {
+
+        statusClass = "pending";
+
+        statusMessage =
+            "Your rescue request is currently in progress.";
+
+    } else if (normalizedStatus === "completed") {
+
+        statusClass = "approved";
+
+        statusMessage =
+            "✓ This rescue request has been completed.";
+
+    } else if (normalizedStatus === "cancelled") {
+
+        statusClass = "rejected";
+
+        statusMessage =
+            "This rescue request has been cancelled.";
+    }
+
+
+    const ngoText =
+        rescue.ngo_name ||
+        (
+            rescue.assigned_ngo
+                ? "NGO #" + rescue.assigned_ngo
+                : "Not assigned"
+        );
+
+
+    const volunteerText =
+        rescue.volunteer_name ||
+        (
+            rescue.assigned_volunteer
+                ? "Volunteer #" + rescue.assigned_volunteer
+                : "Not assigned"
+        );
+
+
+    return `
+        <article class="request-card">
+
+            <div class="request-top">
+
+                <div>
+
+                    <div class="request-id">
+                        Rescue #${escapeHtml(rescue.id)}
+                    </div>
+
+                    <div class="animal">
+                        🚑 Animal #${escapeHtml(rescue.animal_id)}
+                    </div>
+
+                </div>
+
+                <span class="status ${statusClass}">
+                    ${escapeHtml(status)}
+                </span>
+
+            </div>
+
+
+            <div class="details">
+
+                <div>
+                    <strong>Priority:</strong>
+                    ${escapeHtml(rescue.priority || "N/A")}
+                </div>
+
+
+                <div>
+                    <strong>Location:</strong>
+                    ${escapeHtml(rescue.address || "N/A")}
+                </div>
+
+
+                <div>
+                    <strong>Assigned NGO:</strong>
+                    ${escapeHtml(ngoText)}
+
+                    <br>
+
+                    <strong>NGO Contact:</strong>
+                    ${
+                        rescue.ngo_phone
+                            ? escapeHtml(rescue.ngo_phone)
+                            : "Not available"
+                    }
+
+                    ${
+                        rescue.ngo_phone
+                            ? `
+                                <br>
+
+                                <a
+                                    href="tel:${escapeHtml(rescue.ngo_phone)}"
+                                    class="contact-btn"
+                                >
+                                    📞 Call NGO
+                                </a>
+                            `
+                            : ""
+                    }
+                </div>
+
+
+                <div>
+                    <strong>Assigned Volunteer:</strong>
+                    ${escapeHtml(volunteerText)}
+
+                    <br>
+
+                    <strong>Volunteer Contact:</strong>
+                    ${
+                        rescue.volunteer_phone
+                            ? escapeHtml(rescue.volunteer_phone)
+                            : "Not available"
+                    }
+
+                    ${
+                        rescue.volunteer_phone
+                            ? `
+                                <br>
+
+                                <a
+                                    href="tel:${escapeHtml(rescue.volunteer_phone)}"
+                                    class="contact-btn"
+                                >
+                                    📞 Call Volunteer
+                                </a>
+                            `
+                            : ""
+                    }
+                </div>
+
+
+                <div>
+                    <strong>Reported:</strong>
+                    ${escapeHtml(rescue.created_at || "N/A")}
+                </div>
+
+            </div>
+
+
+            <div class="message">
+                ${escapeHtml(statusMessage)}
+            </div>
+
+        </article>
+    `;
+}
+// =========================================================
+// START PAGE
+// =========================================================
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    console.log("My Requests page started");
+
+    await Promise.all([
+        loadMyRequests(),
+        loadMyRescueRequests()
+    ]);
+
+});
+
+</script>
+
+</body>
+</html>

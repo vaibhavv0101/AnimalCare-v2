@@ -1,0 +1,2398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AnimalCare | Manage Animals</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f8fb;
+            color: #1f2937;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .navbar {
+            min-height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #f58220;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-actions button {
+            border: none;
+            cursor: pointer;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .back-btn {
+            background: #eef2f7;
+            color: #374151;
+        }
+
+        .logout-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 35px 25px 60px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .page-header span {
+            color: #f58220;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .page-header h1 {
+            margin: 7px 0;
+            font-size: 32px;
+        }
+
+        .page-header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+            border: none;
+            cursor: pointer;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #f58220;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: #eef2f7;
+            color: #374151;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        /* =====================================================
+           TOOLBAR
+        ===================================================== */
+
+        .toolbar {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+
+            padding: 18px;
+
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            width: 100%;
+            padding: 11px 13px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            font-size: 14px;
+            outline: none;
+        }
+
+        .toolbar input:focus,
+        .toolbar select:focus {
+            border-color: #f58220;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 13px;
+            text-align: left;
+            border-bottom: 1px solid #eef0f3;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #fafafa;
+            color: #6b7280;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .animal-name {
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status.available {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status.adopted {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status.rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+        .actions {
+            display: flex;
+            gap: 7px;
+        }
+
+        .action-btn {
+            border: none;
+            cursor: pointer;
+            padding: 7px 10px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .view-btn {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .edit-btn {
+            background: #fff7ed;
+            color: #c2410c;
+        }
+
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           EMPTY / LOADING
+        ===================================================== */
+
+        .message {
+            padding: 45px 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .error-message {
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           MODAL
+        ===================================================== */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.55);
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 2000;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 760px;
+            max-height: 92vh;
+
+            overflow-y: auto;
+
+            background: #ffffff;
+            border-radius: 16px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 22px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+        }
+
+        .close-btn {
+            border: none;
+            background: #f3f4f6;
+
+            width: 35px;
+            height: 35px;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            font-size: 18px;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #f58220;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+
+            margin-top: 22px;
+        }
+
+        /* =====================================================
+           DETAILS
+        ===================================================== */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .detail-box {
+            background: #f9fafb;
+            border: 1px solid #eef0f3;
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .detail-box.full {
+            grid-column: 1 / -1;
+        }
+
+        .detail-label {
+            font-size: 11px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .toolbar {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .container {
+                padding: 25px 15px 45px;
+            }
+
+            .page-header {
+                flex-direction: column;
+            }
+
+            .toolbar {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid,
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full,
+            .detail-box.full {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="navbar">
+
+    <div class="logo">
+        🐾 AnimalCare Admin
+    </div>
+
+    <div class="nav-actions">
+
+        <button
+            class="back-btn"
+            id="dashboardBtn"
+        >
+            📊 Dashboard
+        </button>
+
+        <button
+            class="back-btn"
+            id="homeBtn"
+        >
+            🏠 Home
+        </button>
+
+        <button
+            class="logout-btn"
+            id="logoutBtn"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="container">
+
+
+    <div class="page-header">
+
+        <div>
+
+            <span>
+                ADMINISTRATION
+            </span>
+
+            <h1>
+                Manage Animals
+            </h1>
+
+            <p>
+                Add, view, update and remove animals from AnimalCare.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            id="addAnimalBtn"
+        >
+            + Add Animal
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TOOLBAR
+    ====================================================== -->
+
+    <div class="toolbar">
+
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search by animal name, breed or species..."
+        >
+
+
+        <select id="speciesFilter">
+
+            <option value="">
+                All Species
+            </option>
+
+        </select>
+
+
+        <select id="statusFilter">
+
+            <option value="">
+                All Status
+            </option>
+
+            <option value="Available">
+                Available
+            </option>
+
+            <option value="Adopted">
+                Adopted
+            </option>
+
+            <option value="Pending">
+                Pending
+            </option>
+
+        </select>
+
+
+        <button
+            class="btn btn-secondary"
+            id="refreshBtn"
+        >
+            🔄 Refresh
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         TABLE
+    ====================================================== -->
+
+    <div class="table-card">
+
+        <div
+            id="tableContainer"
+            class="table-wrapper"
+        >
+
+            <div class="message">
+                Loading animals...
+            </div>
+
+        </div>
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     ADD / EDIT MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="animalModal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h2 id="formTitle">
+                Add Animal
+            </h2>
+
+            <button
+                class="close-btn"
+                id="closeFormBtn"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="animalForm">
+
+            <input
+                type="hidden"
+                id="animalId"
+            >
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="species">
+                        Species *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="species"
+                        placeholder="Dog, Cat, etc."
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="breed">
+                        Breed
+                    </label>
+
+                    <input
+                        type="text"
+                        id="breed"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="gender">
+                        Gender
+                    </label>
+
+                    <select id="gender">
+
+                        <option value="">
+                            Select Gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="age">
+                        Age
+                    </label>
+
+                    <input
+                        type="number"
+                        id="age"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="color">
+                        Color
+                    </label>
+
+                    <input
+                        type="text"
+                        id="color"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="weight">
+                        Weight (kg)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="weight"
+                        min="0"
+                        step="0.1"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="health_status">
+                        Health Status
+                    </label>
+
+                    <input
+                        type="text"
+                        id="health_status"
+                        placeholder="Healthy"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="vaccination_status">
+                        Vaccination Status
+                    </label>
+
+                    <input
+                        type="text"
+                        id="vaccination_status"
+                        placeholder="Vaccinated"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="adoption_status">
+                        Adoption Status
+                    </label>
+
+                    <select id="adoption_status">
+
+                        <option value="Available">
+                            Available
+                        </option>
+
+                        <option value="Pending">
+                            Pending
+                        </option>
+
+                        <option value="Adopted">
+                            Adopted
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="rescue_location">
+                        Rescue Location
+                    </label>
+
+                    <input
+                        type="text"
+                        id="rescue_location"
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        placeholder="Enter animal description..."
+                    ></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="cancelFormBtn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="saveAnimalBtn"
+                >
+                    Save Animal
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     VIEW DETAILS MODAL
+========================================================= -->
+
+<div
+    class="modal"
+    id="detailsModal"
+>
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <h2>
+                Animal Details
+            </h2>
+
+            <button
+                class="close-btn"
+                id="closeDetailsBtn"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            id="detailsContainer"
+            class="details-grid"
+        ></div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     API
+========================================================= -->
+
+<script src="js/api.js"></script>
+
+
+<script>
+
+
+// ============================================================
+// STATE
+// ============================================================
+
+let animals = [];
+
+let editingAnimalId = null;
+
+
+// ============================================================
+// INITIALIZE
+// ============================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initialize
+);
+
+
+async function initialize() {
+
+    const token =
+        getToken();
+
+    const user =
+        getCurrentUser();
+
+
+    if (!token || !user) {
+
+        window.location.href =
+            "login.html";
+
+        return;
+    }
+
+
+    const role =
+        String(
+            user.role || ""
+        ).toLowerCase();
+
+
+    if (role !== "admin") {
+
+        alert(
+            "Admin access required."
+        );
+
+        window.location.href =
+            "index.html";
+
+        return;
+    }
+
+
+    await loadAnimals();
+
+}
+
+
+// ============================================================
+// LOAD ANIMALS
+// ============================================================
+
+async function loadAnimals() {
+
+    const container =
+        document.getElementById(
+            "tableContainer"
+        );
+
+
+    container.innerHTML = `
+
+        <div class="message">
+            Loading animals...
+        </div>
+
+    `;
+
+
+    try {
+
+        const data =
+            await getAnimals();
+
+
+        animals =
+            data.animals || [];
+
+
+        populateSpeciesFilter();
+
+        renderAnimals();
+
+
+    } catch (error) {
+
+        console.error(
+            "LOAD ANIMALS ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="message error-message">
+
+                Unable to load animals.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// SPECIES FILTER
+// ============================================================
+
+function populateSpeciesFilter() {
+
+    const select =
+        document.getElementById(
+            "speciesFilter"
+        );
+
+
+    const current =
+        select.value;
+
+
+    const species =
+        [
+            ...new Set(
+                animals
+                    .map(
+                        animal =>
+                            animal.species
+                    )
+                    .filter(Boolean)
+            )
+        ]
+        .sort();
+
+
+    select.innerHTML = `
+
+        <option value="">
+            All Species
+        </option>
+
+        ${species.map(
+            value => `
+
+            <option
+                value="${escapeHTML(value)}"
+            >
+                ${escapeHTML(value)}
+            </option>
+
+        `
+        ).join("")}
+
+    `;
+
+
+    select.value =
+        current;
+
+}
+
+
+// ============================================================
+// RENDER
+// ============================================================
+
+function renderAnimals() {
+
+    const container =
+        document.getElementById(
+            "tableContainer"
+        );
+
+
+    const search =
+        document.getElementById(
+            "searchInput"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
+
+    const species =
+        document.getElementById(
+            "speciesFilter"
+        ).value;
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const filtered =
+        animals.filter(
+            animal => {
+
+
+                const matchesSearch =
+                    !search ||
+
+                    String(
+                        animal.name || ""
+                    )
+                    .toLowerCase()
+                    .includes(search) ||
+
+                    String(
+                        animal.breed || ""
+                    )
+                    .toLowerCase()
+                    .includes(search) ||
+
+                    String(
+                        animal.species || ""
+                    )
+                    .toLowerCase()
+                    .includes(search);
+
+
+                const matchesSpecies =
+                    !species ||
+                    animal.species === species;
+
+
+                const matchesStatus =
+                    !status ||
+                    animal.adoption_status === status;
+
+
+                return (
+                    matchesSearch &&
+                    matchesSpecies &&
+                    matchesStatus
+                );
+
+            }
+        );
+
+
+    if (!filtered.length) {
+
+        container.innerHTML = `
+
+            <div class="message">
+
+                No animals found.
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    container.innerHTML = `
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Name</th>
+
+                    <th>Species</th>
+
+                    <th>Breed</th>
+
+                    <th>Gender</th>
+
+                    <th>Age</th>
+
+                    <th>Status</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                ${filtered.map(
+                    animal => `
+
+                    <tr>
+
+                        <td>
+                            #${animal.id}
+                        </td>
+
+
+                        <td class="animal-name">
+                            ${escapeHTML(
+                                animal.name ||
+                                "N/A"
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(
+                                animal.species ||
+                                "N/A"
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(
+                                animal.breed ||
+                                "N/A"
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${escapeHTML(
+                                animal.gender ||
+                                "N/A"
+                            )}
+                        </td>
+
+
+                        <td>
+                            ${animal.age ?? "N/A"}
+                        </td>
+
+
+                        <td>
+                            ${statusBadge(
+                                animal.adoption_status ||
+                                "Available"
+                            )}
+                        </td>
+
+
+                        <td>
+
+                            <div class="actions">
+
+                                <button
+                                    class="action-btn view-btn"
+                                    onclick="viewAnimal(${animal.id})"
+                                >
+                                    👁 View
+                                </button>
+
+
+                                <button
+                                    class="action-btn edit-btn"
+                                    onclick="editAnimal(${animal.id})"
+                                >
+                                    ✏️ Edit
+                                </button>
+
+
+                                <button
+                                    class="action-btn delete-btn"
+                                    onclick="deleteAnimal(${animal.id})"
+                                >
+                                    🗑 Delete
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `
+                ).join("")}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+
+
+// ============================================================
+// VIEW ANIMAL
+// ============================================================
+
+async function viewAnimal(
+    id
+) {
+
+    const modal =
+        document.getElementById(
+            "detailsModal"
+        );
+
+    const container =
+        document.getElementById(
+            "detailsContainer"
+        );
+
+
+    modal.classList.add(
+        "active"
+    );
+
+
+    container.innerHTML = `
+
+        <div class="message">
+            Loading details...
+        </div>
+
+    `;
+
+
+    try {
+
+        const data =
+            await apiRequest(
+                `/api/animals/${id}`,
+                {
+                    method: "GET"
+                }
+            );
+
+
+        const animal =
+            data.animal;
+
+
+        if (!animal) {
+
+            throw new Error(
+                "Animal details not found."
+            );
+
+        }
+
+
+        container.innerHTML = `
+
+            ${detail(
+                "ID",
+                "#" + animal.id
+            )}
+
+            ${detail(
+                "Name",
+                animal.name
+            )}
+
+            ${detail(
+                "Species",
+                animal.species
+            )}
+
+            ${detail(
+                "Breed",
+                animal.breed
+            )}
+
+            ${detail(
+                "Gender",
+                animal.gender
+            )}
+
+            ${detail(
+                "Age",
+                animal.age !== null &&
+                animal.age !== undefined
+                    ? animal.age + " years"
+                    : "N/A"
+            )}
+
+            ${detail(
+                "Color",
+                animal.color
+            )}
+
+            ${detail(
+                "Weight",
+                animal.weight !== null &&
+                animal.weight !== undefined
+                    ? animal.weight + " kg"
+                    : "N/A"
+            )}
+
+            ${detail(
+                "Health Status",
+                animal.health_status
+            )}
+
+            ${detail(
+                "Vaccination",
+                animal.vaccination_status
+            )}
+
+            ${detail(
+                "Adoption Status",
+                animal.adoption_status
+            )}
+
+            ${detail(
+                "Rescue Location",
+                animal.rescue_location,
+                true
+            )}
+
+            ${detail(
+                "Description",
+                animal.description,
+                true
+            )}
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(
+            "VIEW ANIMAL ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="message error-message">
+
+                Unable to load animal details.
+
+                <br><br>
+
+                ${escapeHTML(
+                    error.message
+                )}
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// DETAIL HTML
+// ============================================================
+
+function detail(
+    label,
+    value,
+    full = false
+) {
+
+    return `
+
+        <div
+            class="detail-box ${full ? "full" : ""}"
+        >
+
+            <div class="detail-label">
+                ${escapeHTML(label)}
+            </div>
+
+            <div class="detail-value">
+                ${escapeHTML(
+                    value ??
+                    "N/A"
+                )}
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+// ============================================================
+// OPEN ADD FORM
+// ============================================================
+
+function openAddForm() {
+
+    editingAnimalId =
+        null;
+
+
+    document.getElementById(
+        "formTitle"
+    ).textContent =
+        "Add Animal";
+
+
+    document.getElementById(
+        "animalForm"
+    ).reset();
+
+
+    document.getElementById(
+        "animalId"
+    ).value = "";
+
+
+    document.getElementById(
+        "adoption_status"
+    ).value =
+        "Available";
+
+
+    document.getElementById(
+        "animalModal"
+    ).classList.add(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// EDIT ANIMAL
+// ============================================================
+
+async function editAnimal(
+    id
+) {
+
+    try {
+
+        const data =
+            await apiRequest(
+                `/api/animals/${id}`,
+                {
+                    method: "GET"
+                }
+            );
+
+
+        const animal =
+            data.animal;
+
+
+        if (!animal) {
+
+            throw new Error(
+                "Animal not found."
+            );
+
+        }
+
+
+        editingAnimalId =
+            id;
+
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "Edit Animal";
+
+
+        document.getElementById(
+            "animalId"
+        ).value =
+            animal.id ?? "";
+
+
+        document.getElementById(
+            "name"
+        ).value =
+            animal.name ?? "";
+
+
+        document.getElementById(
+            "species"
+        ).value =
+            animal.species ?? "";
+
+
+        document.getElementById(
+            "breed"
+        ).value =
+            animal.breed ?? "";
+
+
+        document.getElementById(
+            "gender"
+        ).value =
+            animal.gender ?? "";
+
+
+        document.getElementById(
+            "age"
+        ).value =
+            animal.age ?? "";
+
+
+        document.getElementById(
+            "color"
+        ).value =
+            animal.color ?? "";
+
+
+        document.getElementById(
+            "weight"
+        ).value =
+            animal.weight ?? "";
+
+
+        document.getElementById(
+            "health_status"
+        ).value =
+            animal.health_status ?? "";
+
+
+        document.getElementById(
+            "vaccination_status"
+        ).value =
+            animal.vaccination_status ?? "";
+
+
+        document.getElementById(
+            "rescue_location"
+        ).value =
+            animal.rescue_location ?? "";
+
+
+        document.getElementById(
+            "description"
+        ).value =
+            animal.description ?? "";
+
+
+        document.getElementById(
+            "adoption_status"
+        ).value =
+            animal.adoption_status ||
+            "Available";
+
+
+        document.getElementById(
+            "animalModal"
+        ).classList.add(
+            "active"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "EDIT LOAD ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to load animal: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// SAVE ANIMAL
+// ============================================================
+
+async function saveAnimal(
+    event
+) {
+
+    event.preventDefault();
+
+
+    const saveButton =
+        document.getElementById(
+            "saveAnimalBtn"
+        );
+
+
+    const animalData = {
+
+        name:
+            document.getElementById(
+                "name"
+            ).value.trim(),
+
+        species:
+            document.getElementById(
+                "species"
+            ).value.trim(),
+
+        breed:
+            document.getElementById(
+                "breed"
+            ).value.trim(),
+
+        gender:
+            document.getElementById(
+                "gender"
+            ).value || null,
+
+        age:
+            numberOrNull(
+                document.getElementById(
+                    "age"
+                ).value
+            ),
+
+        color:
+            document.getElementById(
+                "color"
+            ).value.trim(),
+
+        weight:
+            numberOrNull(
+                document.getElementById(
+                    "weight"
+                ).value
+            ),
+
+        health_status:
+            document.getElementById(
+                "health_status"
+            ).value.trim(),
+
+        vaccination_status:
+            document.getElementById(
+                "vaccination_status"
+            ).value.trim(),
+
+        rescue_location:
+            document.getElementById(
+                "rescue_location"
+            ).value.trim(),
+
+        description:
+            document.getElementById(
+                "description"
+            ).value.trim(),
+
+        adoption_status:
+            document.getElementById(
+                "adoption_status"
+            ).value
+
+    };
+
+
+    if (
+        !animalData.name ||
+        !animalData.species
+    ) {
+
+        alert(
+            "Name and Species are required."
+        );
+
+        return;
+
+    }
+
+
+    saveButton.disabled =
+        true;
+
+
+    saveButton.textContent =
+        editingAnimalId
+            ? "Updating..."
+            : "Saving...";
+
+
+    try {
+
+        let response;
+
+
+        if (editingAnimalId) {
+
+            response =
+                await apiRequest(
+                    `/api/animals/${editingAnimalId}`,
+                    {
+                        method: "PUT",
+
+                        body:
+                            JSON.stringify(
+                                animalData
+                            )
+                    }
+                );
+
+        } else {
+
+            response =
+                await apiRequest(
+                    "/api/animals/",
+                    {
+                        method: "POST",
+
+                        body:
+                            JSON.stringify(
+                                animalData
+                            )
+                    }
+                );
+
+        }
+
+
+        alert(
+            response.message ||
+            (
+                editingAnimalId
+                    ? "Animal updated successfully."
+                    : "Animal added successfully."
+            )
+        );
+
+
+        closeForm();
+
+
+        await loadAnimals();
+
+
+    } catch (error) {
+
+        console.error(
+            "SAVE ANIMAL ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to save animal:\n\n" +
+            error.message
+        );
+
+
+    } finally {
+
+        saveButton.disabled =
+            false;
+
+        saveButton.textContent =
+            "Save Animal";
+
+    }
+
+}
+
+
+// ============================================================
+// DELETE ANIMAL
+// ============================================================
+
+async function deleteAnimal(
+    id
+) {
+
+    const animal =
+        animals.find(
+            item =>
+                Number(item.id) ===
+                Number(id)
+        );
+
+
+    const name =
+        animal?.name ||
+        `Animal #${id}`;
+
+
+    const confirmed =
+        confirm(
+            `Are you sure you want to delete ${name}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                `/api/animals/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        alert(
+            response.message ||
+            "Animal deleted successfully."
+        );
+
+
+        await loadAnimals();
+
+
+    } catch (error) {
+
+        console.error(
+            "DELETE ANIMAL ERROR:",
+            error
+        );
+
+
+        alert(
+            "Unable to delete animal:\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// CLOSE FORM
+// ============================================================
+
+function closeForm() {
+
+    editingAnimalId =
+        null;
+
+
+    document.getElementById(
+        "animalModal"
+    ).classList.remove(
+        "active"
+    );
+
+
+    document.getElementById(
+        "animalForm"
+    ).reset();
+
+}
+
+
+// ============================================================
+// CLOSE DETAILS
+// ============================================================
+
+function closeDetails() {
+
+    document.getElementById(
+        "detailsModal"
+    ).classList.remove(
+        "active"
+    );
+
+}
+
+
+// ============================================================
+// NUMBER HELPER
+// ============================================================
+
+function numberOrNull(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        return null;
+
+    }
+
+
+    const number =
+        Number(value);
+
+
+    return Number.isFinite(
+        number
+    )
+        ? number
+        : null;
+
+}
+
+
+// ============================================================
+// STATUS BADGE
+// ============================================================
+
+function statusBadge(
+    status
+) {
+
+    const value =
+        String(
+            status ||
+            "Available"
+        );
+
+
+    const className =
+        value
+            .toLowerCase()
+            .replaceAll(
+                " ",
+                "-"
+            );
+
+
+    return `
+
+        <span
+            class="status ${escapeHTML(className)}"
+        >
+            ${escapeHTML(value)}
+        </span>
+
+    `;
+
+}
+
+
+// ============================================================
+// SECURITY
+// ============================================================
+
+function escapeHTML(
+    value
+) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+// ============================================================
+// EVENTS
+// ============================================================
+
+document
+    .getElementById(
+        "addAnimalBtn"
+    )
+    .addEventListener(
+        "click",
+        openAddForm
+    );
+
+
+document
+    .getElementById(
+        "animalForm"
+    )
+    .addEventListener(
+        "submit",
+        saveAnimal
+    );
+
+
+document
+    .getElementById(
+        "closeFormBtn"
+    )
+    .addEventListener(
+        "click",
+        closeForm
+    );
+
+
+document
+    .getElementById(
+        "cancelFormBtn"
+    )
+    .addEventListener(
+        "click",
+        closeForm
+    );
+
+
+document
+    .getElementById(
+        "closeDetailsBtn"
+    )
+    .addEventListener(
+        "click",
+        closeDetails
+    );
+
+
+document
+    .getElementById(
+        "refreshBtn"
+    )
+    .addEventListener(
+        "click",
+        loadAnimals
+    );
+
+
+document
+    .getElementById(
+        "searchInput"
+    )
+    .addEventListener(
+        "input",
+        renderAnimals
+    );
+
+
+document
+    .getElementById(
+        "speciesFilter"
+    )
+    .addEventListener(
+        "change",
+        renderAnimals
+    );
+
+
+document
+    .getElementById(
+        "statusFilter"
+    )
+    .addEventListener(
+        "change",
+        renderAnimals
+    );
+
+
+document
+    .getElementById(
+        "dashboardBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "admin-dashboard.html";
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "homeBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            window.location.href =
+                "index.html";
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "logoutBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            logout();
+
+        }
+    );
+
+
+// Close modal when clicking outside
+
+document
+    .getElementById(
+        "animalModal"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "animalModal"
+            ) {
+
+                closeForm();
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById(
+        "detailsModal"
+    )
+    .addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.id ===
+                "detailsModal"
+            ) {
+
+                closeDetails();
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

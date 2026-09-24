@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AnimalCare | Manage Volunteers</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f5f7fb;
+        color: #1f2937;
+    }
+
+    header {
+        background: white;
+        padding: 18px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    header h1 {
+        margin: 0;
+        color: #f97316;
+        font-size: 26px;
+    }
+
+    header button {
+        padding: 10px 18px;
+        margin-left: 8px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    header button:first-child {
+        background: #f3f4f6;
+        color: #374151;
+    }
+
+    header button:last-child {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    main {
+        max-width: 1400px;
+        margin: 30px auto;
+        padding: 0 25px;
+    }
+
+    .page-title {
+        margin-bottom: 25px;
+    }
+
+    .page-title h2 {
+        font-size: 28px;
+        margin-bottom: 5px;
+    }
+
+    .page-title p {
+        color: #6b7280;
+    }
+
+    .card {
+        background: white;
+        padding: 25px;
+        border-radius: 14px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid #e5e7eb;
+    }
+
+    .card h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    #volunteerForm {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 24px;
+    width: 100%;
+}
+
+#volunteerForm > div {
+    width: 100%;
+}
+
+    #volunteerForm label {
+        font-weight: 600;
+    }
+
+    #volunteerForm input,
+    #volunteerForm select {
+        width: 100%;
+        padding: 11px;
+        margin-top: 6px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        outline: none;
+    }
+
+    #volunteerForm input:focus,
+    #volunteerForm select:focus {
+        border-color: #f97316;
+    }
+
+    #submitButton {
+        background: #f97316;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 20px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    #submitButton:hover {
+        opacity: 0.9;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+    }
+
+    th,
+    td {
+        padding: 13px;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    th {
+        background: #f9fafb;
+        color: #4b5563;
+        font-size: 13px;
+        text-transform: uppercase;
+    }
+
+    tbody tr:hover {
+        background: #fff7ed;
+    }
+
+    td button {
+        border: none;
+        border-radius: 6px;
+        padding: 7px 12px;
+        cursor: pointer;
+        margin-right: 5px;
+    }
+
+    td button:first-child {
+        background: #dbeafe;
+        color: #1d4ed8;
+    }
+
+    td button:last-child {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    button[onclick="loadVolunteers()"] {
+        background: #f97316;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        cursor: pointer;
+        margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+        #volunteerForm {
+            grid-template-columns: 1fr;
+        }
+
+        header {
+            padding: 15px;
+        }
+
+        main {
+            padding: 0 12px;
+        }
+
+        table {
+            font-size: 12px;
+        }
+    }
+    #volunteerSearch {
+    width: 320px;
+    max-width: 100%;
+    padding: 11px 14px;
+    margin: 0 10px 18px 0;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    background: white;
+}
+
+#volunteerSearch:focus {
+    border-color: #f97316;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+}
+
+#volunteerSearch::placeholder {
+    color: #9ca3af;
+}
+.availability-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #dcfce7;
+    color: #166534;
+    font-size: 13px;
+    font-weight: 600;
+}
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #dbeafe;
+    color: #1d4ed8;
+    font-size: 13px;
+    font-weight: 600;
+}
+.edit-btn {
+    background: #dbeafe !important;
+    color: #1d4ed8 !important;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.edit-btn:hover {
+    background: #bfdbfe !important;
+}
+
+.delete-btn {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background: #fecaca !important;
+}
+</style>
+</head>
+<body>
+
+    <header>
+    <h1>AnimalCare Admin</h1>
+
+    <div>
+        <button onclick="window.location.href='admin-dashboard.html'">
+            Dashboard
+        </button>
+
+        <button onclick="logout()">
+            Logout
+        </button>
+    </div>
+</header>
+<main>
+    <h2>Manage Volunteers</h2>
+
+    <p>Add, view, edit and delete AnimalCare volunteers.</p>
+    <div class="card">
+<h2>Add Volunteer</h2>
+
+<form id="volunteerForm">
+
+    <label>Name *</label><br>
+    <input type="text" id="name" required>
+    <br><br>
+
+    <label>Email *</label><br>
+    <input type="email" id="email" required>
+    <br><br>
+
+    <label>Phone *</label><br>
+    <input type="text" id="phone" required>
+    <br><br>
+
+    <label>Address *</label><br>
+    <input type="text" id="address" required>
+    <br><br>
+
+    <label>Skills</label><br>
+    <input type="text" id="skills">
+    <br><br>
+
+    <label>Availability</label><br>
+    <select id="availability">
+        <option value="Available">Available</option>
+        <option value="Unavailable">Unavailable</option>
+        <option value="Weekdays">Weekdays</option>
+        <option value="Weekends">Weekends</option>
+    </select>
+
+    <br><br>
+
+<button type="submit" id="submitButton">Add Volunteer</button>
+</form>
+</div>
+<hr>
+<div class="card">
+<h2>Volunteer List</h2>
+<input
+    type="text"
+    id="volunteerSearch"
+    placeholder="Search by name, email, phone or skills..."
+>
+<button type="button" onclick="loadVolunteers()">
+    Refresh Volunteers
+</button>
+
+<br><br>
+
+<table border="1" width="100%" cellpadding="10">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Skills</th>
+            <th>Availability</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody id="volunteerTableBody">
+        <tr>
+            <td colspan="10">Loading volunteers...</td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+</div>
+</main>
+<script src="js/api.js"></script>
+<script>
+    let editingVolunteerId = null;
+    async function loadVolunteers() {
+    const tableBody = document.getElementById("volunteerTableBody");
+
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="10">Loading volunteers...</td>
+        </tr>
+    `;
+
+    try {
+        const response = await apiRequest("/api/volunteers/");
+
+        const volunteers = response.volunteers || [];
+
+        if (volunteers.length === 0) {
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="10">No volunteers found.</td>
+                </tr>
+            `;
+            return;
+        }
+
+        tableBody.innerHTML = volunteers.map(volunteer => `
+            <tr>
+                <td>${volunteer.id}</td>
+                <td>${volunteer.name || ""}</td>
+                <td>${volunteer.email || ""}</td>
+                <td>${volunteer.phone || ""}</td>
+                <td>${volunteer.address || ""}</td>
+                <td>${volunteer.skills || ""}</td>
+                <td><span class="availability-badge">
+    ${volunteer.availability || "Available"}
+</span>
+</td>
+                <td>
+    <span class="status-badge">
+        ${volunteer.status || "Active"}
+    </span>
+</td>
+                <td>${volunteer.created_at || ""}</td>
+                <td>
+                    <button type="button" class="edit-btn" onclick="editVolunteer(${volunteer.id})">
+    Edit
+</button>
+<button type="button" onclick="deleteVolunteer(${volunteer.id})">
+     <button type="button" class="delete-btn" onclick="deleteVolunteer(${volunteer.id})">               
+    Delete
+</button>
+                </td>
+            </tr>
+        `).join("");
+
+    } catch (error) {
+        console.error("Load Volunteers Error:", error);
+
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="10">
+                    Unable to load volunteers.
+                </td>
+            </tr>
+        `;
+    }
+}
+async function editVolunteer(id) {
+    editingVolunteerId = id;
+    const submitButton = document.getElementById("submitButton");
+submitButton.textContent = "Update Volunteer";
+    try {
+        const response = await apiRequest(`/api/volunteers/${id}`);
+
+        const volunteer = response.volunteer;
+
+        document.getElementById("name").value = volunteer.name || "";
+        document.getElementById("email").value = volunteer.email || "";
+        document.getElementById("phone").value = volunteer.phone || "";
+        document.getElementById("address").value = volunteer.address || "";
+        document.getElementById("skills").value = volunteer.skills || "";
+        document.getElementById("availability").value =
+            volunteer.availability || "Available";
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    } catch (error) {
+        console.error("Edit Volunteer Error:", error);
+        alert("Unable to load volunteer.");
+    }
+}
+async function deleteVolunteer(id) {
+    const confirmed = confirm("Are you sure you want to delete this volunteer?");
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        await apiRequest(`/api/volunteers/${id}`, {
+            method: "DELETE"
+        });
+
+        alert("Volunteer deleted successfully!");
+
+        loadVolunteers();
+
+    } catch (error) {
+        console.error("Delete Volunteer Error:", error);
+        alert(error.message || "Unable to delete volunteer.");
+    }
+}
+loadVolunteers();
+document
+    .getElementById("volunteerForm")
+    .addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const volunteerData = {
+            name: document.getElementById("name").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            address: document.getElementById("address").value.trim(),
+            skills: document.getElementById("skills").value.trim(),
+            availability: document.getElementById("availability").value
+        };
+
+        try {
+
+            if (editingVolunteerId) {
+
+    await apiRequest(
+        `/api/volunteers/${editingVolunteerId}`,
+        {
+            method: "PUT",
+            body: JSON.stringify(volunteerData)
+        }
+    );
+
+    alert("Volunteer updated successfully!");
+
+} else {
+
+    await apiRequest(
+        "/api/volunteers/",
+        {
+            method: "POST",
+            body: JSON.stringify(volunteerData)
+        }
+    );
+
+    alert("Volunteer added successfully!");
+}
+editingVolunteerId = null;
+document.getElementById("submitButton").textContent = "Add Volunteer";
+
+            document
+                .getElementById("volunteerForm")
+                .reset();
+
+        } catch (error) {
+
+            console.error(
+                "Add Volunteer Error:",
+                error
+            );
+
+            alert(
+                error.message ||
+                "Unable to add volunteer."
+            );
+        }
+    });
+    document
+    .getElementById("volunteerSearch")
+    .addEventListener("input", function () {
+
+        const searchText = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#volunteerTableBody tr");
+
+        rows.forEach(row => {
+            const rowText = row.textContent.toLowerCase();
+
+            if (rowText.includes(searchText)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+</script>
+</body>
+</html>

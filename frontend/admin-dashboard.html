@@ -1,0 +1,1964 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AnimalCare | Admin Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f8fb;
+            color: #1f2937;
+        }
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .admin-navbar {
+            min-height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 32px;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .admin-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #f58220;
+        }
+
+        .admin-nav {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-user {
+            font-size: 14px;
+            color: #6b7280;
+            margin-right: 10px;
+        }
+
+        .admin-nav button {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .home-btn {
+            color: #374151;
+        }
+
+        .logout-btn {
+            background: #fee2e2 !important;
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .dashboard {
+            max-width: 1400px;
+            margin: auto;
+            padding: 35px 25px 60px;
+        }
+
+        .dashboard-header {
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header span {
+            color: #f58220;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+        }
+
+        .dashboard-header h1 {
+            margin: 7px 0;
+            font-size: 34px;
+        }
+
+        .dashboard-header p {
+            margin: 0;
+            color: #6b7280;
+        }
+
+        /* =====================================================
+           ACCESS DENIED
+        ===================================================== */
+
+        .access-denied {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+
+        .access-denied h2 {
+            margin-bottom: 10px;
+        }
+
+        /* =====================================================
+           STATISTICS
+        ===================================================== */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+
+            padding: 24px;
+
+            display: flex;
+            align-items: center;
+            gap: 17px;
+
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+
+            border-radius: 14px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+
+            background: #fff4e9;
+        }
+
+        .stat-card h2 {
+            margin: 0;
+            font-size: 27px;
+        }
+
+        .stat-card p {
+            margin: 5px 0 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .dashboard-section {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+
+            padding: 25px;
+            margin-bottom: 25px;
+
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+        }
+
+        .section-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .section-top h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .section-top p {
+            margin: 5px 0 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #eef0f3;
+            white-space: nowrap;
+        }
+
+        th {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            color: #6b7280;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        /* =====================================================
+           STATUS
+        ===================================================== */
+
+        .status {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status.available,
+        .status.approved,
+        .status.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status.adopted {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status.rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* =====================================================
+           BUTTONS
+        ===================================================== */
+
+        .btn {
+            border: none;
+            cursor: pointer;
+
+            padding: 9px 14px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #f58220;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background: #eef2f7;
+            color: #374151;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .btn:hover {
+            opacity: .9;
+        }
+
+        /* =====================================================
+           QUICK ACTIONS
+        ===================================================== */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .quick-action {
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+            text-align: center;
+
+            transition: .2s;
+        }
+
+        .quick-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .quick-action .icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .quick-action h3 {
+            margin: 0;
+            font-size: 15px;
+        }
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .loading,
+        .empty,
+        .error {
+            padding: 30px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .error {
+            color: #b91c1c;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .admin-navbar {
+                padding: 0 18px;
+            }
+
+            .admin-user {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard {
+                padding: 25px 15px 45px;
+            }
+
+            .dashboard-header h1 {
+                font-size: 27px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<header class="admin-navbar">
+
+    <div class="admin-logo">
+        🐾 AnimalCare Admin
+    </div>
+
+    <div class="admin-nav">
+
+        <span
+            id="adminUser"
+            class="admin-user"
+        >
+            Admin
+        </span>
+
+        <button
+            class="home-btn"
+            id="homeBtn"
+        >
+            🏠 Home
+        </button>
+
+        <button
+            class="logout-btn"
+            id="logoutBtn"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     DASHBOARD
+========================================================= -->
+
+<main class="dashboard">
+
+
+    <div class="dashboard-header">
+
+        <span>
+            ADMINISTRATION
+        </span>
+
+        <h1>
+            Admin Dashboard
+        </h1>
+
+        <p>
+            Manage animals, rescues, NGOs, volunteers
+            and adoption activity.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACCESS DENIED
+    ====================================================== -->
+
+    <div
+        id="accessDenied"
+        class="access-denied"
+        style="display:none;"
+    >
+
+        <h2>
+            🔒 Admin Access Required
+        </h2>
+
+        <p>
+            You must be logged in as an administrator
+            to access this dashboard.
+        </p>
+
+        <button
+            class="btn btn-primary"
+            id="loginRedirectBtn"
+        >
+            Go to Login
+        </button>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         ADMIN CONTENT
+    ====================================================== -->
+
+    <div id="adminContent">
+
+
+        <!-- =================================================
+             STATISTICS
+        ================================================== -->
+
+        <section class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🐕
+                </div>
+
+                <div>
+
+                    <h2 id="animalCount">
+                        -
+                    </h2>
+
+                    <p>
+                        Animals
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🚑
+                </div>
+
+                <div>
+
+                    <h2 id="rescueCount">
+                        -
+                    </h2>
+
+                    <p>
+                        Rescue Requests
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🏢
+                </div>
+
+                <div>
+
+                    <h2 id="ngoCount">
+                        -
+                    </h2>
+
+                    <p>
+                        NGOs
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🤝
+                </div>
+
+                <div>
+
+                    <h2 id="volunteerCount">
+                        -
+                    </h2>
+
+                    <p>
+                        Volunteers
+                    </p>
+
+                </div>
+
+            </div>
+<div class="stat-card">
+
+    <div class="stat-icon">
+        🏠
+    </div>
+
+    <div>
+        <h2 id="adoptionCount">
+            -
+        </h2>
+
+        <p>
+            Adoption Applications
+        </p>
+    </div>
+
+</div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-top">
+
+                <div>
+
+                    <h2>
+                        Quick Actions
+                    </h2>
+
+                    <p>
+                        Quickly access major AnimalCare modules.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="quick-actions">
+
+
+                <!-- IMPORTANT:
+                     Goes to admin-animals.html
+                -->
+
+                <div
+                    class="quick-action"
+                    id="animalsAction"
+                >
+
+                    <div class="icon">
+                        🐕
+                    </div>
+
+                    <h3>
+                        Manage Animals
+                    </h3>
+
+                </div>
+
+
+                <div
+                    class="quick-action"
+                    id="rescuesAction"
+                >
+
+                    <div class="icon">
+                        🚑
+                    </div>
+
+                    <h3>
+                        Manage Rescues
+                    </h3>
+
+                </div>
+
+
+                <div
+                    class="quick-action"
+                    id="adoptionsAction"
+                >
+
+                    <div class="icon">
+                        🏠
+                    </div>
+
+                    <h3>
+                        Adoption Applications
+                    </h3>
+
+                </div>
+<div
+    class="quick-action"
+    id="ngosAction"
+    role="button"
+    tabindex="0"
+>
+    <div class="quick-action-icon">
+        🏢
+    </div>
+
+    <h3>
+        Manage NGOs
+    </h3>
+</div>
+<div
+    class="quick-action"
+    id="volunteersAction"
+    role="button"
+    tabindex="0"
+>
+    <div class="quick-action-icon">
+        🤝
+    </div>
+
+    <h3>
+        Manage Volunteers
+    </h3>
+</div>
+                <div
+                    class="quick-action"
+                    id="homeAction"
+                >
+
+                    <div class="icon">
+                        🌐
+                    </div>
+
+                    <h3>
+                        View Website
+                    </h3>
+
+                </div>
+
+                <div
+                    class="quick-action"
+                    id="usersAction"
+                >
+
+                    <div class="icon">
+                        👥
+                    </div>
+
+                    <h3>
+                        User Management
+                    </h3>
+
+                </div>
+
+                <div
+                    class="quick-action"
+                    id="analyticsAction"
+                >
+
+                    <div class="icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Analytics &amp; Reports
+                    </h3>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ANIMALS
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-top">
+
+                <div>
+
+                    <h2>
+                        Animals
+                    </h2>
+
+                    <p>
+                        Recently loaded animals.
+                    </p>
+
+                </div>
+
+
+                <!-- IMPORTANT:
+                     Goes to admin-animals.html
+                -->
+
+                <button
+                    class="btn btn-primary"
+                    id="viewAnimalsBtn"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                id="animalsTable"
+                class="table-wrapper"
+            >
+
+                <div class="loading">
+                    Loading animals...
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RESCUES
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-top">
+
+                <div>
+
+                    <h2>
+                        Rescue Requests
+                    </h2>
+
+                    <p>
+                        Current rescue activity.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="btn btn-primary"
+                    id="viewRescuesBtn"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                id="rescuesTable"
+                class="table-wrapper"
+            >
+
+                <div class="loading">
+                    Loading rescues...
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             NGOS
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-top">
+
+                <div>
+
+                    <h2>
+                        Partner NGOs
+                    </h2>
+
+                    <p>
+                        Registered animal welfare organizations.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="ngosTable"
+                class="table-wrapper"
+            >
+
+                <div class="loading">
+                    Loading NGOs...
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             VOLUNTEERS
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-top">
+
+                <div>
+
+                    <h2>
+                        Volunteers
+                    </h2>
+
+                    <p>
+                        Registered AnimalCare volunteers.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="volunteersTable"
+                class="table-wrapper"
+            >
+
+                <div class="loading">
+                    Loading volunteers...
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ADOPTIONS
+        ================================================== -->
+
+        <section class="dashboard-section">
+
+            <div class="section-top">
+
+                <div>
+
+                    <h2>
+                        Adoption Applications
+                    </h2>
+
+                    <p>
+                        Recent adoption applications.
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="btn btn-primary"
+                    id="viewAdoptionsBtn"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                id="adoptionsTable"
+                class="table-wrapper"
+            >
+
+                <div class="loading">
+                    Loading applications...
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</main>
+
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script src="js/api.js"> </script>
+
+
+<script>
+
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeAdminDashboard
+);
+
+
+async function initializeAdminDashboard() {
+console.log("ADMIN DASHBOARD INITIALIZATION STARTED");
+    const token =
+        getToken();
+
+    const user =
+        getCurrentUser();
+
+
+    // No login
+
+    if (!token || !user) {
+
+        showAccessDenied(
+            "🔒 Login Required",
+            "Please login as an administrator to access this dashboard."
+        );
+
+        return;
+    }
+
+
+    // Admin check
+
+    const role =
+        String(
+            user.role || ""
+        ).toLowerCase();
+
+
+    if (role !== "admin") {
+
+        console.error("ADMIN ACCESS DENIED. USER:", user);
+        showAccessDenied(
+            "🔒 Admin Access Required",
+            "Your account does not have administrator permissions."
+        );
+
+        return;
+    }
+
+
+    // Admin information
+
+    document.getElementById(
+        "adminUser"
+    ).textContent =
+        user.full_name ||
+        user.email ||
+        "Admin";
+
+
+    // Load dashboard
+
+    await loadAdminDashboard();
+
+}
+
+
+// ============================================================
+// ACCESS DENIED
+// ============================================================
+
+function showAccessDenied(
+    title,
+    message
+) {
+
+    const content =
+        document.getElementById(
+            "adminContent"
+        );
+
+    const denied =
+        document.getElementById(
+            "accessDenied"
+        );
+
+
+    content.style.display =
+        "none";
+
+    denied.style.display =
+        "block";
+
+
+    denied.querySelector(
+        "h2"
+    ).textContent =
+        title;
+
+
+    denied.querySelector(
+        "p"
+    ).textContent =
+        message;
+
+}
+
+
+// ============================================================
+// LOAD DASHBOARD
+// ============================================================
+
+async function loadAdminDashboard() {
+
+    await Promise.allSettled([
+
+        loadAnimals(),
+
+        loadRescues(),
+
+        loadNGOs(),
+
+        loadVolunteers(),
+
+        loadAdoptions()
+
+    ]);
+
+}
+
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+
+function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+function statusBadge(status) {
+
+    const value =
+        String(status || "Pending");
+
+    const className =
+        value
+            .toLowerCase()
+            .replaceAll(" ", "-");
+
+    return `
+        <span class="status ${escapeHTML(className)}">
+            ${escapeHTML(value)}
+        </span>
+    `;
+}
+// ============================================================
+// ANIMALS
+// ============================================================
+
+async function loadAnimals() {
+
+    const container =
+        document.getElementById(
+            "animalsTable"
+        );
+
+
+    try {
+
+        const data =
+            await getAnimals();
+
+
+        const animals =
+            data.animals || [];
+
+
+        document.getElementById(
+            "animalCount"
+        ).textContent =
+            data.count ??
+            animals.length;
+
+
+        if (!animals.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+                    No animals found.
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML = `
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Species</th>
+                        <th>Breed</th>
+                        <th>Gender</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${animals
+                        .slice(0, 10)
+                        .map(
+                            animal => `
+
+                            <tr>
+
+                                <td>
+                                    #${animal.id}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        animal.name ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        animal.species ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        animal.breed ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        animal.gender ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${statusBadge(
+                                        animal.adoption_status ||
+                                        "Available"
+                                    )}
+                                </td>
+
+                            </tr>
+
+                        `
+                        )
+                        .join("")}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(
+            "Animals error:",
+            error
+        );
+
+
+        document.getElementById(
+            "animalCount"
+        ).textContent =
+            "0";
+
+
+        container.innerHTML = `
+
+            <div class="error">
+                Unable to load animals.
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// RESCUES
+// ============================================================
+
+async function loadRescues() {
+
+    const container =
+        document.getElementById(
+            "rescuesTable"
+        );
+
+
+    try {
+
+        const data =
+            await getRescues();
+
+
+        const rescues =
+            data.rescues || [];
+
+
+        document.getElementById(
+            "rescueCount"
+        ).textContent =
+            data.count ??
+            rescues.length;
+
+
+        if (!rescues.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+                    No rescue requests found.
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML = `
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Animal</th>
+                        <th>Location</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${rescues
+                        .slice(0, 10)
+                        .map(
+                            rescue => `
+
+                            <tr>
+
+                                <td>
+                                    #${rescue.id}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        rescue.animal_name ||
+                                        rescue.animal?.name ||
+                                        rescue.animal_id ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        rescue.location ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${statusBadge(
+                                        rescue.status ||
+                                        "Pending"
+                                    )}
+                                </td>
+
+                            </tr>
+
+                        `
+                        )
+                        .join("")}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(
+            "Rescues error:",
+            error
+        );
+
+
+        document.getElementById(
+            "rescueCount"
+        ).textContent =
+            "0";
+
+
+        container.innerHTML = `
+
+            <div class="error">
+                Unable to load rescue requests.
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// NGOS
+// ============================================================
+
+async function loadNGOs() {
+
+    const container =
+        document.getElementById(
+            "ngosTable"
+        );
+
+
+    try {
+
+        const data =
+            await getNGOs();
+
+
+        const ngos =
+            data.ngos || [];
+
+
+        document.getElementById(
+            "ngoCount"
+        ).textContent =
+            data.count ??
+            ngos.length;
+
+
+        if (!ngos.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+                    No NGOs registered.
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML = `
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${ngos
+                        .slice(0, 10)
+                        .map(
+                            ngo => `
+
+                            <tr>
+
+                                <td>
+                                    #${ngo.id ?? "N/A"}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        ngo.name ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        ngo.address ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${statusBadge(
+                                        ngo.status ||
+                                        "Active"
+                                    )}
+                                </td>
+
+                            </tr>
+
+                        `
+                        )
+                        .join("")}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(
+            "NGO error:",
+            error
+        );
+
+
+        document.getElementById(
+            "ngoCount"
+        ).textContent =
+            "0";
+
+
+        container.innerHTML = `
+
+            <div class="error">
+                Unable to load NGOs.
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// VOLUNTEERS
+// ============================================================
+
+async function loadVolunteers() {
+
+    const container =
+        document.getElementById(
+            "volunteersTable"
+        );
+
+
+    try {
+
+        const data =
+            await getVolunteers();
+
+
+        const volunteers =
+            data.volunteers || [];
+
+
+        document.getElementById(
+            "volunteerCount"
+        ).textContent =
+            data.count ??
+            volunteers.length;
+
+
+        if (!volunteers.length) {
+
+            container.innerHTML = `
+
+                <div class="empty">
+                    No volunteers registered.
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML = `
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Availability</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${volunteers
+                        .slice(0, 10)
+                        .map(
+                            volunteer => `
+
+                            <tr>
+
+                                <td>
+                                    #${volunteer.id ?? "N/A"}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        volunteer.name ||
+                                        volunteer.full_name ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        volunteer.email ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        volunteer.address ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                                <td>
+                                    ${escapeHTML(
+                                        volunteer.availability ||
+                                        "N/A"
+                                    )}
+                                </td>
+
+                            </tr>
+
+                        `
+                        )
+                        .join("")}
+
+                </tbody>
+
+            </table>
+
+        `;
+
+
+    } catch (error) {
+
+        console.error(
+            "Volunteers error:",
+            error
+        );
+
+
+        document.getElementById(
+            "volunteerCount"
+        ).textContent =
+            "0";
+
+
+        container.innerHTML = `
+
+            <div class="error">
+                Unable to load volunteers.
+            </div>
+
+        `;
+
+    }
+
+}
+// ============================================================
+// ADOPTIONS
+// ============================================================
+
+async function loadAdoptions() {
+
+    const container =
+        document.getElementById("adoptionsTable");
+
+    const adoptionCountElement =
+        document.getElementById("adoptionCount");
+
+    if (!container) {
+        console.error("adoptionsTable container not found.");
+        return;
+    }
+
+    try {
+
+        const data = await getAdoptions();
+
+        const adoptions =
+            Array.isArray(data?.adoptions)
+                ? data.adoptions
+                : [];
+
+        // Total adoption applications
+        if (adoptionCountElement) {
+            adoptionCountElement.textContent =
+                data?.count ?? adoptions.length;
+        }
+
+        // Pending adoption applications
+        const pendingAdoptions =
+            adoptions.filter(adoption => {
+                return String(
+                    adoption?.status || "Pending"
+                ).toLowerCase() === "pending";
+            }).length;
+
+        const pendingCountElement =
+            document.getElementById(
+                "pendingAdoptionCount"
+            );
+
+        if (pendingCountElement) {
+            pendingCountElement.textContent =
+                pendingAdoptions;
+        }
+
+        // No applications
+        if (adoptions.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    No adoption applications found.
+                </div>
+            `;
+
+            return;
+        }
+
+        // Adoption table
+        container.innerHTML = `
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Animal</th>
+                        <th>Applicant</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    ${adoptions
+                        .slice(0, 10)
+                        .map(adoption => {
+
+                            const animal =
+                                adoption.animal_name ||
+                                adoption.animal?.name ||
+                                adoption.animal_id ||
+                                "N/A";
+
+                            const applicant =
+                                adoption.user_name ||
+                                adoption.user?.full_name ||
+                                adoption.user?.name ||
+                                adoption.user_id ||
+                                "N/A";
+
+                            const status =
+                                adoption.status ||
+                                "Pending";
+
+                            return `
+                                <tr>
+                                    <td>
+                                        #${escapeHTML(
+                                            adoption.id ?? "N/A"
+                                        )}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(animal)}
+                                    </td>
+
+                                    <td>
+                                        ${escapeHTML(applicant)}
+                                    </td>
+
+                                    <td>
+                                        ${statusBadge(status)}
+                                    </td>
+                                </tr>
+                            `;
+
+                        })
+                        .join("")}
+
+                </tbody>
+
+            </table>
+        `;
+
+    } catch (error) {
+
+        console.error(
+            "Adoptions error:",
+            error
+        );
+
+        if (adoptionCountElement) {
+            adoptionCountElement.textContent = "0";
+        }
+
+        container.innerHTML = `
+            <div class="error">
+                Unable to load adoption applications.
+            </div>
+        `;
+    }
+}
+// Manage Animals button
+document.getElementById("animalsAction")?.addEventListener(
+    "click",
+    function () {
+        window.location.href = "admin-animals.html";
+    }
+);
+// Manage Rescues button
+document.getElementById("rescuesAction")?.addEventListener(
+    "click",
+    function () {
+        window.location.href = "admin-rescues.html";
+    }
+);
+// Manage Adoptions button
+document.getElementById("adoptionsAction")?.addEventListener(
+    "click",
+    function () {
+        window.location.href = "adoptions.html";
+    }
+);
+// Manage NGOs button
+document.getElementById("ngosAction")?.addEventListener(
+    "click",
+    function () {
+        window.location.href = "admin-ngos.html";
+    }
+);
+// Manage Volunteers button
+document.getElementById("volunteersAction")?.addEventListener(
+    "click",
+    function () {
+        window.location.href = "admin-volunteers.html";
+    }
+);
+// View Website button
+document.getElementById("homeAction")?.addEventListener(
+    "click",
+    function () {
+        window.location.href = "index.html";
+    }
+);
+// User Management button
+document.getElementById("usersAction")?.addEventListener(
+    "click",
+    function () {
+        window.location.href = "admin-users.html";
+    }
+);
+// Analytics button
+document.getElementById("analyticsAction")?.addEventListener(
+    "click",
+    function () {
+        window.location.href = "admin-analytics.html";
+    }
+);
+</script>
+</body>
+</html>

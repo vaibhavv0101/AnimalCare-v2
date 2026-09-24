@@ -23,12 +23,12 @@ class Rescue(db.Model):
 
     assigned_ngo = db.Column(
         db.Integer,
-        db.ForeignKey("users.id")
+        db.ForeignKey("ngos.id")
     )
 
     assigned_volunteer = db.Column(
         db.Integer,
-        db.ForeignKey("users.id")
+        db.ForeignKey("volunteers.id")
     )
 
     latitude = db.Column(db.Float)
@@ -72,13 +72,12 @@ class Rescue(db.Model):
     )
 
     volunteer = db.relationship(
-        "User",
-        foreign_keys=[assigned_volunteer],
-        back_populates="assigned_rescues"
+        "Volunteer",
+        foreign_keys=[assigned_volunteer]
     )
 
     ngo = db.relationship(
-        "User",
+        "NGO",
         foreign_keys=[assigned_ngo],
-        back_populates="ngo_rescues"
+        
     )

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+        window.location.replace("login.html");
+    }
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AnimalCare | Rescue & Adoption</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="logo">
+            🐾 AnimalCare
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#animals">Animals</a>
+            <a href="#rescues">Rescues</a>
+            <a href="#adoptions">Adoptions</a>
+            <a href="ngos.html">NGOs</a>
+            <a href="volunteers.html">Volunteers</a>
+            <a href="my-requests.html">My Requests</a>
+            <a href="notifications.html">🔔 Notifications</a>
+        </nav>
+
+        <button id="loginBtn" class="btn btn-primary">
+            Login
+        </button>
+    </header>
+
+
+    <!-- Hero -->
+    <section id="home" class="hero">
+
+        <div class="hero-content">
+
+            <span class="badge">
+                🐾 Animal Rescue & Adoption Platform
+            </span>
+
+            <h1>
+                Give Every Animal
+                <span>A Second Chance.</span>
+            </h1>
+
+            <p>
+                AnimalCare connects rescued animals with caring people,
+                volunteers and NGOs to create a safer and better future
+                for every animal.
+            </p>
+
+            <div class="hero-buttons">
+                <button class="btn btn-primary" id="exploreAnimalsBtn">
+                    Find an Animal
+                </button>
+
+                <button class="btn btn-secondary" id="reportRescueBtn">
+                    Report a Rescue
+                </button>
+            </div>
+
+        </div>
+
+        <div class="hero-card">
+
+            <div class="paw-icon">
+                🐕
+            </div>
+
+            <h3>Make a Difference</h3>
+
+            <p>
+                Rescue. Care. Adopt.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Statistics -->
+    <section class="stats">
+
+        <div class="stat-card">
+            <div class="stat-icon">🐕</div>
+            <h2 id="animalCount">-</h2>
+            <p>Animals</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🚑</div>
+            <h2 id="rescueCount">-</h2>
+            <p>Rescue Requests</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🏢</div>
+            <h2 id="ngoCount">-</h2>
+            <p>NGOs</p>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🤝</div>
+            <h2 id="volunteerCount">-</h2>
+            <p>Volunteers</p>
+        </div>
+
+    </section>
+
+
+    <!-- Animals -->
+    <section id="animals" class="section">
+
+        <div class="section-heading">
+            <span>DISCOVER</span>
+            <h2>Animals Looking for a Home</h2>
+            <p>
+                Meet animals that need care, love and a permanent home.
+            </p>
+        </div>
+
+        <div id="animalsContainer" class="card-grid">
+
+            <div class="loading">
+                Loading animals...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Rescue -->
+    <section id="rescues" class="section section-light">
+
+        <div class="section-heading">
+            <span>RESCUE</span>
+            <h2>Animal Rescue</h2>
+
+            <p>
+                Our rescue system connects reported animals with NGOs
+                and volunteers.
+            </p>
+        </div>
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">📍</div>
+                <h3>Report</h3>
+                <p>
+                    Report an injured or stray animal with its location.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🏢</div>
+                <h3>NGO Support</h3>
+                <p>
+                    Rescue requests can be assigned to registered NGOs.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Volunteer Help</h3>
+                <p>
+                    Volunteers can assist with rescue operations.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Adoption -->
+    <section id="adoptions" class="section">
+
+        <div class="section-heading">
+            <span>ADOPTION</span>
+            <h2>Find Your New Friend</h2>
+
+            <p>
+                Give a rescued animal a loving and permanent home.
+            </p>
+
+            <button
+                class="btn btn-primary"
+                id="viewAdoptionsBtn">
+                View Adoption Applications
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- NGOs -->
+    <section id="ngos" class="section section-light">
+
+        <div class="section-heading">
+            <span>OUR NETWORK</span>
+            <h2>Partner NGOs</h2>
+        </div>
+
+        <div id="ngosContainer" class="card-grid">
+
+            <div class="loading">
+                Loading NGOs...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Volunteers -->
+    <section id="volunteers" class="section">
+
+        <div class="section-heading">
+            <span>COMMUNITY</span>
+            <h2>Our Volunteers</h2>
+        </div>
+
+        <div id="volunteersContainer" class="card-grid">
+
+            <div class="loading">
+                Loading volunteers...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div class="footer-content">
+
+            <div>
+                <h2>🐾 AnimalCare</h2>
+
+                <p>
+                    Connecting animals with care, rescue and loving homes.
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    © 2026 AnimalCare. All rights reserved.
+                </p>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- =====================================================
+         AUTHENTICATED NAVIGATION
+         Uses access_token, which is the token key used by api.js.
+    ====================================================== -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const loginBtn = document.getElementById("loginBtn");
+
+        if (!loginBtn) {
+            return;
+        }
+
+        const token =
+            typeof getToken === "function"
+                ? getToken()
+                : localStorage.getItem("access_token");
+
+        let user = null;
+
+        try {
+            user =
+                typeof getCurrentUser === "function"
+                    ? getCurrentUser()
+                    : JSON.parse(
+                        localStorage.getItem("user")
+                    );
+        } catch (error) {
+            user = null;
+        }
+
+        if (!token || !user) {
+            loginBtn.textContent = "Login";
+
+            loginBtn.onclick = function () {
+                window.location.href = "login.html";
+            };
+
+            return;
+        }
+
+        const role =
+            String(user.role || "")
+                .trim()
+                .toLowerCase();
+
+        /*
+         * app.js already adds a Login click listener.
+         * Clone the button to remove that old listener before
+         * assigning the authenticated-user behavior.
+         */
+        const newLoginBtn =
+            loginBtn.cloneNode(true);
+
+        loginBtn.replaceWith(newLoginBtn);
+
+        if (role === "admin") {
+
+            newLoginBtn.textContent =
+                "Admin Dashboard";
+
+            newLoginBtn.onclick = function () {
+                window.location.href =
+                    "admin-dashboard.html";
+            };
+
+        } else {
+
+            newLoginBtn.textContent =
+                "Logout";
+
+            newLoginBtn.onclick = function () {
+
+                if (typeof logout === "function") {
+                    logout();
+                } else {
+                    localStorage.removeItem(
+                        "access_token"
+                    );
+                    localStorage.removeItem(
+                        "user"
+                    );
+
+                    window.location.href =
+                        "index.html";
+                }
+
+            };
+        }
+
+    });
+    </script>
+
+</body>
+</html>

@@ -46,19 +46,4 @@ class User(db.Model):
     foreign_keys="Rescue.reported_by",
     back_populates="reporter"
     )
-    assigned_rescues = db.relationship(
-    "Rescue",
-    foreign_keys="Rescue.assigned_volunteer",
-    back_populates="volunteer"
-    )
-    ngo_rescues = db.relationship(
-    "Rescue",
-    foreign_keys="Rescue.assigned_ngo",
-    back_populates="ngo"
-    )
-  
-
-    
-
-
-  
+   

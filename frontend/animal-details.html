@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Animal Details | AnimalCare</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f8faf9;
+            color: #17202a;
+        }
+
+        .details-page {
+            min-height: 100vh;
+        }
+
+        /* HEADER */
+
+        .details-header {
+            background: white;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7e9;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #16a085;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #34495e;
+            font-weight: 700;
+        }
+
+        .back-btn:hover {
+            color: #16a085;
+        }
+
+        /* MAIN */
+
+        .details-container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 25px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+            font-size: 1.2rem;
+            color: #566573;
+        }
+
+        .error-box {
+            display: none;
+            padding: 20px;
+            background: #fdedec;
+            color: #c0392b;
+            border-radius: 14px;
+            text-align: center;
+        }
+
+        .animal-details-card {
+            display: grid;
+            grid-template-columns: 42% 58%;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e5e7e9;
+        }
+
+        /* IMAGE */
+
+        .animal-photo {
+            min-height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e8f8f5,
+                    #f8faf9
+                );
+
+            font-size: 10rem;
+        }
+
+        /* INFO */
+
+        .animal-content {
+            padding: 45px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .status.available {
+            background: #eafaf1;
+            color: #1e8449;
+        }
+
+        .status.adopted {
+            background: #fef5e7;
+            color: #b9770e;
+        }
+
+        .status.other {
+            background: #ebedef;
+            color: #566573;
+        }
+
+        .animal-content h1 {
+            margin: 0 0 10px;
+            font-size: 2.8rem;
+        }
+
+        .breed {
+            color: #16a085;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .description {
+            color: #566573;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        /* DETAILS GRID */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            background: #f8faf9;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        .detail-item span {
+            display: block;
+            font-size: 0.8rem;
+            color: #7b7d7d;
+            margin-bottom: 5px;
+        }
+
+        .detail-item strong {
+            color: #34495e;
+        }
+
+        /* BUTTONS */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .primary {
+            background: #16a085;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #117864;
+        }
+
+        .secondary {
+            background: white;
+            color: #117864;
+            border: 1px solid #16a085;
+        }
+
+        .secondary:hover {
+            background: #e8f8f5;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* MESSAGE */
+
+        .message {
+            display: none;
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .message.error {
+            display: block;
+            background: #fdedec;
+            color: #c0392b;
+        }
+
+        .message.success {
+            display: block;
+            background: #eafaf1;
+            color: #1e8449;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .animal-details-card {
+                grid-template-columns: 1fr;
+            }
+
+            .animal-photo {
+                min-height: 300px;
+                font-size: 7rem;
+            }
+
+            .animal-content {
+                padding: 30px 25px;
+            }
+
+            .animal-content h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .details-header {
+                padding: 15px 5%;
+            }
+
+            .details-container {
+                margin: 25px auto;
+                padding: 0 15px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="details-page">
+
+    <!-- HEADER -->
+
+    <header class="details-header">
+
+        <div class="logo">
+            🐾 AnimalCare
+        </div>
+
+        <a
+            href="animals.html"
+            class="back-btn"
+        >
+            ← Back to Animals
+        </a>
+
+    </header>
+
+
+    <!-- MAIN -->
+
+    <main class="details-container">
+
+        <div
+            id="loading"
+            class="loading"
+        >
+            🐾 Loading animal details...
+        </div>
+
+
+        <div
+            id="errorBox"
+            class="error-box"
+        ></div>
+
+
+        <section
+            id="animalCard"
+            class="animal-details-card"
+            style="display:none;"
+        >
+
+            <!-- IMAGE -->
+
+            <div
+                id="animalPhoto"
+                class="animal-photo"
+            >
+                🐶
+            </div>
+
+
+            <!-- INFORMATION -->
+
+            <div class="animal-content">
+
+                <span
+                    id="animalStatus"
+                    class="status"
+                >
+                    Available
+                </span>
+
+                <h1 id="animalName">
+                    Animal
+                </h1>
+
+                <div
+                    id="animalBreed"
+                    class="breed"
+                >
+                    Breed
+                </div>
+
+                <p
+                    id="animalDescription"
+                    class="description"
+                >
+                    This animal is waiting for a loving home.
+                </p>
+
+
+                <!-- DETAILS -->
+
+                <div class="details-grid">
+
+                    <div class="detail-item">
+                        <span>Species</span>
+                        <strong id="species">N/A</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Age</span>
+                        <strong id="age">N/A</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Gender</span>
+                        <strong id="gender">N/A</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Color</span>
+                        <strong id="color">N/A</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Weight</span>
+                        <strong id="weight">N/A</strong>
+                    </div>
+
+                    <div class="detail-item">
+                        <span>Health Status</span>
+                        <strong id="health">N/A</strong>
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIONS -->
+
+                <div class="actions">
+
+                    <button
+                        id="adoptBtn"
+                        class="btn primary"
+                    >
+                        ❤️ Apply for Adoption
+                    </button>
+
+                    <a
+                        href="animals.html"
+                        class="btn secondary"
+                    >
+                        View Other Animals
+                    </a>
+
+                </div>
+
+
+                <div
+                    id="message"
+                    class="message"
+                ></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="js/api.js"></script>
+
+<script>
+
+    // =====================================================
+    // GET ANIMAL ID FROM URL
+    // =====================================================
+
+    const params = new URLSearchParams(
+        window.location.search
+    );
+
+    const animalId = params.get("id");
+
+
+    // =====================================================
+    // LOAD ANIMAL
+    // =====================================================
+
+    async function loadAnimal() {
+
+        const loading =
+            document.getElementById("loading");
+
+        const errorBox =
+            document.getElementById("errorBox");
+
+        const card =
+            document.getElementById("animalCard");
+
+
+        if (!animalId) {
+
+            loading.style.display = "none";
+
+            errorBox.textContent =
+                "Animal ID is missing.";
+
+            errorBox.style.display = "block";
+
+            return;
+        }
+
+
+        try {
+
+            const data =
+                await getAnimals();
+
+
+            if (
+                !data ||
+                !data.success ||
+                !Array.isArray(data.animals)
+            ) {
+
+                throw new Error(
+                    data?.message ||
+                    "Unable to load animals."
+                );
+            }
+
+
+            const animal =
+                data.animals.find(
+                    item =>
+                        String(item.id) ===
+                        String(animalId)
+                );
+
+
+            if (!animal) {
+
+                throw new Error(
+                    "Animal not found."
+                );
+            }
+
+
+            displayAnimal(animal);
+
+
+            loading.style.display = "none";
+
+            card.style.display = "grid";
+
+
+        } catch (error) {
+
+            console.error(
+                "ANIMAL DETAILS ERROR:",
+                error
+            );
+
+            loading.style.display = "none";
+
+            errorBox.textContent =
+                error.message ||
+                "Unable to load animal.";
+
+            errorBox.style.display = "block";
+        }
+
+    }
+
+
+    // =====================================================
+    // DISPLAY ANIMAL
+    // =====================================================
+
+    function displayAnimal(animal) {
+
+        const status =
+            animal.adoption_status ||
+            "Available";
+
+
+        document.getElementById(
+            "animalName"
+        ).textContent =
+            animal.name ||
+            "Unnamed Animal";
+
+
+        document.getElementById(
+            "animalBreed"
+        ).textContent =
+            `${animal.species || "Animal"} • ${
+                animal.breed || "Unknown Breed"
+            }`;
+
+
+        document.getElementById(
+            "species"
+        ).textContent =
+            animal.species ||
+            "N/A";
+
+
+        document.getElementById(
+            "age"
+        ).textContent =
+            animal.age != null
+                ? `${animal.age} years`
+                : "N/A";
+
+
+        document.getElementById(
+            "gender"
+        ).textContent =
+            animal.gender ||
+            "N/A";
+
+
+        document.getElementById(
+            "color"
+        ).textContent =
+            animal.color ||
+            "N/A";
+
+
+        document.getElementById(
+            "weight"
+        ).textContent =
+            animal.weight != null
+                ? `${animal.weight} kg`
+                : "N/A";
+
+
+        document.getElementById(
+            "health"
+        ).textContent =
+            animal.health_status ||
+            "N/A";
+
+
+        document.getElementById(
+            "animalDescription"
+        ).textContent =
+            animal.description ||
+            "This rescued animal is looking for a safe, loving and permanent home.";
+
+
+        // STATUS
+
+        const statusElement =
+            document.getElementById(
+                "animalStatus"
+            );
+
+
+        statusElement.textContent =
+            status;
+
+
+        statusElement.className =
+            "status";
+
+
+        if (
+            status.toLowerCase() ===
+            "available"
+        ) {
+
+            statusElement.classList.add(
+                "available"
+            );
+
+        } else if (
+            status.toLowerCase() ===
+            "adopted"
+        ) {
+
+            statusElement.classList.add(
+                "adopted"
+            );
+
+        } else {
+
+            statusElement.classList.add(
+                "other"
+            );
+
+        }
+
+
+        // IMAGE / EMOJI
+
+        const photo =
+            document.getElementById(
+                "animalPhoto"
+            );
+
+
+        photo.textContent =
+            animal.species &&
+            animal.species.toLowerCase() ===
+            "cat"
+                ? "🐱"
+                : "🐶";
+
+
+        // ADOPTION BUTTON
+
+        const adoptBtn =
+            document.getElementById(
+                "adoptBtn"
+            );
+
+
+        if (
+            status.toLowerCase() !==
+            "available"
+        ) {
+
+            adoptBtn.disabled = true;
+
+            adoptBtn.textContent =
+                "Adoption Not Available";
+
+        } else {
+
+            adoptBtn.disabled = false;
+
+            adoptBtn.onclick =
+                function () {
+
+                    const token =
+                        localStorage.getItem(
+                            "access_token"
+                        );
+
+
+                    if (!token) {
+
+                        window.location.href =
+                            `login.html?redirect=animal-details.html?id=${animal.id}`;
+
+                        return;
+                    }
+
+
+                    // Use the existing adoption
+                    // flow from animals page.
+
+                    window.location.href =
+                        `animals.html?adopt=${animal.id}`;
+
+                };
+
+        }
+
+    }
+
+
+    // =====================================================
+    // START
+    // =====================================================
+
+    loadAnimal();
+
+</script>
+
+</body>
+</html>
