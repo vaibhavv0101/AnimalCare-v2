@@ -2,8 +2,7 @@
 // AnimalCare Frontend API
 // ============================================================
 
-const API_BASE_URL = "https://animalcare-v2-production.up.railway.app";
-
+const API_URL = "https://animalcare-v2-production.up.railway.app";
 // ============================================================
 // TOKEN HELPERS
 // ============================================================
