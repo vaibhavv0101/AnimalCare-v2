@@ -10,9 +10,7 @@ from app.models import (
     Volunteer,
     Notification,
 )
-
 app = create_app()
-
 with app.app_context():
 
     print("Creating AnimalCare database tables...")
@@ -21,23 +19,17 @@ with app.app_context():
 
     print("Tables created successfully.")
 
-    # --------------------------------------------------
     # Create required roles
-    # --------------------------------------------------
-
-   role_names = [
-    "Admin",
-    "User",
-    "NGO",
-    "Volunteer",
-    "Adopter",
-]
+    role_names = [
+        "Admin",
+        "User",
+        "NGO",
+        "Volunteer",
+        "Adopter",
+    ]
 
     for role_name in role_names:
-
-        role = Role.query.filter_by(
-            name=role_name
-        ).first()
+        role = Role.query.filter_by(name=role_name).first()
 
         if not role:
             role = Role(name=role_name)
@@ -49,10 +41,3 @@ with app.app_context():
     db.session.commit()
 
     print("Roles initialized successfully.")
-
-    # --------------------------------------------------
-    # Verify tables
-    # --------------------------------------------------
-
-    print("\nAnimalCare Railway database initialized.")
-    print("Do NOT create the Admin password in this script yet.")
