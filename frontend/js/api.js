@@ -352,16 +352,13 @@ async function getVolunteers() {
 // ============================================================
 
 async function getRescues() {
-
     return await apiRequest(
-        "/api/rescues/",
+        "/api/rescues/my",
         {
             method: "GET"
         }
     );
-
 }
-
 
 async function getRescue(
     id
