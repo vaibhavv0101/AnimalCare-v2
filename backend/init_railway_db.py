@@ -25,12 +25,13 @@ with app.app_context():
     # Create required roles
     # --------------------------------------------------
 
-    role_names = [
-        "Admin",
-        "User",
-        "NGO",
-        "Volunteer",
-    ]
+   role_names = [
+    "Admin",
+    "User",
+    "NGO",
+    "Volunteer",
+    "Adopter",
+]
 
     for role_name in role_names:
 
