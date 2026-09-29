@@ -698,7 +698,7 @@ async function submitAdoptionApplication(event) {
 
         const response =
             await fetch(
-                "http://127.0.0.1:5000/api/adoptions/",
+                "https://animalcare-v2-production.up.railway.app/api/adoptions/",
                 {
                     method: "POST",
 
