@@ -74,31 +74,33 @@ def my_rescue_requests():
 
     for rescue in rescues:
      ngo = NGO.query.get(rescue.assigned_ngo) if rescue.assigned_ngo else None
+    
     volunteer = Volunteer.query.get(rescue.assigned_volunteer) if rescue.assigned_volunteer else None
+
     result.append({
-            "id": rescue.id,
-            "animal_id": rescue.animal_id,
-            "reported_by": rescue.reported_by,
-            "assigned_ngo": rescue.assigned_ngo,
-            "assigned_volunteer": rescue.assigned_volunteer,
-            "ngo_name": ngo.name if ngo else None,
-"volunteer_name": volunteer.name if volunteer else None,
-"ngo_phone": ngo.phone if ngo else None,
-"ngo_email": ngo.email if ngo else None,
-"volunteer_phone": volunteer.phone if volunteer else None,
-"volunteer_email": volunteer.email if volunteer else None,
-            "latitude": rescue.latitude,
-            "longitude": rescue.longitude,
-            "address": rescue.address,
-            "priority": rescue.priority,
-            "status": rescue.status,
-            "notes": rescue.notes,
-            "created_at": (
-                rescue.created_at.strftime("%Y-%m-%d %H:%M:%S")
-                if rescue.created_at
-                else None
-            )
-        })
+        "id": rescue.id,
+        "animal_id": rescue.animal_id,
+        "reported_by": rescue.reported_by,
+        "assigned_ngo": rescue.assigned_ngo,
+        "assigned_volunteer": rescue.assigned_volunteer,
+        "ngo_name": ngo.name if ngo else None,
+        "volunteer_name": volunteer.name if volunteer else None,
+        "ngo_phone": ngo.phone if ngo else None,
+        "ngo_email": ngo.email if ngo else None,
+        "volunteer_phone": volunteer.phone if volunteer else None,
+        "volunteer_email": volunteer.email if volunteer else None,
+        "latitude": rescue.latitude,
+        "longitude": rescue.longitude,
+        "address": rescue.address,
+        "priority": rescue.priority,
+        "status": rescue.status,
+        "notes": rescue.notes,
+        "created_at": (
+            rescue.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            if rescue.created_at
+            else None
+        )
+    })
 
     return jsonify({
         "success": True,
