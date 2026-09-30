@@ -1581,3 +1581,50 @@ function escapeHTML(value) {
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
 }
+// =====================================================
+// NAVBAR NOTIFICATION BADGE
+// =====================================================
+
+async function updateNotificationBadge() {
+    const badge = document.getElementById("notificationBadge");
+
+    if (!badge) {
+        return;
+    }
+
+    // User must be logged in
+    const token = localStorage.getItem("access_token");
+
+    if (!token) {
+        badge.style.display = "none";
+        return;
+    }
+
+    try {
+        const data = await getUnreadNotificationCount();
+
+        const unreadCount = data.unread_count ?? 0;
+
+        if (unreadCount > 0) {
+            badge.textContent = unreadCount > 99 ? "99+" : unreadCount;
+            badge.style.display = "inline-flex";
+        } else {
+            badge.textContent = "0";
+            badge.style.display = "none";
+        }
+
+    } catch (error) {
+        console.error(
+            "Unable to load notification count:",
+            error
+        );
+
+        badge.style.display = "none";
+    }
+}
+
+
+// Load notification count when page opens
+document.addEventListener("DOMContentLoaded", () => {
+    updateNotificationBadge();
+});

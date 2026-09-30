@@ -418,3 +418,15 @@ async function checkBackend() {
     );
 
 }
+// =====================================================
+// NOTIFICATIONS
+// =====================================================
+
+async function getUnreadNotificationCount() {
+    return await apiRequest(
+        "/api/notifications/unread-count",
+        {
+            method: "GET"
+        }
+    );
+}

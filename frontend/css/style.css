@@ -1401,3 +1401,36 @@ footer {
     bottom: 70px;
     left: 10px;
 }
+/* =====================================================
+   NAVBAR NOTIFICATION BADGE
+===================================================== */
+
+.notification-nav {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.notification-badge {
+    min-width: 18px;
+    height: 18px;
+
+    padding: 0 5px;
+
+    border-radius: 20px;
+
+    background: #ef4444;
+    color: white;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    align-items: center;
+    justify-content: center;
+
+    line-height: 18px;
+    text-align: center;
+
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
+}
