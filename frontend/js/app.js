@@ -1,3 +1,4 @@
+console.log("✅ AnimalCare app.js loaded successfully");
 // ========================================
 // ANIMALCARE - MAIN APP.JS
 // ========================================
@@ -31,20 +32,12 @@ function getAnimalIcon(species) {
 // PAGE INITIALIZATION
 // ============================================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-    const token = getToken();
-
-    if (token) {
-
-        loadDashboard();
-
-    } else {
-
-        console.log(
-            "No login token. Dashboard APIs skipped."
-        );
-
+    try {
+        await loadDashboard();
+    } catch (error) {
+        console.error("Dashboard loading failed:", error);
     }
 
 });
@@ -76,10 +69,9 @@ async function loadAnimals() {
     const countElement =
         document.getElementById("animalCount");
 
-    if (!container) {
-        return;
-    }
-
+   if (!container && !countElement) {
+    return;
+}
     try {
 
         const data = await getAnimals();
@@ -96,18 +88,22 @@ async function loadAnimals() {
 
         if (animals.length === 0) {
 
-            container.innerHTML = `
-                <div class="empty-state">
-                    <h3>No animals available</h3>
-                    <p>
-                        There are currently no animals listed.
-                    </p>
-                </div>
-            `;
+    if (container) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <h3>No animals available</h3>
+                <p>
+                    There are currently no animals listed.
+                </p>
+            </div>
+        `;
+    }
 
-            return;
-        }
-
+    return;
+}
+if (!container) {
+    return;
+}
         container.innerHTML = animals.map(animal => {
 
             const adoptionStatus =
@@ -698,7 +694,7 @@ async function submitAdoptionApplication(event) {
 
         const response =
             await fetch(
-                "https://animalcare-v2-production.up.railway.app/api/adoptions/",
+                `${API_BASE_URL}/api/adoptions/`,
                 {
                     method: "POST",
 
@@ -794,10 +790,9 @@ async function loadNGOs() {
     const countElement =
         document.getElementById("ngoCount");
 
-    if (!container) {
-        return;
-    }
-
+    if (!container && !countElement) {
+    return;
+}
     try {
 
         const data =
@@ -805,12 +800,16 @@ async function loadNGOs() {
 
         const ngos =
             data.ngos || [];
+if (countElement) {
+    countElement.textContent =
+        data.count ?? ngos.length;
+}
 
-        if (countElement) {
-
-            countElement.textContent =
-                data.count ?? ngos.length;
-        }
+if (!container) {
+    return;
+}
+       
+        
 
         if (ngos.length === 0) {
 
@@ -899,9 +898,7 @@ async function loadVolunteers() {
             "volunteerCount"
         );
 
-    if (!container) {
-        return;
-    }
+    
 
     try {
 
@@ -910,12 +907,16 @@ async function loadVolunteers() {
 
         const volunteers =
             data.volunteers || [];
+            if (countElement) {
+    countElement.textContent =
+        data.count ?? volunteers.length;
+}
 
-        if (countElement) {
+if (!container) {
+    return;
+}
 
-            countElement.textContent =
-                data.count ?? volunteers.length;
-        }
+      
 
         if (volunteers.length === 0) {
 
