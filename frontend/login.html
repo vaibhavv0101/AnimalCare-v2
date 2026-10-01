@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -18,9 +17,13 @@
     >
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             min-height: 100vh;
+            margin: 0;
 
             display: flex;
             align-items: center;
@@ -33,20 +36,18 @@
                     transparent 35%
                 ),
                 #f7f9f9;
-        }
 
+            font-family: Arial, sans-serif;
+        }
 
         .login-wrapper {
             width: 100%;
             max-width: 450px;
-
             padding: 25px;
         }
 
-
         .login-card {
             background: white;
-
             padding: 40px;
 
             border-radius: 24px;
@@ -58,19 +59,16 @@
             border: 1px solid #e5e7e9;
         }
 
-
         .login-logo {
             text-align: center;
 
             font-size: 1.8rem;
-
             font-weight: 800;
 
             color: #117864;
 
             margin-bottom: 10px;
         }
-
 
         .login-subtitle {
             text-align: center;
@@ -80,11 +78,9 @@
             margin-bottom: 30px;
         }
 
-
         .form-group {
             margin-bottom: 20px;
         }
-
 
         .form-group label {
             display: block;
@@ -92,8 +88,9 @@
             margin-bottom: 7px;
 
             font-weight: 700;
-        }
 
+            color: #2c3e50;
+        }
 
         .form-group input {
             width: 100%;
@@ -101,24 +98,41 @@
             padding: 13px 15px;
 
             border: 1px solid #d5dbdb;
-
             border-radius: 10px;
 
             outline: none;
-        }
 
+            font-size: 15px;
+        }
 
         .form-group input:focus {
             border-color: #16a085;
         }
 
-
         .login-button {
             width: 100%;
 
             margin-top: 5px;
+
+            padding: 14px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #117864;
+            color: white;
+
+            font-size: 16px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s;
         }
 
+        .login-button:hover {
+            background: #0e6655;
+        }
 
         .message {
             margin-top: 18px;
@@ -132,7 +146,6 @@
             text-align: center;
         }
 
-
         .message.error {
             display: block;
 
@@ -141,7 +154,6 @@
             color: #c0392b;
         }
 
-
         .message.success {
             display: block;
 
@@ -149,7 +161,6 @@
 
             color: #1e8449;
         }
-
 
         .back-link {
             display: block;
@@ -161,57 +172,98 @@
             color: #117864;
 
             font-weight: 600;
+
+            text-decoration: none;
         }
 
+        .back-link:hover {
+            text-decoration: underline;
+        }
 
         .loading-button {
             opacity: 0.7;
 
             pointer-events: none;
         }
+        /* ==========================================
+   NEW USER REGISTRATION
+========================================== */
 
+.register-section {
+    margin-top: 22px;
+    text-align: center;
+}
+
+.register-section p {
+    margin: 0 0 12px 0;
+    color: #566573;
+    font-size: 14px;
+}
+
+.register-button {
+    display: block;
+    width: 100%;
+    padding: 13px 15px;
+
+    background: #ffffff;
+    color: #117864;
+
+    border: 2px solid #117864;
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.register-button:hover {
+    background: #117864;
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
     </style>
-
 </head>
 
 
 <body>
 
-
 <div class="login-wrapper">
 
     <div class="login-card">
 
-
-        <!-- LOGO -->
+        <!-- ==========================================
+             LOGO
+        =========================================== -->
 
         <div class="login-logo">
-
             🐾 AnimalCare
-
         </div>
 
-
         <p class="login-subtitle">
-
             Sign in to your AnimalCare account
-
         </p>
 
 
-        <!-- LOGIN FORM -->
+        <!-- ==========================================
+             LOGIN FORM
+        =========================================== -->
 
         <form id="loginForm">
-
 
             <div class="form-group">
 
                 <label for="email">
-
                     Email
-
                 </label>
-
 
                 <input
                     type="email"
@@ -227,11 +279,8 @@
             <div class="form-group">
 
                 <label for="password">
-
                     Password
-
                 </label>
-
 
                 <input
                     type="password"
@@ -244,21 +293,30 @@
             </div>
 
 
+            <!-- LOGIN BUTTON -->
+
             <button
                 type="submit"
                 id="loginButton"
-                class="btn btn-primary login-button"
+                class="login-button"
             >
-
                 Login
-
             </button>
 
-
         </form>
+<!-- NEW USER REGISTRATION -->
 
+<div class="register-section">
+    <p>New to AnimalCare?</p>
 
-        <!-- MESSAGE -->
+    <a href="register.html" class="register-button">
+        Create New Account
+    </a>
+</div>
+
+        <!-- ==========================================
+             LOGIN MESSAGE
+        =========================================== -->
 
         <div
             id="message"
@@ -266,33 +324,32 @@
         ></div>
 
 
-        <!-- BACK -->
+        <!-- ==========================================
+             BACK TO WEBSITE
+        =========================================== -->
 
         <a
             href="index.html"
             class="back-link"
         >
-
             ← Back to AnimalCare
-
         </a>
-
 
     </div>
 
 </div>
 
 
-<!-- ========================================================
-     API SCRIPT
-========================================================= -->
+<!-- ================================================
+     ANIMALCARE API
+================================================ -->
 
-<script src="js/api.js"></script>
+<script src="js/api.js"> </script>
 
 
-<!-- ========================================================
+<!-- ================================================
      LOGIN SCRIPT
-========================================================= -->
+================================================ -->
 
 <script>
 
@@ -306,26 +363,22 @@ const message =
     document.getElementById("message");
 
 
-// ========================================================
+// ==================================================
 // MESSAGE FUNCTION
-// ========================================================
+// ==================================================
 
-function showMessage(
-    text,
-    type
-) {
+function showMessage(text, type) {
 
     message.textContent = text;
 
     message.className =
         `message ${type}`;
-
 }
 
 
-// ========================================================
+// ==================================================
 // LOGIN
-// ========================================================
+// ==================================================
 
 loginForm.addEventListener(
     "submit",
@@ -333,6 +386,10 @@ loginForm.addEventListener(
 
         event.preventDefault();
 
+
+        // ==========================================
+        // GET USER INPUT
+        // ==========================================
 
         const email =
             document
@@ -347,6 +404,10 @@ loginForm.addEventListener(
                 .value;
 
 
+        // ==========================================
+        // VALIDATION
+        // ==========================================
+
         if (!email || !password) {
 
             showMessage(
@@ -358,7 +419,9 @@ loginForm.addEventListener(
         }
 
 
-        // Disable button
+        // ==========================================
+        // DISABLE LOGIN BUTTON
+        // ==========================================
 
         loginButton.disabled = true;
 
@@ -378,10 +441,9 @@ loginForm.addEventListener(
 
         try {
 
-
-            // =================================================
-            // CALL BACKEND LOGIN
-            // =================================================
+            // ======================================
+            // CALL BACKEND LOGIN API
+            // ======================================
 
             const data =
                 await login(
@@ -396,9 +458,9 @@ loginForm.addEventListener(
             );
 
 
-            // =================================================
-            // VERIFY RESPONSE
-            // =================================================
+            // ======================================
+            // VERIFY BACKEND RESPONSE
+            // ======================================
 
             if (
                 !data ||
@@ -414,9 +476,9 @@ loginForm.addEventListener(
             }
 
 
-            // =================================================
-            // EXPLICITLY SAVE TOKEN
-            // =================================================
+            // ======================================
+            // SAVE ACCESS TOKEN
+            // ======================================
 
             localStorage.setItem(
                 "access_token",
@@ -424,9 +486,9 @@ loginForm.addEventListener(
             );
 
 
-            // =================================================
-            // SAVE USER
-            // =================================================
+            // ======================================
+            // SAVE USER INFORMATION
+            // ======================================
 
             if (data.user) {
 
@@ -439,9 +501,9 @@ loginForm.addEventListener(
             }
 
 
-            // =================================================
-            // VERIFY TOKEN
-            // =================================================
+            // ======================================
+            // VERIFY TOKEN WAS SAVED
+            // ======================================
 
             const savedToken =
                 localStorage.getItem(
@@ -465,9 +527,9 @@ loginForm.addEventListener(
             }
 
 
-            // =================================================
-            // SUCCESS
-            // =================================================
+            // ======================================
+            // LOGIN SUCCESS
+            // ======================================
 
             showMessage(
                 "Login successful! Redirecting...",
@@ -475,33 +537,61 @@ loginForm.addEventListener(
             );
 
 
-            // Redirect based on logged-in user's role
-            setTimeout(function() {
+            // ======================================
+            // REDIRECT BASED ON USER ROLE
+            // ======================================
 
-                const user = JSON.parse(
-                    localStorage.getItem("user") || "{}"
-                );
+            setTimeout(
+                function() {
 
-                const role = String(
-                    user.role || ""
-                ).trim().toLowerCase();
+                    const user =
+                        JSON.parse(
+                            localStorage.getItem("user") ||
+                            "{}"
+                        );
 
-                console.log("REDIRECT USER:", user);
-                console.log("REDIRECT ROLE:", role);
 
-                if (role === "admin") {
-                    window.location.href =
-                        "./admin-dashboard.html";
-                } else {
-                    window.location.href =
-                        "./index.html";
-                }
+                    const role =
+                        String(
+                            user.role || ""
+                        )
+                        .trim()
+                        .toLowerCase();
 
-            }, 700);
+
+                    console.log(
+                        "REDIRECT USER:",
+                        user
+                    );
+
+                    console.log(
+                        "REDIRECT ROLE:",
+                        role
+                    );
+
+
+                    // ADMIN
+                    if (role === "admin") {
+
+                        window.location.href =
+                            "./admin-dashboard.html";
+
+                    }
+
+                    // NORMAL USER
+                    else {
+
+                        window.location.href =
+                            "./index.html";
+
+                    }
+
+                },
+                700
+            );
 
 
         } catch (error) {
-
 
             console.error(
                 "LOGIN ERROR:",
@@ -516,10 +606,11 @@ loginForm.addEventListener(
             );
 
 
-            // Re-enable button
+            // ======================================
+            // ENABLE LOGIN BUTTON AGAIN
+            // ======================================
 
-            loginButton.disabled =
-                false;
+            loginButton.disabled = false;
 
             loginButton.classList.remove(
                 "loading-button"
@@ -527,15 +618,12 @@ loginForm.addEventListener(
 
             loginButton.textContent =
                 "Login";
-
         }
-
     }
 );
 
+
 </script>
 
-
 </body>
-
 </html>
