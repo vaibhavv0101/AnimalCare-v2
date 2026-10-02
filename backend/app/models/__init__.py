@@ -6,3 +6,4 @@ from app.models.adoption import Adoption
 from app.models.ngo import NGO
 from app.models.volunteer import Volunteer
 from app.models.notification import Notification
+from app.models.donation import Donation

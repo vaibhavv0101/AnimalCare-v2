@@ -71,6 +71,7 @@ def create_app():
     Rescue,
     Volunteer,
     Notification,
+    Donation,
 )
 
         # Keep model imports active so SQLAlchemy can discover
@@ -83,6 +84,7 @@ def create_app():
             NGO,
             Rescue,
             Volunteer,
+            Donation,
         )
 
     except ImportError as e:
@@ -211,8 +213,22 @@ def create_app():
 
     except ImportError as e:
         print("WARNING: Notifications blueprint not registered:", e)
+       
     # --------------------------------------------------------
-    # 11. Home route
+    # Register Donations Blueprint
+    # --------------------------------------------------------
+    try:
+        from app.donations import donations_bp
+
+        app.register_blueprint(donations_bp)
+
+        print("Donations blueprint registered")
+
+    except ImportError as e:
+        print("WARNING: Donations blueprint not registered:", e)
+
+    # --------------------------------------------------------
+    # Home route
     # --------------------------------------------------------
     @app.route("/")
     def home():
@@ -223,7 +239,7 @@ def create_app():
         })
 
     # --------------------------------------------------------
-    # 12. Health check route
+    # Health check route
     # --------------------------------------------------------
     @app.route("/api/health")
     def health_check():
@@ -234,7 +250,7 @@ def create_app():
         })
 
     # --------------------------------------------------------
-    # 13. 404 Error Handler
+    # 404 Error Handler
     # --------------------------------------------------------
     @app.errorhandler(404)
     def not_found(error):
@@ -244,7 +260,7 @@ def create_app():
         }), 404
 
     # --------------------------------------------------------
-    # 14. 500 Error Handler
+    # 500 Error Handler
     # --------------------------------------------------------
     @app.errorhandler(500)
     def internal_error(error):
@@ -260,7 +276,7 @@ def create_app():
         }), 500
 
     # --------------------------------------------------------
-    # 15. Return application
+    # Return application
     # --------------------------------------------------------
     return app
 
@@ -288,7 +304,7 @@ if __name__ == "__main__":
     print()
 
     app.run(
-    host="0.0.0.0",
-    port=int(os.environ.get("PORT", 5000)),
-    debug=False
-)
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False
+    )
