@@ -59,7 +59,11 @@ def create_app():
 
     # Register Donations module
     app.register_blueprint(donations_bp)
+    # Register Demo Payment API
+    # SIMULATION ONLY - NO REAL MONEY
+    from app.donations.demo.routes import demo_payments_bp
 
+    app.register_blueprint(demo_payments_bp)
     @app.route("/")
     def home():
         return {

@@ -226,6 +226,12 @@ def create_app():
 
     except ImportError as e:
         print("WARNING: Donations blueprint not registered:", e)
+            # Register Demo Payment Blueprint
+    from app.donations.demo.routes import demo_payments_bp
+
+    app.register_blueprint(demo_payments_bp)
+
+    print("Demo payment blueprint registered")
 
     # --------------------------------------------------------
     # Home route

@@ -850,7 +850,30 @@
                 >
                     Submit Donation
                 </button>
+<!-- DEMO PAYMENT SIMULATOR -->
+<div style="margin-top: 20px;">
 
+    <button
+        id="demoPaymentBtn"
+        type="button"
+        class="submit-btn"
+        style="background: #2563eb;"
+    >
+        Simulate Demo Payment
+    </button>
+
+    <p style="font-size: 13px; margin-top: 10px; color: #64748b;">
+        DEMO ONLY - No real money will be transferred.
+    </p>
+
+    <div
+        id="demoPaymentResult"
+        role="status"
+        aria-live="polite"
+        style="margin-top: 12px;"
+    ></div>
+
+</div>
             </form>
 
         </section>
@@ -1455,7 +1478,60 @@ document
         }
     );
 
+/* ============================================================
+   DEMO PAYMENT SIMULATOR
+============================================================ */
 
+document.getElementById("demoPaymentBtn")
+    .addEventListener("click", async function () {
+
+        const button = this;
+        const resultBox =
+            document.getElementById("demoPaymentResult");
+
+        const amount =
+            document.getElementById("amount").value;
+
+        if (!amount || !Number.isFinite(Number(amount)) ||
+            Number(amount) <= 0) {
+            resultBox.textContent =
+                "Please enter a valid donation amount.";
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = "Simulating...";
+
+        resultBox.textContent = "";
+
+        try {
+            const response = await apiRequest(
+                "/api/donations/demo/simulate",
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        amount: amount,
+                        outcome: "success"
+                    })
+                }
+            );
+
+            const payment = response.simulation;
+
+            resultBox.textContent =
+                `${payment.payment_status} | ` +
+                `Amount: INR ${payment.amount} | ` +
+                `Transaction: ${payment.transaction_id} | ` +
+                "DEMO ONLY - NO REAL MONEY TRANSFERRED";
+
+        } catch (error) {
+            resultBox.textContent =
+                "Demo payment error: " + error.message;
+        } finally {
+            button.disabled = false;
+            button.textContent = "Simulate Demo Payment";
+        }
+    });
 /* ============================================================
    BUTTONS
 ============================================================ */
