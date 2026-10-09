@@ -430,3 +430,69 @@ async function getUnreadNotificationCount() {
         }
     );
 }
+// ============================================================
+// DONATIONS
+// ============================================================
+
+// Create a new donation
+async function createDonation(data) {
+
+    return await apiRequest(
+        "/api/donations/",
+        {
+            method: "POST",
+            body: JSON.stringify(data)
+        }
+    );
+}
+
+
+/* ==========================================
+   DONATIONS API
+========================================== */
+
+
+
+// User: Get my donations
+async function getMyDonations() {
+    return await apiRequest(
+        "/api/donations/my",
+        {
+            method: "GET"
+        }
+    );
+}
+
+// Admin: Get all donations
+async function getAllDonations() {
+    return await apiRequest(
+        "/api/donations/",
+        {
+            method: "GET"
+        }
+    );
+}
+
+// Admin: Get donation details
+async function getDonationById(id) {
+    return await apiRequest(
+        `/api/donations/${id}`,
+        {
+            method: "GET"
+        }
+    );
+}
+
+// Admin: Update donation status
+async function updateDonationStatus(id, status) {
+    return await apiRequest(
+        `/api/donations/${id}/status`,
+        {
+            method: "PUT",
+            body: JSON.stringify({ status })
+        }
+    );
+}
+
+
+    

@@ -1,0 +1,574 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AnimalCare | Admin Donations</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f6f8fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #f58220;
+        }
+
+        button, select, input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .nav-btn {
+            background: #f58220;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .card p {
+            color: #6b7280;
+            margin: 0 0 10px;
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .toolbar input,
+        .toolbar select {
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .toolbar input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .table-box {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 850px;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #fff7ed;
+            color: #374151;
+        }
+
+        .status {
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .Pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .Received {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .Cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .status-select {
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+        }
+
+        .save-btn {
+            background: #f58220;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 9px 12px;
+        }
+
+        .save-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .error {
+            color: #b91c1c;
+        }
+
+        .success {
+            color: #166534;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            🐾 AnimalCare Admin
+        </div>
+
+        <button class="nav-btn"
+                onclick="location.href='admin-dashboard.html'">
+            Dashboard
+        </button>
+    </header>
+
+    <main class="container">
+
+        <h1>Donations Management</h1>
+
+        <p class="subtitle">
+            View and manage AnimalCare donation records.
+        </p>
+
+        <div class="stats">
+
+            <div class="card">
+                <p>Total Donations</p>
+                <h2 id="totalDonations">0</h2>
+            </div>
+
+            <div class="card">
+                <p>Total Recorded Amount</p>
+                <h2 id="totalAmount">₹0</h2>
+            </div>
+
+            <div class="card">
+                <p>Pending Donations</p>
+                <h2 id="pendingDonations">0</h2>
+            </div>
+
+            <div class="card">
+                <p>Received Donations</p>
+                <h2 id="receivedDonations">0</h2>
+            </div>
+
+        </div>
+
+        <div class="toolbar">
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search by donor or donation ID"
+            >
+
+            <select id="statusFilter">
+                <option value="All">All Statuses</option>
+                <option value="Pending">Pending</option>
+                <option value="Received">Received</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+
+            <button class="nav-btn" id="refreshBtn">
+                Refresh
+            </button>
+
+        </div>
+
+        <div id="message"
+             class="message"
+             role="status"
+             aria-live="polite"></div>
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Donor</th>
+                        <th>Amount</th>
+                        <th>Purpose</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Update Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="donationsTable">
+                    <tr>
+                        <td colspan="7">
+                            Loading donations...
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+    <script src="js/api.js"></script>
+
+    <script>
+        let allDonations = [];
+
+        const tableBody =
+            document.getElementById("donationsTable");
+
+        const messageBox =
+            document.getElementById("message");
+
+        const moneyFormatter =
+            new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR"
+            });
+
+        function showMessage(text, isError = false) {
+            messageBox.textContent = text;
+            messageBox.className =
+                "message " + (isError ? "error" : "success");
+        }
+
+        function formatDate(value) {
+            if (!value) return "-";
+            return String(value);
+        }
+
+        function addCell(row, value) {
+            const cell = document.createElement("td");
+            cell.textContent = value ?? "-";
+            row.appendChild(cell);
+            return cell;
+        }
+
+        function updateStats() {
+            const total = allDonations.reduce(
+                (sum, donation) =>
+                    sum + Number(donation.amount || 0),
+                0
+            );
+
+            document.getElementById(
+                "totalDonations"
+            ).textContent = allDonations.length;
+
+            document.getElementById(
+                "totalAmount"
+            ).textContent = moneyFormatter.format(total);
+
+            document.getElementById(
+                "pendingDonations"
+            ).textContent = allDonations.filter(
+                d => d.payment_status === "Pending"
+            ).length;
+
+            document.getElementById(
+                "receivedDonations"
+            ).textContent = allDonations.filter(
+                d => d.payment_status === "Received"
+            ).length;
+        }
+
+        function renderDonations() {
+            const search = document.getElementById(
+                "searchInput"
+            ).value.toLowerCase().trim();
+
+            const filter = document.getElementById(
+                "statusFilter"
+            ).value;
+
+            const filtered = allDonations.filter(d => {
+                const matchesSearch =
+                    String(d.donor_name || "")
+                        .toLowerCase()
+                        .includes(search) ||
+                    String(d.id).includes(search);
+
+                const matchesStatus =
+                    filter === "All" ||
+                    d.payment_status === filter;
+
+                return matchesSearch && matchesStatus;
+            });
+
+            tableBody.replaceChildren();
+
+            if (!filtered.length) {
+                const row = document.createElement("tr");
+                addCell(row, "No donations found")
+                    .colSpan = 7;
+                tableBody.appendChild(row);
+                return;
+            }
+
+            filtered.forEach(donation => {
+                const row = document.createElement("tr");
+
+                addCell(row, donation.id);
+                addCell(row, donation.donor_name);
+                addCell(
+                    row,
+                    moneyFormatter.format(
+                        Number(donation.amount || 0)
+                    )
+                );
+                addCell(row, donation.purpose);
+                addCell(row, formatDate(donation.created_at));
+
+                const statusCell = addCell(row, "");
+                const statusBadge =
+                    document.createElement("span");
+
+                statusBadge.className =
+                    "status " + donation.payment_status;
+                statusBadge.textContent =
+                    donation.payment_status;
+
+                statusCell.appendChild(statusBadge);
+
+                const actionCell = addCell(row, "");
+                const select =
+                    document.createElement("select");
+
+                select.className = "status-select";
+
+                ["Pending", "Received", "Cancelled"]
+                    .forEach(status => {
+                        const option =
+                            document.createElement("option");
+                        option.value = status;
+                        option.textContent = status;
+                        select.appendChild(option);
+                    });
+
+                select.value = donation.payment_status;
+
+                const saveBtn =
+                    document.createElement("button");
+
+                saveBtn.className = "save-btn";
+                saveBtn.textContent = "Save";
+                saveBtn.style.marginLeft = "8px";
+
+                saveBtn.addEventListener("click", async () => {
+                    const newStatus = select.value;
+
+                    if (newStatus === donation.payment_status) {
+                        showMessage("No status change selected.");
+                        return;
+                    }
+
+                    if (newStatus === "Received") {
+                        const confirmed = confirm(
+                            "Only mark this donation Received " +
+                            "if payment has been independently verified. Continue?"
+                        );
+
+                        if (!confirmed) return;
+                    }
+
+                    if (!confirm(
+                        `Change donation #${donation.id} ` +
+                        `to ${newStatus}?`
+                    )) {
+                        return;
+                    }
+
+                    saveBtn.disabled = true;
+
+                    try {
+                        const result =
+                            await updateDonationStatus(
+                                donation.id,
+                                newStatus
+                            );
+
+                        if (!result || result.success !== true) {
+                            throw new Error(
+                                result?.message ||
+                                "Status update failed"
+                            );
+                        }
+
+                        showMessage(
+                            `Donation #${donation.id} updated.`
+                        );
+
+                        await loadDonations(false);
+
+                    } catch (error) {
+                        showMessage(
+                            error.message ||
+                            "Unable to update donation",
+                            true
+                        );
+                        saveBtn.disabled = false;
+                    }
+                });
+
+                actionCell.append(select, saveBtn);
+                tableBody.appendChild(row);
+            });
+        }
+
+        async function loadDonations(clearMessage = true) {
+            if (clearMessage) showMessage("");
+
+            try {
+                const response = await getAllDonations();
+
+                if (!response || response.success !== true) {
+                    throw new Error(
+                        response?.message ||
+                        "Unable to load donations"
+                    );
+                }
+
+                allDonations = response.donations || [];
+
+                updateStats();
+                renderDonations();
+
+            } catch (error) {
+                showMessage(
+                    error.message || "Unable to load donations",
+                    true
+                );
+            }
+        }
+
+        async function checkAdmin() {
+            const token = getToken();
+            const user = getCurrentUser();
+
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            if (!user || user.role !== "Admin") {
+                showMessage("Admin access required.", true);
+                tableBody.replaceChildren();
+                return;
+            }
+
+            await loadDonations();
+        }
+
+        document.getElementById(
+            "searchInput"
+        ).addEventListener("input", renderDonations);
+
+        document.getElementById(
+            "statusFilter"
+        ).addEventListener("change", renderDonations);
+
+        document.getElementById(
+            "refreshBtn"
+        ).addEventListener("click", () => loadDonations());
+
+        checkAdmin();
+    </script>
+
+</body>
+</html>

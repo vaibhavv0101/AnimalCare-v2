@@ -1,8 +1,10 @@
+
 from flask import Flask
 
 from app.config import Config
 from app.extensions import db, migrate, jwt, cors, bcrypt
 from app.models import Role, User
+
 from app.auth import auth_bp
 from app.animals import animals_bp
 from app.rescues import rescues_bp
@@ -10,6 +12,10 @@ from app.adoptions import adoptions_bp
 from app.ngos import ngos_bp
 from app.volunteers import volunteers_bp
 from app.users import users_bp
+
+# Donations Module
+from app.donations import donations_bp
+
 
 def create_app():
     app = Flask(__name__)
@@ -19,15 +25,30 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     jwt.init_app(app)
+
     cors.init_app(
-    app,
-    resources={r"/api/*": {"origins": ["http://127.0.0.1:5500", "http://localhost:5500"]}},
-    supports_credentials=True,
-    allow_headers=["Content-Type", "Authorization"],
-    methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
-)
+        app,
+        resources={
+            r"/api/*": {
+                "origins": [
+                    "http://127.0.0.1:5500",
+                    "http://localhost:5500",
+                    "http://127.0.0.1:5501",
+                    "http://localhost:5501"
+                ]
+            }
+        },
+        supports_credentials=True,
+        allow_headers=["Content-Type", "Authorization"],
+        methods=[
+            "GET", "POST", "PUT",
+            "PATCH", "DELETE", "OPTIONS"
+        ]
+    )
+
     bcrypt.init_app(app)
 
+    # Register existing modules
     app.register_blueprint(auth_bp)
     app.register_blueprint(animals_bp)
     app.register_blueprint(rescues_bp)
@@ -35,6 +56,9 @@ def create_app():
     app.register_blueprint(ngos_bp)
     app.register_blueprint(volunteers_bp)
     app.register_blueprint(users_bp)
+
+    # Register Donations module
+    app.register_blueprint(donations_bp)
 
     @app.route("/")
     def home():
