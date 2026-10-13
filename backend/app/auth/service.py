@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import create_access_token
 
 from app.extensions import db, bcrypt
@@ -11,7 +12,15 @@ def register_user(data):
 
     if existing:
         return {"success": False, "message": "Email already exists"}, 409
+    existing_phone = User.query.filter_by(
+        phone=data["phone"]
+    ).first()
 
+    if existing_phone:
+        return {
+            "success": False,
+            "message": "Phone number already registered. Please use another number."
+        }, 409
     role = Role.query.filter_by(name=data["role"]).first()
 
     if not role:
@@ -29,8 +38,16 @@ def register_user(data):
         role_id=role.id
     )
 
-    db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.add(user)
+        db.session.commit()
+
+    except IntegrityError:
+        db.session.rollback()
+        return {
+            "success": False,
+            "message": "Email or phone number already registered."
+        }, 409
 
     return {
         "success": True,
